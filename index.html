@@ -1,0 +1,1956 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zebra Multiplication</title>
+  <style>
+    :root{
+      --bg:#091019;
+      --text:#eef4fb;
+      --muted:#a7b3c3;
+      --line:rgba(222,232,244,.46);
+      --lineStrong:rgba(240,246,255,.82);
+      --gold:#ffd976;
+      --green:#7ef1bb;
+      --red:#ff8598;
+      --shadow:0 24px 70px rgba(0,0,0,.42);
+      --shadowSoft:0 12px 30px rgba(0,0,0,.28);
+      --white1:#ffffff;
+      --white2:#edf4fb;
+      --white3:#ccd8e4;
+      --black1:#475667;
+      --black2:#172330;
+      --black3:#070b10;
+      --menuW:min(420px, 92vw);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(90,134,199,.17), transparent 44%),
+        radial-gradient(900px 620px at 100% 0%, rgba(255,218,128,.08), transparent 40%),
+        radial-gradient(600px 400px at 50% 100%, rgba(120,180,255,.05), transparent 50%),
+        linear-gradient(180deg, #0b1017 0%, var(--bg) 100%);
+      overflow:hidden;
+    }
+
+    .app{
+      position:relative;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    }
+
+    .menuBtn{
+      position:absolute;
+      top:18px;
+      left:18px;
+      z-index:30;
+      width:58px;
+      height:58px;
+      border:none;
+      border-radius:18px;
+      cursor:pointer;
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(10px);
+      display:grid;
+      place-items:center;
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .menuBtn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.18);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+    }
+
+    .menuBtn svg{ width:24px; height:24px; }
+
+    .titleChip{
+      position:absolute;
+      top:18px;
+      left:90px;
+      z-index:20;
+      padding:14px 18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(10px);
+      pointer-events:none;
+    }
+
+    .titleChip .big{
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.04em;
+      line-height:1;
+    }
+
+    .stage{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+
+    .boardShell{
+      position:relative;
+      width:min(1200px, calc(100vw - 48px));
+      height:min(820px, calc(100vh - 48px));
+      border-radius:30px;
+      overflow:hidden;
+      background:
+        radial-gradient(540px 280px at 50% 48%, rgba(255,255,255,.03), transparent 68%),
+        radial-gradient(280px 180px at 14% 18%, rgba(125,177,255,.05), transparent 70%),
+        radial-gradient(320px 200px at 85% 82%, rgba(255,214,109,.045), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.012));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+    }
+
+    .boardShell::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: radial-gradient(1100px 520px at 50% 50%, rgba(255,255,255,.03), transparent 70%);
+      z-index:0;
+    }
+
+    #boardSvg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      display:block;
+      z-index:1;
+    }
+
+    .sideChooser{
+      position:absolute;
+      top:18px;
+      right:18px;
+      z-index:12;
+      width:220px;
+      padding:14px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(12px);
+    }
+
+    .sideChooser .label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--gold);
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .sideChooser .hint{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .pieceChooser{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .pieceBtn{
+      border:none;
+      border-radius:16px;
+      padding:14px 12px;
+      cursor:pointer;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--text);
+      box-shadow:var(--shadowSoft);
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
+      font-size:14px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+
+    .pieceBtn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.18);
+    }
+
+    .pieceBtn.active{
+      border-color:rgba(255,217,118,.55);
+      box-shadow:0 0 0 1px rgba(255,217,118,.22), var(--shadowSoft);
+      background:linear-gradient(180deg, rgba(255,217,118,.12), rgba(255,255,255,.04));
+    }
+
+    .pieceDot{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.18);
+      flex:0 0 auto;
+    }
+
+    .pieceDot.white{
+      background: radial-gradient(circle at 32% 28%, var(--white1) 0%, var(--white2) 42%, var(--white3) 100%);
+    }
+
+    .pieceDot.black{
+      background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
+    }
+
+    .hud{
+      position:absolute;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      z-index:10;
+      display:flex;
+      justify-content:center;
+      max-width:min(90%, 760px);
+    }
+
+    .pill{
+      padding:12px 16px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(10px);
+      font-size:13px;
+      font-weight:800;
+      color:var(--text);
+      white-space:nowrap;
+    }
+
+    .turnDot{
+      display:inline-block;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      margin-right:8px;
+      vertical-align:middle;
+      border:1px solid rgba(255,255,255,.16);
+    }
+
+    .turnDot.white{
+      background: radial-gradient(circle at 32% 28%, var(--white1) 0%, var(--white2) 42%, var(--white3) 100%);
+    }
+
+    .turnDot.black{
+      background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
+    }
+
+    .menuBackdrop,
+    .modalBackdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(5,8,13,.54);
+      backdrop-filter:blur(8px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+      z-index:39;
+    }
+
+    .menuBackdrop.show,
+    .modalBackdrop.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .menuPanel{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:var(--menuW);
+      z-index:40;
+      transform:translateX(-104%);
+      transition:transform .24s ease;
+      background:linear-gradient(180deg, rgba(18,27,39,.98), rgba(12,18,28,.98));
+      border-right:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .menuPanel.show{ transform:translateX(0); }
+
+    .menuHeader{
+      padding:22px 22px 16px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .menuTitle{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+
+    .closeBtn{
+      width:42px;
+      height:42px;
+      border:none;
+      cursor:pointer;
+      color:var(--text);
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .menuBody{
+      padding:18px 18px 24px;
+      overflow:auto;
+      display:grid;
+      gap:16px;
+    }
+
+    .card{
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      padding:16px;
+    }
+
+    .card h3{
+      margin:0 0 10px;
+      font-size:13px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--gold);
+    }
+
+    .card p, .card li, .card label, .card .small{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .card ol{
+      margin:8px 0 0;
+      padding-left:20px;
+    }
+
+    .boardList{
+      display:grid;
+      gap:10px;
+    }
+
+    .boardOption{
+      width:100%;
+      text-align:left;
+      border:none;
+      border-radius:16px;
+      padding:14px;
+      cursor:pointer;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--text);
+      box-shadow:var(--shadowSoft);
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .boardOption:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.18);
+    }
+
+    .boardOption.active{
+      border-color:rgba(255,217,118,.55);
+      box-shadow:0 0 0 1px rgba(255,217,118,.22), var(--shadowSoft);
+      background:linear-gradient(180deg, rgba(255,217,118,.12), rgba(255,255,255,.04));
+    }
+
+    .boardOption .name{
+      font-size:15px;
+      font-weight:900;
+      margin-bottom:3px;
+    }
+
+    .boardOption .desc{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .btn, .input, .select{
+      width:100%;
+      border:none;
+      outline:none;
+      border-radius:16px;
+      padding:14px 14px;
+      font-size:14px;
+      font-weight:800;
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+    }
+
+    .btn{ cursor:pointer; transition:transform .12s ease, border-color .18s ease; }
+    .btn:hover{
+      border-color:rgba(255,255,255,.16);
+      transform:translateY(-1px);
+    }
+
+    .btn.gold{
+      color:#1d1500;
+      background:linear-gradient(180deg, #ffe5a0, #f0ca6c);
+      border-color:#f6de94;
+    }
+
+    .btnRow{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .history{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      min-height:40px;
+    }
+
+    .moveChip{
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:12px;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .dot{
+      display:inline-block;
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      margin-right:7px;
+      vertical-align:middle;
+      border:1px solid rgba(255,255,255,.15);
+    }
+
+    .dot.white{
+      background: radial-gradient(circle at 32% 28%, var(--white1) 0%, var(--white2) 42%, var(--white3) 100%);
+    }
+
+    .dot.black{
+      background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      z-index:50;
+      pointer-events:none;
+    }
+
+    .modal.show{ pointer-events:auto; }
+
+    .modalCard{
+      width:min(820px, 92vw);
+      max-height:min(90vh, 950px);
+      overflow:auto;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(19,28,40,.98), rgba(11,16,24,.98));
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:var(--shadow);
+      padding:24px;
+      transform:translateY(18px) scale(.98);
+      opacity:0;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+
+    .modal.show .modalCard{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .modalMini{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--gold);
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .modalTitle{
+      margin:0 0 8px;
+      font-size:32px;
+      line-height:1.05;
+      letter-spacing:-.05em;
+    }
+
+    .modalText{
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+      margin-bottom:16px;
+    }
+
+    .scoreLabTop{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .scoreStep{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .scoreStep.active{
+      color:var(--text);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.09);
+    }
+
+    .highlightWrap{
+      height:320px;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      margin:14px 0 18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    }
+
+    .highlightWrap svg{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    .questionCard{
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .questionCard h4{
+      margin:0 0 6px;
+      font-size:20px;
+      letter-spacing:-.03em;
+    }
+
+    .feedback{
+      min-height:24px;
+      font-size:14px;
+      font-weight:800;
+      margin-top:10px;
+    }
+
+    .feedback.good{ color:var(--green); }
+    .feedback.bad{ color:var(--red); }
+
+    .groupList{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .groupChip{
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .prodLine{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:10px 0 14px;
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .prodFactor,
+    .prodSymbol,
+    .prodResult{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .prodSymbol{
+      background:rgba(255,255,255,.03);
+    }
+
+    .prodResult{
+      border-color:rgba(255,217,118,.35);
+      color:var(--gold);
+    }
+
+    .modalActions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .winnerSummary{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .winnerBox{
+      border-radius:20px;
+      padding:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .winnerBox .name{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--muted);
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .winnerBox .val{
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:-.05em;
+    }
+
+    .cell{
+      cursor:pointer;
+      transition:filter .12s ease;
+    }
+
+    .cell.disabled{ cursor:default; }
+
+    .hex-base{
+      fill:rgba(255,255,255,.018);
+      stroke:var(--line);
+      stroke-width:2;
+      transition:fill .15s ease, stroke .15s ease, stroke-width .15s ease;
+    }
+
+    .cell.empty:hover .hex-base{
+      fill:rgba(255,255,255,.065);
+      stroke:var(--lineStrong);
+      stroke-width:2.25;
+      filter:drop-shadow(0 0 12px rgba(255,255,255,.12));
+    }
+
+    .cell.white .hex-base{
+      fill:rgba(231,239,246,.06);
+      stroke:rgba(217,227,238,.58);
+    }
+
+    .cell.black .hex-base{
+      fill:rgba(18,28,39,.42);
+      stroke:rgba(124,138,156,.56);
+    }
+
+    .piece{
+      pointer-events:none;
+      transform-origin:center;
+    }
+
+    .piece.newPlace{
+      opacity:0;
+      animation:placeIn .18s ease-out forwards;
+    }
+
+    @keyframes placeIn{
+      0%{ opacity:0; transform:scale(.45); }
+      100%{ opacity:1; transform:scale(1); }
+    }
+
+    .empty-hint{
+      opacity:0;
+      transition:opacity .12s ease;
+      pointer-events:none;
+    }
+
+    .cell.empty:hover .empty-hint{ opacity:1; }
+
+    .scoreHighlight .hex-base{
+      fill:rgba(255,255,255,.05);
+      stroke:rgba(255,255,255,.25);
+      opacity:.35;
+    }
+
+    .scoreHighlight.match .hex-base{
+      opacity:1;
+      stroke-width:2.5;
+    }
+
+    .scoreHighlight.match.white .hex-base{
+      fill:rgba(240,247,255,.16);
+      stroke:rgba(255,255,255,.96);
+      filter:drop-shadow(0 0 12px rgba(255,255,255,.18));
+    }
+
+    .scoreHighlight.match.black .hex-base{
+      fill:rgba(48,63,82,.55);
+      stroke:rgba(180,198,220,.85);
+      filter:drop-shadow(0 0 12px rgba(110,144,180,.18));
+    }
+
+    .scoreHighlight.otherOwner .hex-base{
+      fill:rgba(255,255,255,.015);
+      opacity:.18;
+    }
+
+    .scorePiece{
+      pointer-events:none;
+    }
+
+    @media (max-width: 980px){
+      .boardShell{
+        width:calc(100vw - 20px);
+        height:calc(100vh - 20px);
+        border-radius:22px;
+      }
+
+      .stage{ padding:10px; }
+
+      .titleChip{
+        left:88px;
+        right:14px;
+        width:auto;
+      }
+
+      .sideChooser{
+        top:14px;
+        right:14px;
+        width:190px;
+        padding:12px;
+      }
+
+      .hud{
+        left:12px;
+        right:12px;
+        bottom:12px;
+        transform:none;
+        justify-content:center;
+      }
+
+      .winnerSummary{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 700px){
+      .sideChooser{
+        width:170px;
+      }
+
+      .pieceBtn{
+        padding:12px 10px;
+        font-size:13px;
+      }
+
+      .titleChip .big{
+        font-size:19px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <button id="menuBtn" class="menuBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+      </svg>
+    </button>
+
+    <div class="titleChip">
+      <div class="big">Zebra Multiplication</div>
+    </div>
+
+    <div class="stage">
+      <div class="boardShell">
+        <svg id="boardSvg" viewBox="0 0 1400 900" aria-label="Zebra Multiplication board"></svg>
+
+        <div class="sideChooser">
+          <div class="label">Choose Piece</div>
+          <div class="pieceChooser">
+            <button id="chooseWhiteBtn" class="pieceBtn active" type="button">
+              <span class="pieceDot white"></span>
+              White
+            </button>
+            <button id="chooseBlackBtn" class="pieceBtn" type="button">
+              <span class="pieceDot black"></span>
+              Black
+            </button>
+          </div>
+          <div class="hint">The choice only changes the current turn. Next turn, the other player returns to their own automatic color unless they change it.</div>
+        </div>
+
+        <div class="hud">
+          <div id="turnPill" class="pill"><span class="turnDot white"></span>Player 1 choosing White</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="menuBackdrop" class="menuBackdrop"></div>
+  <aside id="menuPanel" class="menuPanel" aria-hidden="true">
+    <div class="menuHeader">
+      <div class="menuTitle">Zebra Menu</div>
+      <button id="closeMenuBtn" class="closeBtn" aria-label="Close menu">✕</button>
+    </div>
+    <div class="menuBody">
+      <section class="card">
+        <h3>Boards</h3>
+        <div id="boardList" class="boardList"></div>
+      </section>
+
+      <section class="card">
+        <h3>Game Controls</h3>
+        <div class="btnRow">
+          <button id="resetBtn" class="btn">Reset Board</button>
+          <button id="openScoreBtn" class="btn">Open Score Lab</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Rules</h3>
+        <ol>
+          <li>Player 1 goes first and is automatically White.</li>
+          <li>Player 2 is automatically Black.</li>
+          <li>A player can temporarily switch to place the other color on their turn.</li>
+          <li>That temporary switch does not carry forward to the next turn.</li>
+          <li>When the board is full, do not reveal the score right away.</li>
+          <li>Students work through the score lab.</li>
+          <li>Find each separate connected group.</li>
+          <li>Count the size of each group.</li>
+          <li>Multiply the group sizes one step at a time.</li>
+          <li>After both player scores are found, compare them to find the winner.</li>
+        </ol>
+        <p style="margin-top:10px;">Connected means touching by edges, not just corners.</p>
+      </section>
+
+      <section class="card">
+        <h3>Recent Moves</h3>
+        <div id="history" class="history"></div>
+      </section>
+    </div>
+  </aside>
+
+  <div id="modalBackdrop" class="modalBackdrop"></div>
+
+  <div id="scoreModal" class="modal" aria-hidden="true">
+    <div class="modalCard">
+      <div class="modalMini">Score Lab</div>
+      <h2 class="modalTitle">Let’s calculate the scores together</h2>
+      <div class="modalText">
+        First count and multiply White’s groups all the way through. Then do the same for Black. After both scores are complete, compare them to find the winner.
+      </div>
+
+      <div class="scoreLabTop">
+        <div id="stepWhiteGroups" class="scoreStep active">1. White groups</div>
+        <div id="stepWhiteMultiply" class="scoreStep">2. White multiply</div>
+        <div id="stepWhiteScore" class="scoreStep">3. White score</div>
+        <div id="stepBlackGroups" class="scoreStep">4. Black groups</div>
+        <div id="stepBlackMultiply" class="scoreStep">5. Black multiply</div>
+        <div id="stepBlackScore" class="scoreStep">6. Black score</div>
+        <div id="stepWinner" class="scoreStep">7. Winner</div>
+      </div>
+
+      <div class="highlightWrap">
+        <svg id="scoreSvg" viewBox="0 0 1000 320"></svg>
+      </div>
+
+      <div id="scoreLabContent"></div>
+
+      <div class="modalActions">
+        <button id="scoreNextBtn" class="btn gold">Check</button>
+        <button id="scoreCancelBtn" class="btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SVG_NS = "http://www.w3.org/2000/svg";
+
+    const boardSvg = document.getElementById("boardSvg");
+    const historyEl = document.getElementById("history");
+    const turnPill = document.getElementById("turnPill");
+
+    const menuBtn = document.getElementById("menuBtn");
+    const closeMenuBtn = document.getElementById("closeMenuBtn");
+    const menuBackdrop = document.getElementById("menuBackdrop");
+    const menuPanel = document.getElementById("menuPanel");
+    const boardListEl = document.getElementById("boardList");
+
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const scoreModal = document.getElementById("scoreModal");
+    const scoreLabContent = document.getElementById("scoreLabContent");
+    const scoreSvg = document.getElementById("scoreSvg");
+    const scoreNextBtn = document.getElementById("scoreNextBtn");
+    const scoreCancelBtn = document.getElementById("scoreCancelBtn");
+    const openScoreBtn = document.getElementById("openScoreBtn");
+
+    const chooseWhiteBtn = document.getElementById("chooseWhiteBtn");
+    const chooseBlackBtn = document.getElementById("chooseBlackBtn");
+
+    const stepsEls = {
+      whiteGroups: document.getElementById("stepWhiteGroups"),
+      whiteMultiply: document.getElementById("stepWhiteMultiply"),
+      whiteScore: document.getElementById("stepWhiteScore"),
+      blackGroups: document.getElementById("stepBlackGroups"),
+      blackMultiply: document.getElementById("stepBlackMultiply"),
+      blackScore: document.getElementById("stepBlackScore"),
+      winner: document.getElementById("stepWinner")
+    };
+
+    const HEX_SIZE = 36;
+    const VIEW_W = 1400;
+    const VIEW_H = 900;
+
+    function createSvgEl(name, attrs = {}){
+      const el = document.createElementNS(SVG_NS, name);
+      for(const [k,v] of Object.entries(attrs)) el.setAttribute(k, v);
+      return el;
+    }
+
+    function key(q, r){ return `${q},${r}`; }
+
+    function axialToPixel(q, r, size = HEX_SIZE){
+      return {
+        x: size * Math.sqrt(3) * (q + r / 2),
+        y: size * 1.5 * r
+      };
+    }
+
+    function hexPoints(cx, cy, size){
+      const pts = [];
+      for(let i = 0; i < 6; i++){
+        const angle = (60 * i - 30) * Math.PI / 180;
+        pts.push(`${cx + size * Math.cos(angle)},${cy + size * Math.sin(angle)}`);
+      }
+      return pts.join(" ");
+    }
+
+    function uniqueCoords(coords){
+      const seen = new Set();
+      const out = [];
+      for(const c of coords){
+        const k = key(c.q, c.r);
+        if(!seen.has(k)){
+          seen.add(k);
+          out.push({ q:c.q, r:c.r });
+        }
+      }
+      return out;
+    }
+
+    function shiftCoords(coords, dq = 0, dr = 0){
+      return coords.map(c => ({ q:c.q + dq, r:c.r + dr }));
+    }
+
+    function rowsToCoords(lengths){
+      const coords = [];
+      const maxLen = Math.max(...lengths);
+      lengths.forEach((len, r) => {
+        const start = -Math.floor(len / 2);
+        const offset = Math.floor((maxLen - len) / 2);
+        for(let i = 0; i < len; i++){
+          coords.push({ q:start + i + offset, r });
+        }
+      });
+      return uniqueCoords(coords);
+    }
+
+    function customRows(rows){
+      const coords = [];
+      rows.forEach((row, r) => {
+        for(let i = 0; i < row.length; i++){
+          coords.push({ q:row.start + i, r });
+        }
+      });
+      return uniqueCoords(coords);
+    }
+
+    function hexagon(radius){
+      const cells = [];
+      for(let q = -radius; q <= radius; q++){
+        for(let r = -radius; r <= radius; r++){
+          const s = -q - r;
+          if(Math.max(Math.abs(q), Math.abs(r), Math.abs(s)) <= radius){
+            cells.push({ q, r });
+          }
+        }
+      }
+      return uniqueCoords(cells);
+    }
+
+    function triangle(size){
+      const cells = [];
+      for(let r = 0; r < size; r++){
+        for(let q = 0; q <= r; q++){
+          cells.push({ q, r });
+        }
+      }
+      return uniqueCoords(cells);
+    }
+
+    function ring(radiusOuter, radiusInner){
+      const outer = hexagon(radiusOuter);
+      const innerSet = new Set(hexagon(radiusInner).map(c => key(c.q, c.r)));
+      return outer.filter(c => !innerSet.has(key(c.q, c.r)));
+    }
+
+    function cleanBoard(coords){
+      return uniqueCoords(coords).sort((a,b) => a.r - b.r || a.q - b.q);
+    }
+
+    const boards = [
+      {
+        id:"diamond",
+        name:"Diamond",
+        description:"A large balanced board.",
+        coords: cleanBoard(hexagon(4))
+      },
+      {
+        id:"ring",
+        name:"Ring",
+        description:"A loop board with a hole in the center.",
+        coords: cleanBoard(ring(4, 1))
+      },
+      {
+        id:"hourglass",
+        name:"Hourglass",
+        description:"Wide ends with a narrow middle.",
+        coords: cleanBoard(rowsToCoords([7,6,5,4,5,6,7]))
+      },
+      {
+        id:"trapezoid",
+        name:"Trapezoid",
+        description:"A compact board with strong edges.",
+        coords: cleanBoard(rowsToCoords([4,5,6,7,7,6]))
+      },
+      {
+        id:"triangle",
+        name:"Triangle",
+        description:"A triangular board for tight play.",
+        coords: cleanBoard(triangle(7))
+      },
+      {
+        id:"doubleBridge",
+        name:"Double Bridge",
+        description:"Two clusters connected by a narrow bridge.",
+        coords: cleanBoard(
+          shiftCoords(hexagon(2), -5, 1)
+            .concat(shiftCoords(hexagon(2), 5, 1))
+            .concat([{q:-2,r:1},{q:-1,r:1},{q:0,r:1},{q:1,r:1},{q:2,r:1}])
+        )
+      },
+      {
+        id:"butterfly",
+        name:"Butterfly",
+        description:"Two wings with a central body.",
+        coords: cleanBoard(
+          shiftCoords(rowsToCoords([2,3,4,3,2]), -4, 1)
+            .concat(shiftCoords(rowsToCoords([2,3,4,3,2]), 4, 1))
+            .concat([{q:-1,r:2},{q:0,r:2},{q:1,r:2},{q:0,r:1},{q:0,r:3}])
+        )
+      },
+      {
+        id:"arch",
+        name:"Arch",
+        description:"A tall arch with open space below.",
+        coords: cleanBoard(customRows([
+          {start:-3, length:7},
+          {start:-4, length:9},
+          {start:-4, length:9},
+          {start:-3, length:2},
+          {start:2, length:2},
+          {start:-2, length:1},
+          {start:2, length:1}
+        ]))
+      },
+      {
+        id:"path",
+        name:"Path",
+        description:"A long corridor board.",
+        coords: cleanBoard(customRows([
+          {start:0, length:2},
+          {start:0, length:3},
+          {start:1, length:3},
+          {start:1, length:3},
+          {start:2, length:3},
+          {start:2, length:3},
+          {start:3, length:3},
+          {start:3, length:2}
+        ]))
+      }
+    ];
+
+    let state = {
+      currentBoardId: boards[0].id,
+      cells: new Map(),
+      currentPlayer: 1,
+      selectedPiece: "white",
+      moveNumber: 1,
+      history: [],
+      gameOver: false,
+      scoreLab: null,
+      lastPlacedKey: null
+    };
+
+    function defaultPieceForPlayer(player){
+      return player === 1 ? "white" : "black";
+    }
+
+    function getBoardById(id){
+      return boards.find(b => b.id === id) || boards[0];
+    }
+
+    function cloneBoardCells(board){
+      const map = new Map();
+      board.coords.forEach(c => {
+        map.set(key(c.q, c.r), { q:c.q, r:c.r, owner:null });
+      });
+      return map;
+    }
+
+    function computeBounds(coords, size = HEX_SIZE){
+      const px = coords.map(c => axialToPixel(c.q, c.r, size));
+      const minX = Math.min(...px.map(p => p.x));
+      const maxX = Math.max(...px.map(p => p.x));
+      const minY = Math.min(...px.map(p => p.y));
+      const maxY = Math.max(...px.map(p => p.y));
+      return { minX, maxX, minY, maxY };
+    }
+
+    function getNeighbors(cell){
+      const dirs = [[1,0],[0,1],[-1,1],[-1,0],[0,-1],[1,-1]];
+      const out = [];
+      for(const [dq,dr] of dirs){
+        const k = key(cell.q + dq, cell.r + dr);
+        if(state.cells.has(k)) out.push(state.cells.get(k));
+      }
+      return out;
+    }
+
+    function getGroups(owner){
+      const visited = new Set();
+      const groups = [];
+
+      for(const [k, cell] of state.cells){
+        if(cell.owner !== owner || visited.has(k)) continue;
+        const stack = [cell];
+        const group = [];
+        visited.add(k);
+
+        while(stack.length){
+          const cur = stack.pop();
+          group.push(cur);
+          for(const n of getNeighbors(cur)){
+            const nk = key(n.q, n.r);
+            if(n.owner === owner && !visited.has(nk)){
+              visited.add(nk);
+              stack.push(n);
+            }
+          }
+        }
+        groups.push(group.sort((a,b) => a.r - b.r || a.q - b.q));
+      }
+
+      groups.sort((a,b) => b.length - a.length);
+      return groups;
+    }
+
+    function multiplyStepwiseNumbers(numbers){
+      if(!numbers.length) return { steps: [], result: 1 };
+      if(numbers.length === 1) return { steps: [], result: numbers[0] };
+
+      const steps = [];
+      let running = numbers[0];
+      for(let i = 1; i < numbers.length; i++){
+        const next = numbers[i];
+        const result = running * next;
+        steps.push({ left: running, right: next, result });
+        running = result;
+      }
+      return { steps, result: running };
+    }
+
+    function filledCount(){
+      let count = 0;
+      for(const [,cell] of state.cells) if(cell.owner) count++;
+      return count;
+    }
+
+    function isBoardFull(){
+      return filledCount() === state.cells.size;
+    }
+
+    function resetGame(boardId = state.currentBoardId){
+      const board = getBoardById(boardId);
+      state.currentBoardId = board.id;
+      state.cells = cloneBoardCells(board);
+      state.currentPlayer = 1;
+      state.selectedPiece = defaultPieceForPlayer(1);
+      state.moveNumber = 1;
+      state.history = [];
+      state.gameOver = false;
+      state.scoreLab = null;
+      state.lastPlacedKey = null;
+      closeScoreModal();
+      renderAll();
+    }
+
+    function setSelectedPiece(piece){
+      state.selectedPiece = piece;
+      renderPieceChooser();
+      renderHud();
+    }
+
+    function placePiece(k){
+      if(state.gameOver) return;
+      const cell = state.cells.get(k);
+      if(!cell || cell.owner) return;
+
+      cell.owner = state.selectedPiece;
+      state.history.push({
+        move: state.moveNumber,
+        player: state.currentPlayer,
+        piece: state.selectedPiece,
+        q: cell.q,
+        r: cell.r
+      });
+
+      state.lastPlacedKey = k;
+      state.moveNumber++;
+
+      if(isBoardFull()){
+        state.gameOver = true;
+        renderAll();
+        startScoreLab();
+      } else {
+        state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+        state.selectedPiece = defaultPieceForPlayer(state.currentPlayer);
+        renderAll();
+      }
+    }
+
+    function renderBoardList(){
+      boardListEl.innerHTML = "";
+      boards.forEach(board => {
+        const btn = document.createElement("button");
+        btn.className = `boardOption ${board.id === state.currentBoardId ? "active" : ""}`;
+        btn.type = "button";
+        btn.innerHTML = `
+          <div class="name">${board.name} (${board.coords.length} cells)</div>
+          <div class="desc">${board.description}</div>
+        `;
+        btn.addEventListener("click", () => {
+          resetGame(board.id);
+        });
+        boardListEl.appendChild(btn);
+      });
+    }
+
+    function renderPiece(owner, x, y, isNew = false){
+      const wrap = createSvgEl("g", { class:`piece${isNew ? " newPlace" : ""}` });
+
+      if(owner === "white"){
+        wrap.appendChild(createSvgEl("circle", {
+          cx:x, cy:y + 1.5, r:HEX_SIZE * .58, fill:"rgba(0,0,0,.16)"
+        }));
+        wrap.appendChild(createSvgEl("circle", {
+          cx:x, cy:y, r:HEX_SIZE * .54, fill:"url(#whiteGrad)"
+        }));
+        wrap.appendChild(createSvgEl("circle", {
+          cx:x - 9, cy:y - 10, r:HEX_SIZE * .17, fill:"rgba(255,255,255,.72)"
+        }));
+      } else {
+        wrap.appendChild(createSvgEl("circle", {
+          cx:x, cy:y + 1.5, r:HEX_SIZE * .58, fill:"rgba(0,0,0,.22)"
+        }));
+        wrap.appendChild(createSvgEl("circle", {
+          cx:x, cy:y, r:HEX_SIZE * .54, fill:"url(#blackGrad)"
+        }));
+        wrap.appendChild(createSvgEl("circle", {
+          cx:x - 9, cy:y - 10, r:HEX_SIZE * .14, fill:"rgba(255,255,255,.15)"
+        }));
+      }
+      return wrap;
+    }
+
+    function injectDefs(svg){
+      const defs = createSvgEl("defs");
+
+      const whiteGrad = createSvgEl("radialGradient", { id:"whiteGrad", cx:"32%", cy:"28%", r:"75%" });
+      whiteGrad.appendChild(createSvgEl("stop", { offset:"0%", "stop-color":"#ffffff" }));
+      whiteGrad.appendChild(createSvgEl("stop", { offset:"46%", "stop-color":"#edf4fb" }));
+      whiteGrad.appendChild(createSvgEl("stop", { offset:"100%", "stop-color":"#ccd8e4" }));
+
+      const blackGrad = createSvgEl("radialGradient", { id:"blackGrad", cx:"35%", cy:"30%", r:"78%" });
+      blackGrad.appendChild(createSvgEl("stop", { offset:"0%", "stop-color":"#4a5968" }));
+      blackGrad.appendChild(createSvgEl("stop", { offset:"42%", "stop-color":"#15202d" }));
+      blackGrad.appendChild(createSvgEl("stop", { offset:"100%", "stop-color":"#070b10" }));
+
+      defs.appendChild(whiteGrad);
+      defs.appendChild(blackGrad);
+      svg.appendChild(defs);
+    }
+
+    function renderBoard(){
+      boardSvg.innerHTML = "";
+      injectDefs(boardSvg);
+
+      const coords = [...state.cells.values()];
+      const bounds = computeBounds(coords);
+      const boardW = (bounds.maxX - bounds.minX) + HEX_SIZE * 2.6;
+      const boardH = (bounds.maxY - bounds.minY) + HEX_SIZE * 2.8;
+      const scale = Math.min((VIEW_W - 120) / boardW, (VIEW_H - 120) / boardH, 1.62);
+
+      const gMain = createSvgEl("g", {
+        transform:`translate(${VIEW_W/2},${VIEW_H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
+      });
+
+      boardSvg.appendChild(gMain);
+
+      coords.sort((a,b) => a.r - b.r || a.q - b.q).forEach(cell => {
+        const { x, y } = axialToPixel(cell.q, cell.r);
+
+        const g = createSvgEl("g", {
+          class:`cell ${cell.owner ? cell.owner : "empty"} ${state.gameOver || cell.owner ? "disabled" : ""}`,
+          "data-key": key(cell.q, cell.r)
+        });
+
+        g.appendChild(createSvgEl("polygon", {
+          class:"hex-base",
+          points:hexPoints(x, y, HEX_SIZE - 2)
+        }));
+
+        if(!cell.owner && !state.gameOver){
+          g.appendChild(createSvgEl("circle", {
+            class:"empty-hint",
+            cx:x, cy:y, r:6.2,
+            fill:state.selectedPiece === "white" ? "rgba(255,255,255,.92)" : "rgba(129,146,167,.76)"
+          }));
+          g.addEventListener("click", () => placePiece(key(cell.q, cell.r)));
+        }
+
+        if(cell.owner){
+          const isNew = key(cell.q, cell.r) === state.lastPlacedKey;
+          g.appendChild(renderPiece(cell.owner, x, y, isNew));
+        }
+
+        gMain.appendChild(g);
+      });
+
+      state.lastPlacedKey = null;
+    }
+
+    function renderHistory(){
+      historyEl.innerHTML = "";
+      if(!state.history.length){
+        const div = document.createElement("div");
+        div.className = "small";
+        div.textContent = "No moves yet.";
+        historyEl.appendChild(div);
+        return;
+      }
+
+      state.history.slice(-28).forEach(m => {
+        const chip = document.createElement("div");
+        chip.className = "moveChip";
+        chip.innerHTML = `<span class="dot ${m.piece}"></span>P${m.player} • ${m.move}. (${m.q}, ${m.r})`;
+        historyEl.appendChild(chip);
+      });
+    }
+
+    function renderPieceChooser(){
+      chooseWhiteBtn.classList.toggle("active", state.selectedPiece === "white");
+      chooseBlackBtn.classList.toggle("active", state.selectedPiece === "black");
+    }
+
+    function renderHud(){
+      if(state.gameOver){
+        turnPill.textContent = "Board full. Score lab opened";
+      } else if(state.selectedPiece === "white"){
+        turnPill.innerHTML = `Player ${state.currentPlayer} choosing <span class="turnDot white"></span>White`;
+      } else {
+        turnPill.innerHTML = `Player ${state.currentPlayer} choosing <span class="turnDot black"></span>Black`;
+      }
+    }
+
+    function renderAll(){
+      renderBoardList();
+      renderBoard();
+      renderHistory();
+      renderPieceChooser();
+      renderHud();
+    }
+
+    function openMenu(){
+      menuPanel.classList.add("show");
+      menuBackdrop.classList.add("show");
+      menuPanel.setAttribute("aria-hidden", "false");
+    }
+
+    function closeMenu(){
+      menuPanel.classList.remove("show");
+      menuBackdrop.classList.remove("show");
+      menuPanel.setAttribute("aria-hidden", "true");
+    }
+
+    function setStep(stepKey){
+      Object.entries(stepsEls).forEach(([k, el]) => {
+        el.classList.toggle("active", k === stepKey);
+      });
+    }
+
+    function startScoreLab(){
+      const whiteGroups = getGroups("white");
+      const blackGroups = getGroups("black");
+
+      state.scoreLab = {
+        phase:"whiteGroups",
+        whiteGroups,
+        blackGroups,
+        whiteGroupIndex:0,
+        blackGroupIndex:0,
+        whiteSizesEntered:[],
+        blackSizesEntered:[],
+        whiteMultiplyStep:0,
+        blackMultiplyStep:0,
+        whiteRunningTotal:null,
+        blackRunningTotal:null,
+        whiteScore:null,
+        blackScore:null,
+        feedback:"",
+        finished:false
+      };
+
+      openScoreModal();
+      renderScoreLab();
+    }
+
+    function openScoreModal(){
+      scoreModal.classList.add("show");
+      scoreModal.setAttribute("aria-hidden", "false");
+      modalBackdrop.classList.add("show");
+    }
+
+    function closeScoreModal(){
+      scoreModal.classList.remove("show");
+      scoreModal.setAttribute("aria-hidden", "true");
+      modalBackdrop.classList.remove("show");
+    }
+
+    function renderScoreLab(){
+      const s = state.scoreLab;
+      if(!s) return;
+
+      if(s.phase === "whiteGroups") setStep("whiteGroups");
+      if(s.phase === "whiteMultiply") setStep("whiteMultiply");
+      if(s.phase === "whiteScore") setStep("whiteScore");
+      if(s.phase === "blackGroups") setStep("blackGroups");
+      if(s.phase === "blackMultiply") setStep("blackMultiply");
+      if(s.phase === "blackScore") setStep("blackScore");
+      if(s.phase === "winner") setStep("winner");
+
+      renderScoreBoardPreview();
+
+      if(s.phase === "whiteGroups"){
+        const idx = s.whiteGroupIndex;
+        const discovered = s.whiteSizesEntered.map((n,i) => `<span class="groupChip">White group ${i+1}: ${n}</span>`).join("");
+
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>Count White group ${idx + 1}</h4>
+            <div class="modalText">Count the number of white hexes in the highlighted connected group.</div>
+            <input id="groupSizeInput" class="input" type="number" min="1" step="1" placeholder="Enter the size of this white group" />
+            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+            <div class="groupList">${discovered}</div>
+          </div>
+        `;
+        scoreNextBtn.textContent = idx === s.whiteGroups.length - 1 ? "Check and continue" : "Check";
+      }
+
+      if(s.phase === "whiteMultiply"){
+        const sizes = s.whiteSizesEntered;
+        const stepData = multiplyStepwiseNumbers(sizes);
+        const current = stepData.steps[s.whiteMultiplyStep];
+        const completed = stepData.steps.slice(0, s.whiteMultiplyStep).map(step => `
+          <div class="prodLine">
+            <span class="prodFactor">${step.left}</span>
+            <span class="prodSymbol">×</span>
+            <span class="prodFactor">${step.right}</span>
+            <span class="prodSymbol">=</span>
+            <span class="prodResult">${step.result}</span>
+          </div>
+        `).join("");
+
+        if(!current){
+          s.phase = "whiteScore";
+          s.feedback = "";
+          renderScoreLab();
+          return;
+        }
+
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>Multiply White's groups step by step</h4>
+            <div class="modalText">Do one multiplication step, then continue to the next one.</div>
+            <div class="groupList">${sizes.map((n,i) => `<span class="groupChip">Group ${i+1}: ${n}</span>`).join("")}</div>
+            ${completed}
+            <div class="prodLine">
+              <span class="prodFactor">${current.left}</span>
+              <span class="prodSymbol">×</span>
+              <span class="prodFactor">${current.right}</span>
+              <span class="prodSymbol">=</span>
+            </div>
+            <input id="productInput" class="input" type="number" min="1" step="1" placeholder="Enter the result of this multiplication step" />
+            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+          </div>
+        `;
+        scoreNextBtn.textContent = s.whiteMultiplyStep === stepData.steps.length - 1 ? "Check and finish White" : "Check next step";
+      }
+
+      if(s.phase === "whiteScore"){
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>White's final score</h4>
+            <div class="modalText">White's multiplication is complete.</div>
+            <div class="prodLine">
+              ${s.whiteSizesEntered.map((n, i) => `${i ? '<span class="prodSymbol">×</span>' : ''}<span class="prodFactor">${n}</span>`).join("")}
+              <span class="prodSymbol">=</span>
+              <span class="prodResult">${s.whiteScore}</span>
+            </div>
+          </div>
+        `;
+        scoreNextBtn.textContent = "Continue to Black";
+      }
+
+      if(s.phase === "blackGroups"){
+        const idx = s.blackGroupIndex;
+        const discovered = s.blackSizesEntered.map((n,i) => `<span class="groupChip">Black group ${i+1}: ${n}</span>`).join("");
+
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>Count Black group ${idx + 1}</h4>
+            <div class="modalText">Count the number of black hexes in the highlighted connected group.</div>
+            <input id="groupSizeInput" class="input" type="number" min="1" step="1" placeholder="Enter the size of this black group" />
+            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+            <div class="groupList">${discovered}</div>
+          </div>
+        `;
+        scoreNextBtn.textContent = idx === s.blackGroups.length - 1 ? "Check and continue" : "Check";
+      }
+
+      if(s.phase === "blackMultiply"){
+        const sizes = s.blackSizesEntered;
+        const stepData = multiplyStepwiseNumbers(sizes);
+        const current = stepData.steps[s.blackMultiplyStep];
+        const completed = stepData.steps.slice(0, s.blackMultiplyStep).map(step => `
+          <div class="prodLine">
+            <span class="prodFactor">${step.left}</span>
+            <span class="prodSymbol">×</span>
+            <span class="prodFactor">${step.right}</span>
+            <span class="prodSymbol">=</span>
+            <span class="prodResult">${step.result}</span>
+          </div>
+        `).join("");
+
+        if(!current){
+          s.phase = "blackScore";
+          s.feedback = "";
+          renderScoreLab();
+          return;
+        }
+
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>Multiply Black's groups step by step</h4>
+            <div class="modalText">Do one multiplication step, then continue to the next one.</div>
+            <div class="groupList">${sizes.map((n,i) => `<span class="groupChip">Group ${i+1}: ${n}</span>`).join("")}</div>
+            ${completed}
+            <div class="prodLine">
+              <span class="prodFactor">${current.left}</span>
+              <span class="prodSymbol">×</span>
+              <span class="prodFactor">${current.right}</span>
+              <span class="prodSymbol">=</span>
+            </div>
+            <input id="productInput" class="input" type="number" min="1" step="1" placeholder="Enter the result of this multiplication step" />
+            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+          </div>
+        `;
+        scoreNextBtn.textContent = s.blackMultiplyStep === stepData.steps.length - 1 ? "Check and finish Black" : "Check next step";
+      }
+
+      if(s.phase === "blackScore"){
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>Black's final score</h4>
+            <div class="modalText">Black's multiplication is complete.</div>
+            <div class="prodLine">
+              ${s.blackSizesEntered.map((n, i) => `${i ? '<span class="prodSymbol">×</span>' : ''}<span class="prodFactor">${n}</span>`).join("")}
+              <span class="prodSymbol">=</span>
+              <span class="prodResult">${s.blackScore}</span>
+            </div>
+          </div>
+        `;
+        scoreNextBtn.textContent = "Continue to winner";
+      }
+
+      if(s.phase === "winner"){
+        let winnerText = "It is a tie";
+        if(s.whiteScore > s.blackScore) winnerText = "Player 1 wins";
+        if(s.blackScore > s.whiteScore) winnerText = "Player 2 wins";
+
+        scoreLabContent.innerHTML = `
+          <div class="questionCard">
+            <h4>${winnerText}</h4>
+            <div class="modalText">Both scores are complete. Compare them to find the winner.</div>
+            <div class="winnerSummary">
+              <div class="winnerBox">
+                <div class="name">White score</div>
+                <div class="val">${s.whiteScore}</div>
+              </div>
+              <div class="winnerBox">
+                <div class="name">Black score</div>
+                <div class="val">${s.blackScore}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        scoreNextBtn.textContent = "Done";
+        s.finished = true;
+      }
+    }
+
+    function renderScoreBoardPreview(){
+      const s = state.scoreLab;
+      if(!s) return;
+
+      scoreSvg.innerHTML = "";
+      injectDefs(scoreSvg);
+
+      const board = getBoardById(state.currentBoardId);
+      const coords = board.coords;
+      const size = 18;
+      const bounds = computeBounds(coords, size);
+      const W = 1000;
+      const H = 320;
+      const boardW = (bounds.maxX - bounds.minX) + size * 2.8;
+      const boardH = (bounds.maxY - bounds.minY) + size * 2.8;
+      const scale = Math.min((W - 50) / boardW, (H - 50) / boardH, 1.65);
+
+      const gMain = createSvgEl("g", {
+        transform:`translate(${W/2},${H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
+      });
+      scoreSvg.appendChild(gMain);
+
+      let activeOwner = null;
+      let activeGroup = null;
+
+      if(s.phase === "whiteGroups"){
+        activeOwner = "white";
+        activeGroup = s.whiteGroups[s.whiteGroupIndex] || [];
+      } else if(s.phase === "blackGroups"){
+        activeOwner = "black";
+        activeGroup = s.blackGroups[s.blackGroupIndex] || [];
+      }
+
+      const activeSet = new Set((activeGroup || []).map(c => key(c.q, c.r)));
+
+      for(const cell of state.cells.values()){
+        const { x, y } = axialToPixel(cell.q, cell.r, size);
+
+        let cls = "scoreHighlight";
+        if(activeOwner){
+          if(cell.owner === activeOwner && activeSet.has(key(cell.q, cell.r))){
+            cls += ` match ${activeOwner}`;
+          } else if(cell.owner && cell.owner !== activeOwner){
+            cls += " otherOwner";
+          }
+        } else {
+          cls += cell.owner ? ` match ${cell.owner}` : "";
+        }
+
+        const g = createSvgEl("g", { class:cls });
+
+        g.appendChild(createSvgEl("polygon", {
+          class:"hex-base",
+          points:hexPoints(x, y, size - 1.2)
+        }));
+
+        if(cell.owner){
+          const r = size * .48;
+          if(cell.owner === "white"){
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y + 1, r:r + 1.4, fill:"rgba(0,0,0,.12)" }));
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y, r:r, fill:"url(#whiteGrad)" }));
+          } else {
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y + 1, r:r + 1.4, fill:"rgba(0,0,0,.18)" }));
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y, r:r, fill:"url(#blackGrad)" }));
+          }
+        }
+
+        gMain.appendChild(g);
+      }
+    }
+
+    function setFeedback(text, good = false){
+      state.scoreLab.feedback = text ? `<span class="${good ? 'good' : 'bad'}">${text}</span>` : "";
+    }
+
+    function handleScoreNext(){
+      const s = state.scoreLab;
+      if(!s) return;
+
+      if(s.phase === "whiteGroups"){
+        const input = document.getElementById("groupSizeInput");
+        const val = Number(input.value);
+        const actual = s.whiteGroups[s.whiteGroupIndex].length;
+
+        if(val === actual){
+          s.whiteSizesEntered.push(val);
+          s.whiteGroupIndex++;
+          s.feedback = "";
+          if(s.whiteGroupIndex >= s.whiteGroups.length){
+            s.phase = "whiteMultiply";
+          }
+          renderScoreLab();
+        } else {
+          setFeedback("Not quite. Count the highlighted white group again.");
+          renderScoreLab();
+        }
+        return;
+      }
+
+      if(s.phase === "whiteMultiply"){
+        const sizes = s.whiteSizesEntered;
+        const steps = multiplyStepwiseNumbers(sizes).steps;
+        const current = steps[s.whiteMultiplyStep];
+        const val = Number(document.getElementById("productInput").value);
+
+        if(val === current.result){
+          s.whiteRunningTotal = current.result;
+          s.whiteMultiplyStep++;
+          s.feedback = "";
+          if(s.whiteMultiplyStep >= steps.length){
+            s.whiteScore = multiplyStepwiseNumbers(sizes).result;
+            s.phase = "whiteScore";
+          }
+          renderScoreLab();
+        } else {
+          setFeedback("That multiplication step is not correct yet.");
+          renderScoreLab();
+        }
+        return;
+      }
+
+      if(s.phase === "whiteScore"){
+        s.phase = "blackGroups";
+        s.feedback = "";
+        renderScoreLab();
+        return;
+      }
+
+      if(s.phase === "blackGroups"){
+        const input = document.getElementById("groupSizeInput");
+        const val = Number(input.value);
+        const actual = s.blackGroups[s.blackGroupIndex].length;
+
+        if(val === actual){
+          s.blackSizesEntered.push(val);
+          s.blackGroupIndex++;
+          s.feedback = "";
+          if(s.blackGroupIndex >= s.blackGroups.length){
+            s.phase = "blackMultiply";
+          }
+          renderScoreLab();
+        } else {
+          setFeedback("Not quite. Count the highlighted black group again.");
+          renderScoreLab();
+        }
+        return;
+      }
+
+      if(s.phase === "blackMultiply"){
+        const sizes = s.blackSizesEntered;
+        const steps = multiplyStepwiseNumbers(sizes).steps;
+        const current = steps[s.blackMultiplyStep];
+        const val = Number(document.getElementById("productInput").value);
+
+        if(val === current.result){
+          s.blackRunningTotal = current.result;
+          s.blackMultiplyStep++;
+          s.feedback = "";
+          if(s.blackMultiplyStep >= steps.length){
+            s.blackScore = multiplyStepwiseNumbers(sizes).result;
+            s.phase = "blackScore";
+          }
+          renderScoreLab();
+        } else {
+          setFeedback("That multiplication step is not correct yet.");
+          renderScoreLab();
+        }
+        return;
+      }
+
+      if(s.phase === "blackScore"){
+        s.phase = "winner";
+        s.feedback = "";
+        renderScoreLab();
+        return;
+      }
+
+      if(s.phase === "winner"){
+        renderEndScreen();
+        return;
+      }
+
+      if(s.finished){
+        renderEndScreen();
+      }
+    }
+
+    function renderEndScreen(){
+      const s = state.scoreLab;
+      if(!s) return;
+
+      let winnerText = "It is a tie";
+      if(s.whiteScore > s.blackScore) winnerText = "Player 1 wins";
+      if(s.blackScore > s.whiteScore) winnerText = "Player 2 wins";
+
+      scoreLabContent.innerHTML = `
+        <div class="questionCard">
+          <h4>${winnerText}</h4>
+          <div class="modalText">The score calculation is complete.</div>
+          <div class="winnerSummary">
+            <div class="winnerBox">
+              <div class="name">White score</div>
+              <div class="val">${s.whiteScore}</div>
+            </div>
+            <div class="winnerBox">
+              <div class="name">Black score</div>
+              <div class="val">${s.blackScore}</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      scoreNextBtn.textContent = "Reset Game";
+      scoreNextBtn.onclick = null;
+      scoreNextBtn.addEventListener("click", handleResetFromEnd, { once:true });
+
+      const actions = document.querySelector(".modalActions");
+      if(!document.getElementById("chooseNewBoardBtn")){
+        const btn = document.createElement("button");
+        btn.id = "chooseNewBoardBtn";
+        btn.className = "btn";
+        btn.textContent = "Choose New Board";
+        btn.addEventListener("click", () => {
+          closeScoreModal();
+          openMenu();
+        });
+        actions.insertBefore(btn, scoreCancelBtn);
+      }
+
+      s.finished = true;
+      renderScoreBoardPreview();
+    }
+
+    function handleResetFromEnd(){
+      const chooseNewBoardBtn = document.getElementById("chooseNewBoardBtn");
+      if(chooseNewBoardBtn) chooseNewBoardBtn.remove();
+      scoreNextBtn.textContent = "Check";
+      scoreNextBtn.onclick = null;
+      scoreNextBtn.addEventListener("click", handleScoreNext);
+      resetGame(state.currentBoardId);
+    }
+
+    menuBtn.addEventListener("click", openMenu);
+    closeMenuBtn.addEventListener("click", closeMenu);
+    menuBackdrop.addEventListener("click", closeMenu);
+
+    chooseWhiteBtn.addEventListener("click", () => setSelectedPiece("white"));
+    chooseBlackBtn.addEventListener("click", () => setSelectedPiece("black"));
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      resetGame(state.currentBoardId);
+      closeMenu();
+    });
+
+    openScoreBtn.addEventListener("click", () => {
+      if(state.gameOver){
+        if(!state.scoreLab) startScoreLab();
+        else {
+          openScoreModal();
+          renderScoreLab();
+        }
+      }
+    });
+
+    scoreNextBtn.addEventListener("click", handleScoreNext);
+    scoreCancelBtn.addEventListener("click", closeScoreModal);
+    modalBackdrop.addEventListener("click", closeScoreModal);
+
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        closeMenu();
+        closeScoreModal();
+      }
+    });
+
+    function renderPieceChooser(){
+      chooseWhiteBtn.classList.toggle("active", state.selectedPiece === "white");
+      chooseBlackBtn.classList.toggle("active", state.selectedPiece === "black");
+    }
+
+    resetGame(boards[0].id);
+  </script>
+</body>
+</html>
