@@ -22,7 +22,7 @@
       --black1:#475667;
       --black2:#172330;
       --black3:#070b10;
-      --menuW:min(420px, 92vw);
+      --menuW:min(440px, 92vw);
     }
 
     *{ box-sizing:border-box; }
@@ -67,34 +67,21 @@
       transition:transform .12s ease, border-color .18s ease, background .18s ease;
     }
 
-    .menuBtn:hover{
+    .menuBtn:hover,
+    .btn:hover,
+    .pieceBtn:hover,
+    .settingBtn:hover,
+    .levelBtn:hover,
+    .dropdownHeader:hover,
+    .boardOption:hover,
+    .closeBtn:hover,
+    .toggleBtn:hover,
+    .resetCornerBtn:hover{
       transform:translateY(-1px);
       border-color:rgba(255,255,255,.18);
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
     }
 
     .menuBtn svg{ width:24px; height:24px; }
-
-    .titleChip{
-      position:absolute;
-      top:18px;
-      left:90px;
-      z-index:20;
-      padding:14px 18px;
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:var(--shadowSoft);
-      backdrop-filter:blur(10px);
-      pointer-events:none;
-    }
-
-    .titleChip .big{
-      font-size:22px;
-      font-weight:900;
-      letter-spacing:-.04em;
-      line-height:1;
-    }
 
     .stage{
       position:absolute;
@@ -117,6 +104,7 @@
         linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.012));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:var(--shadow);
+      isolation:isolate;
     }
 
     .boardShell::before{
@@ -124,8 +112,108 @@
       position:absolute;
       inset:0;
       pointer-events:none;
-      background: radial-gradient(1100px 520px at 50% 50%, rgba(255,255,255,.03), transparent 70%);
       z-index:0;
+      background:radial-gradient(1100px 520px at 50% 50%, rgba(255,255,255,.03), transparent 70%);
+    }
+
+    .boardShell::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      opacity:.55;
+      mix-blend-mode:screen;
+      transition:opacity .24s ease;
+      background:radial-gradient(900px 520px at 50% 50%, rgba(255,255,255,.03), transparent 72%);
+    }
+
+    .boardShell[data-theme="path"]::after{
+      background:
+        linear-gradient(150deg, transparent 0 34%, rgba(255,255,255,.04) 34% 40%, transparent 40% 48%, rgba(125,177,255,.05) 48% 54%, transparent 54% 100%),
+        radial-gradient(780px 380px at 50% 50%, rgba(255,255,255,.03), transparent 70%);
+    }
+
+    .boardShell[data-theme="crescent"]::after{
+      background:
+        radial-gradient(circle at 44% 50%, rgba(255,255,255,.06), transparent 18%),
+        radial-gradient(circle at 53% 50%, rgba(9,16,25,.92), transparent 17%),
+        radial-gradient(700px 360px at 50% 50%, rgba(125,177,255,.06), transparent 72%);
+    }
+
+    .boardShell[data-theme="triangle"]::after{
+      background:
+        linear-gradient(60deg, transparent 0 48%, rgba(255,255,255,.045) 48% 51%, transparent 51%),
+        linear-gradient(-60deg, transparent 0 48%, rgba(255,255,255,.045) 48% 51%, transparent 51%),
+        linear-gradient(180deg, transparent 0 74%, rgba(125,177,255,.05) 74% 77%, transparent 77%);
+    }
+
+    .boardShell[data-theme="trapezoid"]::after{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), transparent 26%, transparent 74%, rgba(255,255,255,.02)),
+        linear-gradient(160deg, transparent 0 36%, rgba(125,177,255,.04) 36% 40%, transparent 40% 60%, rgba(255,214,109,.035) 60% 64%, transparent 64%);
+    }
+
+    .boardShell[data-theme="moonBloom"]::after{
+      background:
+        radial-gradient(240px 150px at 50% 22%, rgba(255,255,255,.05), transparent 70%),
+        radial-gradient(220px 140px at 70% 40%, rgba(125,177,255,.08), transparent 70%),
+        radial-gradient(220px 140px at 62% 66%, rgba(255,255,255,.045), transparent 70%),
+        radial-gradient(220px 140px at 38% 66%, rgba(255,214,109,.05), transparent 70%),
+        radial-gradient(220px 140px at 30% 40%, rgba(255,255,255,.045), transparent 70%);
+    }
+
+    .boardShell[data-theme="hourglass"]::after{
+      background:
+        linear-gradient(145deg, transparent 0 34%, rgba(255,255,255,.04) 34% 39%, transparent 39% 61%, rgba(255,255,255,.04) 61% 66%, transparent 66%),
+        linear-gradient(-145deg, transparent 0 34%, rgba(125,177,255,.04) 34% 39%, transparent 39% 61%, rgba(125,177,255,.04) 61% 66%, transparent 66%);
+    }
+
+    .boardShell[data-theme="arch"]::after{
+      background:
+        radial-gradient(500px 260px at 50% 82%, rgba(255,255,255,.03), transparent 72%),
+        linear-gradient(180deg, transparent 0 18%, rgba(255,255,255,.04) 18% 22%, transparent 22%),
+        radial-gradient(460px 280px at 50% 68%, rgba(125,177,255,.07), transparent 70%);
+    }
+
+    .boardShell[data-theme="butterfly"]::after{
+      background:
+        radial-gradient(300px 180px at 35% 50%, rgba(125,177,255,.08), transparent 70%),
+        radial-gradient(300px 180px at 65% 50%, rgba(255,255,255,.05), transparent 70%),
+        linear-gradient(90deg, transparent 0 48%, rgba(255,214,109,.04) 48% 52%, transparent 52%);
+    }
+
+    .boardShell[data-theme="doubleBridge"]::after{
+      background:
+        radial-gradient(260px 190px at 28% 50%, rgba(255,255,255,.05), transparent 70%),
+        radial-gradient(260px 190px at 72% 50%, rgba(125,177,255,.08), transparent 70%),
+        linear-gradient(90deg, transparent 0 43%, rgba(255,214,109,.04) 43% 57%, transparent 57%);
+    }
+
+    .boardShell[data-theme="ring"]::after{
+      background:
+        radial-gradient(circle at 50% 50%, transparent 0 17%, rgba(255,255,255,.05) 17% 21%, transparent 21% 31%, rgba(125,177,255,.05) 31% 34%, transparent 34%),
+        radial-gradient(900px 520px at 50% 50%, rgba(255,255,255,.03), transparent 72%);
+    }
+
+    .boardShell[data-theme="diamond"]::after{
+      background:
+        linear-gradient(135deg, transparent 0 47%, rgba(255,255,255,.035) 47% 50%, transparent 50%),
+        linear-gradient(-135deg, transparent 0 47%, rgba(125,177,255,.045) 47% 50%, transparent 50%),
+        radial-gradient(760px 420px at 50% 50%, rgba(255,255,255,.03), transparent 72%);
+    }
+
+    .boardShell[data-theme="harbor"]::after{
+      background:
+        radial-gradient(300px 180px at 50% 28%, rgba(255,255,255,.06), transparent 72%),
+        linear-gradient(180deg, transparent 0 40%, rgba(255,255,255,.03) 40% 46%, transparent 46% 54%, rgba(125,177,255,.04) 54% 60%, transparent 60%),
+        radial-gradient(700px 420px at 50% 65%, rgba(125,177,255,.06), transparent 74%);
+    }
+
+    .boardShell[data-theme="vault"]::after{
+      background:
+        linear-gradient(135deg, transparent 0 44%, rgba(255,255,255,.04) 44% 47%, transparent 47% 53%, rgba(255,255,255,.04) 53% 56%, transparent 56%),
+        linear-gradient(45deg, transparent 0 44%, rgba(255,214,109,.035) 44% 47%, transparent 47% 53%, rgba(125,177,255,.045) 53% 56%, transparent 56%);
     }
 
     #boardSvg{
@@ -142,7 +230,7 @@
       top:18px;
       right:18px;
       z-index:12;
-      width:220px;
+      width:260px;
       padding:14px;
       border-radius:20px;
       background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
@@ -151,7 +239,8 @@
       backdrop-filter:blur(12px);
     }
 
-    .sideChooser .label{
+    .sideChooser .label,
+    .panelLabel{
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:.16em;
@@ -160,13 +249,18 @@
       margin-bottom:10px;
     }
 
-    .pieceChooser{
+    .pieceChooser,
+    .modeGrid,
+    .teacherGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
     }
 
-    .pieceBtn{
+    .pieceBtn,
+    .settingBtn,
+    .toggleBtn,
+    .levelBtn{
       border:none;
       border-radius:16px;
       padding:14px 12px;
@@ -178,18 +272,20 @@
       transition:transform .12s ease, border-color .18s ease, background .18s ease;
       font-size:14px;
       font-weight:900;
+    }
+
+    .pieceBtn{
       display:flex;
       align-items:center;
       justify-content:center;
       gap:10px;
     }
 
-    .pieceBtn:hover{
-      transform:translateY(-1px);
-      border-color:rgba(255,255,255,.18);
-    }
-
-    .pieceBtn.active{
+    .pieceBtn.active,
+    .settingBtn.active,
+    .levelBtn.active,
+    .boardOption.active,
+    .toggleBtn.active{
       border-color:rgba(255,217,118,.55);
       box-shadow:0 0 0 1px rgba(255,217,118,.22), var(--shadowSoft);
       background:linear-gradient(180deg, rgba(255,217,118,.12), rgba(255,255,255,.04));
@@ -222,7 +318,8 @@
       max-width:min(90%, 760px);
     }
 
-    .pill{
+    .pill,
+    .resetCornerBtn{
       padding:12px 16px;
       border-radius:999px;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
@@ -240,7 +337,7 @@
       width:10px;
       height:10px;
       border-radius:50%;
-      margin-right:8px;
+      margin:0 8px 0 8px;
       vertical-align:middle;
       border:1px solid rgba(255,255,255,.16);
     }
@@ -253,8 +350,109 @@
       background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
     }
 
+    .resetCornerBtn{
+      position:absolute;
+      right:18px;
+      bottom:18px;
+      z-index:12;
+      cursor:pointer;
+      min-width:132px;
+      text-align:center;
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .liveScore{
+      position:absolute;
+      left:18px;
+      bottom:18px;
+      z-index:12;
+      min-width:178px;
+      padding:14px 16px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(12px);
+      display:none;
+    }
+
+    .liveScore.show{ display:block; }
+
+    .liveScoreRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-size:13px;
+      font-weight:900;
+      margin-top:8px;
+    }
+
+    .liveScoreRow:first-of-type{ margin-top:0; }
+
+    .liveScoreTag{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .liveScoreVal{
+      color:var(--gold);
+      font-size:16px;
+      letter-spacing:-.03em;
+    }
+
+    .nameTag{
+      position:absolute;
+      left:18px;
+      top:18px;
+      z-index:12;
+      min-width:240px;
+      padding:14px 16px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(12px);
+    }
+
+    .nameTagTitle{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--gold);
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .nameRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .nameRow + .nameRow{ margin-top:8px; }
+
+    .nameRowLabel{
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .nameRowValue{
+      font-size:14px;
+      font-weight:900;
+      color:var(--text);
+      text-align:right;
+    }
+
     .menuBackdrop,
-    .modalBackdrop{
+    .modalBackdrop,
+    .nameBackdrop{
       position:fixed;
       inset:0;
       background:rgba(5,8,13,.54);
@@ -266,7 +464,8 @@
     }
 
     .menuBackdrop.show,
-    .modalBackdrop.show{
+    .modalBackdrop.show,
+    .nameBackdrop.show{
       opacity:1;
       pointer-events:auto;
     }
@@ -313,6 +512,7 @@
       border-radius:14px;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.08);
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
     }
 
     .menuBody{
@@ -338,20 +538,64 @@
       color:var(--gold);
     }
 
-    .card p, .card li, .card label, .card .small{
+    .small,
+    .card p{
       color:var(--muted);
       line-height:1.6;
       font-size:14px;
     }
 
-    .card ol{
-      margin:8px 0 0;
-      padding-left:20px;
-    }
-
-    .boardList{
+    .dropdown{
       display:grid;
       gap:10px;
+    }
+
+    .dropdownHeader{
+      width:100%;
+      text-align:left;
+      border:none;
+      outline:none;
+      border-radius:16px;
+      padding:14px 14px;
+      font-size:14px;
+      font-weight:800;
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadowSoft);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .dropdownHeader .sub{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      margin-top:3px;
+    }
+
+    .chev{
+      transition:transform .18s ease;
+      font-size:16px;
+      color:var(--muted);
+    }
+
+    .dropdown.open .chev{
+      transform:rotate(180deg);
+    }
+
+    .dropdownBody{
+      display:none;
+      gap:10px;
+    }
+
+    .dropdown.open > .dropdownBody{
+      display:grid;
     }
 
     .boardOption{
@@ -368,17 +612,6 @@
       transition:transform .12s ease, border-color .18s ease, background .18s ease;
     }
 
-    .boardOption:hover{
-      transform:translateY(-1px);
-      border-color:rgba(255,255,255,.18);
-    }
-
-    .boardOption.active{
-      border-color:rgba(255,217,118,.55);
-      box-shadow:0 0 0 1px rgba(255,217,118,.22), var(--shadowSoft);
-      background:linear-gradient(180deg, rgba(255,217,118,.12), rgba(255,255,255,.04));
-    }
-
     .boardOption .name{
       font-size:15px;
       font-weight:900;
@@ -391,7 +624,46 @@
       line-height:1.5;
     }
 
-    .btn, .input, .select{
+    .levelGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .levelBtn{
+      text-align:left;
+      padding:12px;
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .levelBtn .sub{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+      margin-top:4px;
+    }
+
+    .subCard{
+      border-radius:18px;
+      padding:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .subCardTitle{
+      margin:0 0 10px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--gold);
+      font-weight:900;
+    }
+
+    .btn,
+    .input{
       width:100%;
       border:none;
       outline:none;
@@ -405,10 +677,9 @@
       box-shadow:var(--shadowSoft);
     }
 
-    .btn{ cursor:pointer; transition:transform .12s ease, border-color .18s ease; }
-    .btn:hover{
-      border-color:rgba(255,255,255,.16);
-      transform:translateY(-1px);
+    .btn{
+      cursor:pointer;
+      transition:transform .12s ease, border-color .18s ease;
     }
 
     .btn.gold{
@@ -423,39 +694,14 @@
       gap:10px;
     }
 
-    .history{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      min-height:40px;
-    }
-
-    .moveChip{
-      padding:7px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+    .toggleLabel{
+      margin-top:12px;
+      margin-bottom:8px;
+      color:var(--muted);
       font-size:12px;
       font-weight:800;
-      color:var(--text);
-    }
-
-    .dot{
-      display:inline-block;
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      margin-right:7px;
-      vertical-align:middle;
-      border:1px solid rgba(255,255,255,.15);
-    }
-
-    .dot.white{
-      background: radial-gradient(circle at 32% 28%, var(--white1) 0%, var(--white2) 42%, var(--white3) 100%);
-    }
-
-    .dot.black{
-      background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
+      letter-spacing:.04em;
+      text-transform:uppercase;
     }
 
     .modal{
@@ -488,6 +734,37 @@
       transform:translateY(0) scale(1);
     }
 
+    .nameModal{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      z-index:60;
+      pointer-events:none;
+    }
+
+    .nameModal.show{ pointer-events:auto; }
+
+    .nameModalCard{
+      width:min(620px, 92vw);
+      border-radius:30px;
+      background:
+        radial-gradient(420px 220px at 12% 0%, rgba(125,177,255,.12), transparent 65%),
+        radial-gradient(320px 190px at 100% 12%, rgba(255,217,118,.09), transparent 65%),
+        linear-gradient(180deg, rgba(19,28,40,.99), rgba(11,16,24,.99));
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:var(--shadow);
+      padding:28px;
+      transform:translateY(18px) scale(.98);
+      opacity:0;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+
+    .nameModal.show .nameModalCard{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
     .modalMini{
       font-size:12px;
       text-transform:uppercase;
@@ -498,16 +775,17 @@
     }
 
     .modalTitle{
-      margin:0 0 8px;
+      margin:0 0 14px;
       font-size:32px;
       line-height:1.05;
       letter-spacing:-.05em;
     }
 
-    .modalText{
-      color:var(--muted);
-      line-height:1.65;
-      font-size:15px;
+    .nameGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
       margin-bottom:16px;
     }
 
@@ -565,6 +843,13 @@
       letter-spacing:-.03em;
     }
 
+    .modalText{
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+      margin-bottom:16px;
+    }
+
     .feedback{
       min-height:24px;
       font-size:14px;
@@ -574,6 +859,7 @@
 
     .feedback.good{ color:var(--green); }
     .feedback.bad{ color:var(--red); }
+    .feedback.empty{ color:transparent; }
 
     .groupList{
       display:flex;
@@ -750,44 +1036,66 @@
 
       .stage{ padding:10px; }
 
-      .titleChip{
-        left:88px;
-        right:14px;
-        width:auto;
-      }
-
       .sideChooser{
         top:14px;
         right:14px;
-        width:190px;
+        width:226px;
         padding:12px;
       }
 
       .hud{
-        left:12px;
-        right:12px;
+        left:210px;
+        right:152px;
         bottom:12px;
         transform:none;
         justify-content:center;
       }
 
-      .winnerSummary{
+      .liveScore{
+        left:12px;
+        bottom:12px;
+      }
+
+      .nameTag{
+        left:12px;
+        top:12px;
+        min-width:220px;
+      }
+
+      .resetCornerBtn{
+        right:12px;
+        bottom:12px;
+      }
+
+      .winnerSummary,
+      .nameGrid{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width: 700px){
       .sideChooser{
-        width:170px;
+        width:182px;
       }
 
-      .pieceBtn{
+      .pieceBtn,
+      .settingBtn,
+      .toggleBtn{
         padding:12px 10px;
         font-size:13px;
       }
 
-      .titleChip .big{
-        font-size:19px;
+      .resetCornerBtn{
+        min-width:110px;
+        padding:11px 14px;
+      }
+
+      .liveScore{
+        min-width:150px;
+      }
+
+      .nameTag{
+        min-width:180px;
       }
     }
   </style>
@@ -800,13 +1108,21 @@
       </svg>
     </button>
 
-    <div class="titleChip">
-      <div class="big">Zebra Multiplication</div>
-    </div>
-
     <div class="stage">
-      <div class="boardShell">
+      <div id="boardShell" class="boardShell" data-theme="path">
         <svg id="boardSvg" viewBox="0 0 1400 900" aria-label="Zebra Multiplication board"></svg>
+
+        <div id="nameTag" class="nameTag">
+          <div class="nameTagTitle">Players</div>
+          <div class="nameRow">
+            <div class="nameRowLabel"><span class="pieceDot white"></span>Player 1</div>
+            <div id="nameOneVal" class="nameRowValue">Player 1</div>
+          </div>
+          <div class="nameRow">
+            <div class="nameRowLabel"><span class="pieceDot black"></span>Player 2</div>
+            <div id="nameTwoVal" class="nameRowValue">Player 2</div>
+          </div>
+        </div>
 
         <div class="sideChooser">
           <div class="label">Choose Piece</div>
@@ -822,9 +1138,23 @@
           </div>
         </div>
 
+        <div id="liveScorePanel" class="liveScore">
+          <div class="panelLabel">Live Score</div>
+          <div class="liveScoreRow">
+            <div class="liveScoreTag"><span class="pieceDot white"></span>White</div>
+            <div id="liveWhiteVal" class="liveScoreVal">0</div>
+          </div>
+          <div class="liveScoreRow">
+            <div class="liveScoreTag"><span class="pieceDot black"></span>Black</div>
+            <div id="liveBlackVal" class="liveScoreVal">0</div>
+          </div>
+        </div>
+
         <div class="hud">
           <div id="turnPill" class="pill"><span class="turnDot white"></span>Player 1 choosing White</div>
         </div>
+
+        <button id="mainResetBtn" class="resetCornerBtn" type="button">Reset Game</button>
       </div>
     </div>
   </div>
@@ -835,40 +1165,83 @@
       <div class="menuTitle">Zebra Menu</div>
       <button id="closeMenuBtn" class="closeBtn" aria-label="Close menu">✕</button>
     </div>
+
     <div class="menuBody">
       <section class="card">
-        <h3>Boards</h3>
-        <div id="boardList" class="boardList"></div>
-      </section>
+        <div id="teacherDropdown" class="dropdown">
+          <button id="teacherDropdownHeader" class="dropdownHeader" type="button">
+            <span>
+              <span>Teacher Panel</span>
+              <span class="sub">Modes, boards, scoring, and display options</span>
+            </span>
+            <span class="chev">⌄</span>
+          </button>
 
-      <section class="card">
-        <h3>Game Controls</h3>
-        <div class="btnRow">
-          <button id="resetBtn" class="btn">Reset Board</button>
-          <button id="openScoreBtn" class="btn">Open Score Lab</button>
+          <div class="dropdownBody">
+            <div class="subCard">
+              <div class="subCardTitle">Mode</div>
+              <div class="modeGrid">
+                <button id="modeTwoBtn" class="settingBtn active" type="button">Two Players</button>
+                <button id="modeCpuBtn" class="settingBtn" type="button">One Player</button>
+              </div>
+              <p id="modeText" class="small" style="margin-top:10px;">Two human players take turns.</p>
+            </div>
+
+            <div id="cpuCard" class="subCard" style="display:none;">
+              <div class="subCardTitle">CPU Skill</div>
+              <div id="levelGrid" class="levelGrid"></div>
+            </div>
+
+            <div class="subCard">
+              <div id="boardDropdown" class="dropdown">
+                <button id="boardDropdownHeader" class="dropdownHeader" type="button">
+                  <span>
+                    <span id="boardDropdownTitle">Board</span>
+                    <span id="boardDropdownSub" class="sub">Select a board</span>
+                  </span>
+                  <span class="chev">⌄</span>
+                </button>
+                <div id="boardDropdownBody" class="dropdownBody"></div>
+              </div>
+            </div>
+
+            <div class="subCard">
+              <div class="subCardTitle">Scoring</div>
+              <div class="teacherGrid">
+                <button id="liveScoreBtn" class="toggleBtn active" type="button">Live Score On</button>
+                <button id="autoOpenBtn" class="toggleBtn active" type="button">Auto Score Lab On</button>
+              </div>
+
+              <div class="toggleLabel">Display</div>
+              <div class="teacherGrid">
+                <button id="bonusModeBtn" class="toggleBtn" type="button">Connect 4 Mode Off</button>
+              </div>
+
+              <p class="small" id="teacherModeHelp" style="margin-top:12px;">
+                Classic mode uses the normal zebra rules.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       <section class="card">
-        <h3>Rules</h3>
-        <ol>
-          <li>Player 1 goes first and is automatically White.</li>
-          <li>Player 2 is automatically Black.</li>
-          <li>A player can temporarily switch to place the other color on their turn.</li>
-          <li>That temporary switch does not carry forward to the next turn.</li>
-          <li>When the board is full, do not reveal the score right away.</li>
-          <li>Students work through the score lab.</li>
-          <li>Find each separate connected group.</li>
-          <li>Count the size of each group.</li>
-          <li>Multiply the group sizes one step at a time.</li>
-          <li>After both player scores are found, compare them to find the winner.</li>
-        </ol>
-        <p style="margin-top:10px;">Connected means touching by edges, not just corners.</p>
-      </section>
+        <div id="controlsDropdown" class="dropdown">
+          <button id="controlsDropdownHeader" class="dropdownHeader" type="button">
+            <span>
+              <span>Game Controls</span>
+              <span class="sub">Reset and score tools</span>
+            </span>
+            <span class="chev">⌄</span>
+          </button>
 
-      <section class="card">
-        <h3>Recent Moves</h3>
-        <div id="history" class="history"></div>
+          <div class="dropdownBody">
+            <div class="btnRow">
+              <button id="resetBtn" class="btn" type="button">Reset Board</button>
+              <button id="openScoreBtn" class="btn" type="button">Open Score Lab</button>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   </aside>
@@ -879,9 +1252,6 @@
     <div class="modalCard">
       <div class="modalMini">Score Lab</div>
       <h2 class="modalTitle">Let’s calculate the scores together</h2>
-      <div class="modalText">
-        First count and multiply White’s groups all the way through. Then do the same for Black. After both scores are complete, compare them to find the winner.
-      </div>
 
       <div class="scoreLabTop">
         <div id="stepWhiteGroups" class="scoreStep active">1. White groups</div>
@@ -900,8 +1270,28 @@
       <div id="scoreLabContent"></div>
 
       <div class="modalActions">
-        <button id="scoreNextBtn" class="btn gold">Check</button>
-        <button id="scoreCancelBtn" class="btn">Close</button>
+        <button id="scoreNextBtn" class="btn gold" type="button">Check</button>
+        <button id="scoreCancelBtn" class="btn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="nameBackdrop" class="nameBackdrop"></div>
+  <div id="nameModal" class="nameModal" aria-hidden="true">
+    <div class="nameModalCard">
+      <div class="modalMini">New Match</div>
+      <h2 class="modalTitle">Enter the player names</h2>
+      <div class="modalText">
+        Set the names once, then the turn bar will show the name instead of Player 1 or Player 2.
+      </div>
+
+      <div class="nameGrid">
+        <input id="playerOneInput" class="input" type="text" maxlength="24" placeholder="Player 1 name" />
+        <input id="playerTwoInput" class="input" type="text" maxlength="24" placeholder="Player 2 name" />
+      </div>
+
+      <div class="modalActions" style="margin-top:0;">
+        <button id="startGameBtn" class="btn gold" type="button">Start Game</button>
       </div>
     </div>
   </div>
@@ -909,15 +1299,25 @@
   <script>
     const SVG_NS = "http://www.w3.org/2000/svg";
 
+    const boardShell = document.getElementById("boardShell");
     const boardSvg = document.getElementById("boardSvg");
-    const historyEl = document.getElementById("history");
     const turnPill = document.getElementById("turnPill");
 
     const menuBtn = document.getElementById("menuBtn");
     const closeMenuBtn = document.getElementById("closeMenuBtn");
     const menuBackdrop = document.getElementById("menuBackdrop");
     const menuPanel = document.getElementById("menuPanel");
-    const boardListEl = document.getElementById("boardList");
+
+    const teacherDropdown = document.getElementById("teacherDropdown");
+    const teacherDropdownHeader = document.getElementById("teacherDropdownHeader");
+    const controlsDropdown = document.getElementById("controlsDropdown");
+    const controlsDropdownHeader = document.getElementById("controlsDropdownHeader");
+
+    const boardDropdown = document.getElementById("boardDropdown");
+    const boardDropdownHeader = document.getElementById("boardDropdownHeader");
+    const boardDropdownBody = document.getElementById("boardDropdownBody");
+    const boardDropdownTitle = document.getElementById("boardDropdownTitle");
+    const boardDropdownSub = document.getElementById("boardDropdownSub");
 
     const modalBackdrop = document.getElementById("modalBackdrop");
     const scoreModal = document.getElementById("scoreModal");
@@ -927,8 +1327,34 @@
     const scoreCancelBtn = document.getElementById("scoreCancelBtn");
     const openScoreBtn = document.getElementById("openScoreBtn");
 
+    const nameBackdrop = document.getElementById("nameBackdrop");
+    const nameModal = document.getElementById("nameModal");
+    const playerOneInput = document.getElementById("playerOneInput");
+    const playerTwoInput = document.getElementById("playerTwoInput");
+    const startGameBtn = document.getElementById("startGameBtn");
+    const nameOneVal = document.getElementById("nameOneVal");
+    const nameTwoVal = document.getElementById("nameTwoVal");
+
     const chooseWhiteBtn = document.getElementById("chooseWhiteBtn");
     const chooseBlackBtn = document.getElementById("chooseBlackBtn");
+
+    const mainResetBtn = document.getElementById("mainResetBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const modeTwoBtn = document.getElementById("modeTwoBtn");
+    const modeCpuBtn = document.getElementById("modeCpuBtn");
+    const cpuCard = document.getElementById("cpuCard");
+    const modeText = document.getElementById("modeText");
+    const levelGrid = document.getElementById("levelGrid");
+
+    const liveScorePanel = document.getElementById("liveScorePanel");
+    const liveWhiteVal = document.getElementById("liveWhiteVal");
+    const liveBlackVal = document.getElementById("liveBlackVal");
+
+    const liveScoreBtn = document.getElementById("liveScoreBtn");
+    const autoOpenBtn = document.getElementById("autoOpenBtn");
+    const bonusModeBtn = document.getElementById("bonusModeBtn");
+    const teacherModeHelp = document.getElementById("teacherModeHelp");
 
     const stepsEls = {
       whiteGroups: document.getElementById("stepWhiteGroups"),
@@ -943,6 +1369,7 @@
     const HEX_SIZE = 36;
     const VIEW_W = 1400;
     const VIEW_H = 900;
+    const CPU_DELAY = 260;
 
     function createSvgEl(name, attrs = {}){
       const el = document.createElementNS(SVG_NS, name);
@@ -1043,85 +1470,152 @@
 
     const boards = [
       {
-        id:"diamond",
-        name:"Diamond",
-        description:"A large balanced board.",
-        coords: cleanBoard(hexagon(4))
-      },
-      {
-        id:"ring",
-        name:"Ring",
-        description:"A loop board with a hole in the center.",
-        coords: cleanBoard(ring(4, 1))
-      },
-      {
-        id:"hourglass",
-        name:"Hourglass",
-        description:"Wide ends with a narrow middle.",
-        coords: cleanBoard(rowsToCoords([7,6,5,4,5,6,7]))
-      },
-      {
-        id:"trapezoid",
-        name:"Trapezoid",
-        description:"A compact board with strong edges.",
-        coords: cleanBoard(rowsToCoords([4,5,6,7,7,6]))
-      },
-      {
-        id:"triangle",
-        name:"Triangle",
-        description:"A triangular board for tight play.",
-        coords: cleanBoard(triangle(7))
-      },
-      {
-        id:"doubleBridge",
-        name:"Double Bridge",
-        description:"Two clusters connected by a narrow bridge.",
-        coords: cleanBoard(
-          shiftCoords(hexagon(2), -5, 1)
-            .concat(shiftCoords(hexagon(2), 5, 1))
-            .concat([{q:-2,r:1},{q:-1,r:1},{q:0,r:1},{q:1,r:1},{q:2,r:1}])
-        )
-      },
-      {
-        id:"butterfly",
-        name:"Butterfly",
-        description:"Two wings with a central body.",
-        coords: cleanBoard(
-          shiftCoords(rowsToCoords([2,3,4,3,2]), -4, 1)
-            .concat(shiftCoords(rowsToCoords([2,3,4,3,2]), 4, 1))
-            .concat([{q:-1,r:2},{q:0,r:2},{q:1,r:2},{q:0,r:1},{q:0,r:3}])
-        )
-      },
-      {
-        id:"arch",
-        name:"Arch",
-        description:"A tall arch with open space below.",
-        coords: cleanBoard(customRows([
-          {start:-3, length:7},
-          {start:-4, length:9},
-          {start:-4, length:9},
-          {start:-3, length:2},
-          {start:2, length:2},
-          {start:-2, length:1},
-          {start:2, length:1}
-        ]))
-      },
-      {
         id:"path",
         name:"Path",
-        description:"A long corridor board.",
+        description:"A slim corridor that rewards careful blocking.",
+        theme:"path",
         coords: cleanBoard(customRows([
           {start:0, length:2},
           {start:0, length:3},
           {start:1, length:3},
           {start:1, length:3},
-          {start:2, length:3},
-          {start:2, length:3},
-          {start:3, length:3},
-          {start:3, length:2}
+          {start:2, length:2}
         ]))
+      },
+      {
+        id:"crescent",
+        name:"Crescent",
+        description:"A curved board with pressure on the outside lane.",
+        theme:"crescent",
+        coords: cleanBoard([
+          ...hexagon(2).filter(c => !["1,0","1,-1","2,-1","2,0"].includes(key(c.q, c.r)))
+        ])
+      },
+      {
+        id:"triangle",
+        name:"Triangle",
+        description:"A clean triangular climb with tight connections.",
+        theme:"triangle",
+        coords: cleanBoard(triangle(5))
+      },
+      {
+        id:"harbor",
+        name:"Harbor",
+        description:"A wide cove shape with one calm center lane.",
+        theme:"harbor",
+        coords: cleanBoard(customRows([
+          {start:-2, length:5},
+          {start:-3, length:7},
+          {start:-3, length:3},
+          {start:1, length:3},
+          {start:-2, length:5}
+        ]))
+      },
+      {
+        id:"trapezoid",
+        name:"Trapezoid",
+        description:"Compact and balanced with sturdy edges.",
+        theme:"trapezoid",
+        coords: cleanBoard(rowsToCoords([3,4,5,5,4]))
+      },
+      {
+        id:"vault",
+        name:"Vault",
+        description:"A tight central chamber with angled wings.",
+        theme:"vault",
+        coords: cleanBoard(customRows([
+          {start:-1, length:3},
+          {start:-2, length:5},
+          {start:-3, length:7},
+          {start:-2, length:5},
+          {start:-1, length:3}
+        ]))
+      },
+      {
+        id:"moonBloom",
+        name:"Moon Bloom",
+        description:"A beautiful flower board with a glowing center path.",
+        theme:"moonBloom",
+        coords: cleanBoard(
+          shiftCoords(rowsToCoords([1,3,1]), 0, -2)
+            .concat(shiftCoords(rowsToCoords([1,3,1]), -2, 0))
+            .concat(shiftCoords(rowsToCoords([1,3,1]), 2, 0))
+            .concat(shiftCoords(rowsToCoords([1,3,1]), 0, 2))
+            .concat([{q:0,r:0},{q:1,r:0},{q:-1,r:0},{q:0,r:1},{q:0,r:-1}])
+        )
+      },
+      {
+        id:"hourglass",
+        name:"Hourglass",
+        description:"Wide ends with a narrow middle choke point.",
+        theme:"hourglass",
+        coords: cleanBoard(rowsToCoords([5,4,3,4,5]))
+      },
+      {
+        id:"arch",
+        name:"Arch",
+        description:"A high arch with elegant long connections.",
+        theme:"arch",
+        coords: cleanBoard(customRows([
+          {start:-2, length:5},
+          {start:-3, length:7},
+          {start:-3, length:7},
+          {start:-2, length:2},
+          {start:1, length:2},
+          {start:-1, length:1},
+          {start:1, length:1}
+        ]))
+      },
+      {
+        id:"butterfly",
+        name:"Butterfly",
+        description:"Two wings and a body with flowing choices.",
+        theme:"butterfly",
+        coords: cleanBoard(
+          shiftCoords(rowsToCoords([2,3,2]), -3, 1)
+            .concat(shiftCoords(rowsToCoords([2,3,2]), 3, 1))
+            .concat([{q:-1,r:2},{q:0,r:2},{q:1,r:2},{q:0,r:1},{q:0,r:3}])
+        )
+      },
+      {
+        id:"doubleBridge",
+        name:"Double Bridge",
+        description:"Two clusters linked by a tense central run.",
+        theme:"doubleBridge",
+        coords: cleanBoard(
+          shiftCoords(hexagon(1), -4, 1)
+            .concat(shiftCoords(hexagon(1), 4, 1))
+            .concat([{q:-2,r:1},{q:-1,r:1},{q:0,r:1},{q:1,r:1},{q:2,r:1}])
+        )
+      },
+      {
+        id:"ring",
+        name:"Ring",
+        description:"A loop board with a central hole.",
+        theme:"ring",
+        coords: cleanBoard(ring(3, 1))
+      },
+      {
+        id:"diamond",
+        name:"Diamond",
+        description:"A large balanced board with rich endgame play.",
+        theme:"diamond",
+        coords: cleanBoard(hexagon(4))
       }
+    ].sort((a,b) => a.coords.length - b.coords.length || a.name.localeCompare(b.name));
+
+    const cpuLevels = [
+      { id:1, name:"Level 1", label:"Wanderer", depth:0, beam:6, noise:1.75, switchChance:.36, selfish:0.45, tactical:0.25, center:0.8 },
+      { id:2, name:"Level 2", label:"Scout", depth:0, beam:8, noise:1.20, switchChance:.28, selfish:0.60, tactical:0.35, center:0.8 },
+      { id:3, name:"Level 3", label:"Reader", depth:1, beam:8, noise:.75, switchChance:.20, selfish:0.80, tactical:0.55, center:0.65 },
+      { id:4, name:"Level 4", label:"Builder", depth:1, beam:10, noise:.42, switchChance:.14, selfish:1.00, tactical:0.80, center:0.55 },
+      { id:5, name:"Level 5", label:"Hunter", depth:2, beam:8, noise:.20, switchChance:.10, selfish:1.15, tactical:1.10, center:0.45 },
+      { id:6, name:"Level 6", label:"Strategist", depth:2, beam:10, noise:.10, switchChance:.07, selfish:1.25, tactical:1.35, center:0.35 },
+      { id:7, name:"Level 7", label:"Sage", depth:2, beam:12, noise:.04, switchChance:.04, selfish:1.40, tactical:1.70, center:0.28 },
+      { id:8, name:"Level 8", label:"Grandmaster", depth:3, beam:10, noise:0, switchChance:.02, selfish:1.55, tactical:2.05, center:0.20 }
     ];
+
+    let cpuTimeout = null;
 
     let state = {
       currentBoardId: boards[0].id,
@@ -1132,15 +1626,42 @@
       history: [],
       gameOver: false,
       scoreLab: null,
-      lastPlacedKey: null
+      lastPlacedKey: null,
+      mode: "two",
+      cpuLevel: 4,
+      cpuThinking: false,
+      bonusTurn: false,
+      namesConfirmed: false,
+      playerNames: {
+        1: "Player 1",
+        2: "Player 2"
+      },
+      teacher: {
+        liveScore: true,
+        autoOpenScoreLab: true,
+        bonusMode: "classic"
+      }
     };
 
     function defaultPieceForPlayer(player){
       return player === 1 ? "white" : "black";
     }
 
+    function otherColor(owner){
+      return owner === "white" ? "black" : "white";
+    }
+
     function getBoardById(id){
       return boards.find(b => b.id === id) || boards[0];
+    }
+
+    function getCpuLevel(){
+      return cpuLevels.find(l => l.id === state.cpuLevel) || cpuLevels[3];
+    }
+
+    function getPlayerName(player){
+      if(state.mode === "cpu" && player === 2) return "CPU";
+      return state.playerNames[player] || `Player ${player}`;
     }
 
     function cloneBoardCells(board){
@@ -1149,6 +1670,14 @@
         map.set(key(c.q, c.r), { q:c.q, r:c.r, owner:null });
       });
       return map;
+    }
+
+    function cloneCellsMap(cells){
+      const out = new Map();
+      for(const [k, cell] of cells){
+        out.set(k, { q:cell.q, r:cell.r, owner:cell.owner });
+      }
+      return out;
     }
 
     function computeBounds(coords, size = HEX_SIZE){
@@ -1160,21 +1689,42 @@
       return { minX, maxX, minY, maxY };
     }
 
-    function getNeighbors(cell){
+    function getNeighborsFromMap(cellsMap, cell){
       const dirs = [[1,0],[0,1],[-1,1],[-1,0],[0,-1],[1,-1]];
       const out = [];
       for(const [dq,dr] of dirs){
         const k = key(cell.q + dq, cell.r + dr);
-        if(state.cells.has(k)) out.push(state.cells.get(k));
+        if(cellsMap.has(k)) out.push(cellsMap.get(k));
       }
       return out;
     }
 
-    function getGroups(owner){
+    function getGroupContainingCell(cellsMap, startKey, owner){
+      const start = cellsMap.get(startKey);
+      if(!start || start.owner !== owner) return [];
+      const stack = [start];
+      const visited = new Set([startKey]);
+      const group = [];
+
+      while(stack.length){
+        const cur = stack.pop();
+        group.push(cur);
+        for(const n of getNeighborsFromMap(cellsMap, cur)){
+          const nk = key(n.q, n.r);
+          if(n.owner === owner && !visited.has(nk)){
+            visited.add(nk);
+            stack.push(n);
+          }
+        }
+      }
+      return group;
+    }
+
+    function getGroupsFromMap(cellsMap, owner){
       const visited = new Set();
       const groups = [];
 
-      for(const [k, cell] of state.cells){
+      for(const [k, cell] of cellsMap){
         if(cell.owner !== owner || visited.has(k)) continue;
         const stack = [cell];
         const group = [];
@@ -1183,7 +1733,7 @@
         while(stack.length){
           const cur = stack.pop();
           group.push(cur);
-          for(const n of getNeighbors(cur)){
+          for(const n of getNeighborsFromMap(cellsMap, cur)){
             const nk = key(n.q, n.r);
             if(n.owner === owner && !visited.has(nk)){
               visited.add(nk);
@@ -1191,16 +1741,25 @@
             }
           }
         }
-        groups.push(group.sort((a,b) => a.r - b.r || a.q - b.q));
+        groups.push(group);
       }
 
       groups.sort((a,b) => b.length - a.length);
       return groups;
     }
 
+    function getGroups(owner){
+      return getGroupsFromMap(state.cells, owner).map(group => group.sort((a,b) => a.r - b.r || a.q - b.q));
+    }
+
     function multiplyStepwiseNumbers(numbers){
-      if(!numbers.length) return { steps: [], result: 1 };
-      if(numbers.length === 1) return { steps: [], result: numbers[0] };
+      if(!numbers.length) return { steps: [], result: 0 };
+      if(numbers.length === 1) {
+        return {
+          steps: [{ left: numbers[0], right: 0, result: 0 }],
+          result: 0
+        };
+      }
 
       const steps = [];
       let running = numbers[0];
@@ -1213,17 +1772,56 @@
       return { steps, result: running };
     }
 
-    function filledCount(){
+    function formatProductChips(numbers, result){
+      if(!numbers.length){
+        return `<span class="prodResult">${result}</span>`;
+      }
+      if(numbers.length === 1){
+        return `
+          <span class="prodFactor">${numbers[0]}</span>
+          <span class="prodSymbol">×</span>
+          <span class="prodFactor">0</span>
+          <span class="prodSymbol">=</span>
+          <span class="prodResult">${result}</span>
+        `;
+      }
+      return `
+        ${numbers.map((n, i) => `${i ? '<span class="prodSymbol">×</span>' : ''}<span class="prodFactor">${n}</span>`).join("")}
+        <span class="prodSymbol">=</span>
+        <span class="prodResult">${result}</span>
+      `;
+    }
+
+    function getScoreForOwner(cellsMap, owner){
+      const groups = getGroupsFromMap(cellsMap, owner);
+      const sizes = groups.map(g => g.length);
+      return multiplyStepwiseNumbers(sizes).result;
+    }
+
+    function filledCountMap(cellsMap){
       let count = 0;
-      for(const [,cell] of state.cells) if(cell.owner) count++;
+      for(const [, cell] of cellsMap) if(cell.owner) count++;
       return count;
     }
 
+    function isBoardFullMap(cellsMap){
+      return filledCountMap(cellsMap) === cellsMap.size;
+    }
+
     function isBoardFull(){
-      return filledCount() === state.cells.size;
+      return isBoardFullMap(state.cells);
+    }
+
+    function cancelCpuTurn(){
+      state.cpuThinking = false;
+      if(cpuTimeout){
+        clearTimeout(cpuTimeout);
+        cpuTimeout = null;
+      }
     }
 
     function resetGame(boardId = state.currentBoardId){
+      cancelCpuTurn();
       const board = getBoardById(boardId);
       state.currentBoardId = board.id;
       state.cells = cloneBoardCells(board);
@@ -1234,22 +1832,78 @@
       state.gameOver = false;
       state.scoreLab = null;
       state.lastPlacedKey = null;
+      state.bonusTurn = false;
       closeScoreModal();
       renderAll();
     }
 
+    function setMode(mode){
+      state.mode = mode;
+      cancelCpuTurn();
+      resetGame(state.currentBoardId);
+      renderSettings();
+      renderNames();
+    }
+
+    function setCpuLevel(levelId){
+      state.cpuLevel = levelId;
+      renderSettings();
+    }
+
     function setSelectedPiece(piece){
+      if(state.cpuThinking) return;
+      if(state.mode === "cpu" && state.currentPlayer === 2) return;
       state.selectedPiece = piece;
       renderPieceChooser();
       renderHud();
     }
 
+    function shouldAwardBonusTurn(lastKey, owner){
+      if(state.teacher.bonusMode !== "connect4") return false;
+      const group = getGroupContainingCell(state.cells, lastKey, owner);
+      return group.length === 4;
+    }
+
+    function finishTurnAfterPlacement(lastKey, placedOwner){
+      state.bonusTurn = false;
+
+      if(shouldAwardBonusTurn(lastKey, placedOwner) && !isBoardFull()){
+        state.bonusTurn = true;
+        state.selectedPiece = defaultPieceForPlayer(state.currentPlayer);
+        renderAll();
+        if(state.mode === "cpu" && state.currentPlayer === 2){
+          requestCpuMove();
+        }
+        return;
+      }
+
+      if(isBoardFull()){
+        state.gameOver = true;
+        renderAll();
+        if(state.teacher.autoOpenScoreLab){
+          startScoreLab();
+        }
+        return;
+      }
+
+      state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+      state.selectedPiece = defaultPieceForPlayer(state.currentPlayer);
+      renderAll();
+
+      if(state.mode === "cpu" && state.currentPlayer === 2){
+        requestCpuMove();
+      }
+    }
+
     function placePiece(k){
-      if(state.gameOver) return;
+      if(state.gameOver || state.cpuThinking || !state.namesConfirmed) return;
+      if(state.mode === "cpu" && state.currentPlayer === 2) return;
+
       const cell = state.cells.get(k);
       if(!cell || cell.owner) return;
 
       cell.owner = state.selectedPiece;
+      state.lastPlacedKey = k;
       state.history.push({
         move: state.moveNumber,
         player: state.currentPlayer,
@@ -1258,62 +1912,28 @@
         r: cell.r
       });
 
-      state.lastPlacedKey = k;
       state.moveNumber++;
-
-      if(isBoardFull()){
-        state.gameOver = true;
-        renderAll();
-        startScoreLab();
-      } else {
-        state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
-        state.selectedPiece = defaultPieceForPlayer(state.currentPlayer);
-        renderAll();
-      }
+      finishTurnAfterPlacement(k, state.selectedPiece);
     }
 
-    function renderBoardList(){
-      boardListEl.innerHTML = "";
-      boards.forEach(board => {
-        const btn = document.createElement("button");
-        btn.className = `boardOption ${board.id === state.currentBoardId ? "active" : ""}`;
-        btn.type = "button";
-        btn.innerHTML = `
-          <div class="name">${board.name} (${board.coords.length} cells)</div>
-          <div class="desc">${board.description}</div>
-        `;
-        btn.addEventListener("click", () => {
-          resetGame(board.id);
-        });
-        boardListEl.appendChild(btn);
+    function placeCpuPiece(k, piece){
+      if(state.gameOver) return;
+      const cell = state.cells.get(k);
+      if(!cell || cell.owner) return;
+
+      cell.owner = piece;
+      state.lastPlacedKey = k;
+      state.history.push({
+        move: state.moveNumber,
+        player: 2,
+        piece,
+        q: cell.q,
+        r: cell.r
       });
-    }
 
-    function renderPiece(owner, x, y, isNew = false){
-      const wrap = createSvgEl("g", { class:`piece${isNew ? " newPlace" : ""}` });
-
-      if(owner === "white"){
-        wrap.appendChild(createSvgEl("circle", {
-          cx:x, cy:y + 1.5, r:HEX_SIZE * .58, fill:"rgba(0,0,0,.16)"
-        }));
-        wrap.appendChild(createSvgEl("circle", {
-          cx:x, cy:y, r:HEX_SIZE * .54, fill:"url(#whiteGrad)"
-        }));
-        wrap.appendChild(createSvgEl("circle", {
-          cx:x - 9, cy:y - 10, r:HEX_SIZE * .17, fill:"rgba(255,255,255,.72)"
-        }));
-      } else {
-        wrap.appendChild(createSvgEl("circle", {
-          cx:x, cy:y + 1.5, r:HEX_SIZE * .58, fill:"rgba(0,0,0,.22)"
-        }));
-        wrap.appendChild(createSvgEl("circle", {
-          cx:x, cy:y, r:HEX_SIZE * .54, fill:"url(#blackGrad)"
-        }));
-        wrap.appendChild(createSvgEl("circle", {
-          cx:x - 9, cy:y - 10, r:HEX_SIZE * .14, fill:"rgba(255,255,255,.15)"
-        }));
-      }
-      return wrap;
+      state.moveNumber++;
+      state.cpuThinking = false;
+      finishTurnAfterPlacement(k, piece);
     }
 
     function injectDefs(svg){
@@ -1332,6 +1952,11 @@
       defs.appendChild(whiteGrad);
       defs.appendChild(blackGrad);
       svg.appendChild(defs);
+    }
+
+    function renderBoardTheme(){
+      const board = getBoardById(state.currentBoardId);
+      boardShell.dataset.theme = board.theme || board.id;
     }
 
     function renderBoard(){
@@ -1353,8 +1978,9 @@
       coords.sort((a,b) => a.r - b.r || a.q - b.q).forEach(cell => {
         const { x, y } = axialToPixel(cell.q, cell.r);
 
+        const disabled = state.gameOver || cell.owner || state.cpuThinking || !state.namesConfirmed || (state.mode === "cpu" && state.currentPlayer === 2);
         const g = createSvgEl("g", {
-          class:`cell ${cell.owner ? cell.owner : "empty"} ${state.gameOver || cell.owner ? "disabled" : ""}`,
+          class:`cell ${cell.owner ? cell.owner : "empty"} ${disabled ? "disabled" : ""}`,
           "data-key": key(cell.q, cell.r)
         });
 
@@ -1363,7 +1989,7 @@
           points:hexPoints(x, y, HEX_SIZE - 2)
         }));
 
-        if(!cell.owner && !state.gameOver){
+        if(!cell.owner && !disabled){
           g.appendChild(createSvgEl("circle", {
             class:"empty-hint",
             cx:x, cy:y, r:6.2,
@@ -1383,44 +2009,138 @@
       state.lastPlacedKey = null;
     }
 
-    function renderHistory(){
-      historyEl.innerHTML = "";
-      if(!state.history.length){
-        const div = document.createElement("div");
-        div.className = "small";
-        div.textContent = "No moves yet.";
-        historyEl.appendChild(div);
-        return;
-      }
+    function renderPiece(owner, x, y, isNew = false){
+      const wrap = createSvgEl("g", { class:`piece${isNew ? " newPlace" : ""}` });
 
-      state.history.slice(-28).forEach(m => {
-        const chip = document.createElement("div");
-        chip.className = "moveChip";
-        chip.innerHTML = `<span class="dot ${m.piece}"></span>P${m.player} • ${m.move}. (${m.q}, ${m.r})`;
-        historyEl.appendChild(chip);
+      if(owner === "white"){
+        wrap.appendChild(createSvgEl("circle", { cx:x, cy:y + 1.5, r:HEX_SIZE * .58, fill:"rgba(0,0,0,.16)" }));
+        wrap.appendChild(createSvgEl("circle", { cx:x, cy:y, r:HEX_SIZE * .54, fill:"url(#whiteGrad)" }));
+        wrap.appendChild(createSvgEl("circle", { cx:x - 9, cy:y - 10, r:HEX_SIZE * .17, fill:"rgba(255,255,255,.72)" }));
+      } else {
+        wrap.appendChild(createSvgEl("circle", { cx:x, cy:y + 1.5, r:HEX_SIZE * .58, fill:"rgba(0,0,0,.22)" }));
+        wrap.appendChild(createSvgEl("circle", { cx:x, cy:y, r:HEX_SIZE * .54, fill:"url(#blackGrad)" }));
+        wrap.appendChild(createSvgEl("circle", { cx:x - 9, cy:y - 10, r:HEX_SIZE * .14, fill:"rgba(255,255,255,.15)" }));
+      }
+      return wrap;
+    }
+
+    function renderBoardDropdown(){
+      const board = getBoardById(state.currentBoardId);
+      boardDropdownTitle.textContent = `${board.name} (${board.coords.length})`;
+      boardDropdownSub.textContent = board.description;
+      boardDropdownBody.innerHTML = "";
+
+      boards.forEach(b => {
+        const btn = document.createElement("button");
+        btn.className = `boardOption ${b.id === state.currentBoardId ? "active" : ""}`;
+        btn.type = "button";
+        btn.innerHTML = `
+          <div class="name">${b.name} (${b.coords.length} cells)</div>
+          <div class="desc">${b.description}</div>
+        `;
+        btn.addEventListener("click", () => {
+          resetGame(b.id);
+          renderBoardDropdown();
+          boardDropdown.classList.remove("open");
+          closeMenu();
+        });
+        boardDropdownBody.appendChild(btn);
       });
     }
 
+    function renderTeacherPanel(){
+      liveScoreBtn.classList.toggle("active", state.teacher.liveScore);
+      autoOpenBtn.classList.toggle("active", state.teacher.autoOpenScoreLab);
+      bonusModeBtn.classList.toggle("active", state.teacher.bonusMode === "connect4");
+
+      liveScoreBtn.textContent = state.teacher.liveScore ? "Live Score On" : "Live Score Off";
+      autoOpenBtn.textContent = state.teacher.autoOpenScoreLab ? "Auto Score Lab On" : "Auto Score Lab Off";
+      bonusModeBtn.textContent = state.teacher.bonusMode === "connect4" ? "Connect 4 Mode On" : "Connect 4 Mode Off";
+
+      teacherModeHelp.textContent = state.teacher.bonusMode === "connect4"
+        ? "Connect 4 Mode is on. A bonus stone is only earned when the placed move creates a connected group of exactly 4. Reaching 5 or more does not earn another bonus."
+        : "Classic mode uses the normal zebra rules.";
+    }
+
+    function renderSettings(){
+      const cpuLevel = getCpuLevel();
+
+      modeTwoBtn.classList.toggle("active", state.mode === "two");
+      modeCpuBtn.classList.toggle("active", state.mode === "cpu");
+      cpuCard.style.display = state.mode === "cpu" ? "" : "none";
+      modeText.textContent = state.mode === "two"
+        ? "Two human players take turns."
+        : `Play against the CPU. The CPU takes the second turn. Current skill: ${cpuLevel.name} ${cpuLevel.label}.`;
+
+      levelGrid.innerHTML = "";
+      cpuLevels.forEach(level => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `levelBtn ${state.cpuLevel === level.id ? "active" : ""}`;
+        btn.innerHTML = `${level.name}<span class="sub">${level.label}</span>`;
+        btn.addEventListener("click", () => setCpuLevel(level.id));
+        levelGrid.appendChild(btn);
+      });
+
+      renderTeacherPanel();
+    }
+
     function renderPieceChooser(){
+      const locked = state.mode === "cpu" && state.currentPlayer === 2;
+      chooseWhiteBtn.disabled = locked || state.cpuThinking || !state.namesConfirmed;
+      chooseBlackBtn.disabled = locked || state.cpuThinking || !state.namesConfirmed;
       chooseWhiteBtn.classList.toggle("active", state.selectedPiece === "white");
       chooseBlackBtn.classList.toggle("active", state.selectedPiece === "black");
+      chooseWhiteBtn.style.opacity = (locked || state.cpuThinking || !state.namesConfirmed) ? ".65" : "1";
+      chooseBlackBtn.style.opacity = (locked || state.cpuThinking || !state.namesConfirmed) ? ".65" : "1";
+    }
+
+    function renderLiveScore(){
+      const whiteScore = getScoreForOwner(state.cells, "white");
+      const blackScore = getScoreForOwner(state.cells, "black");
+      liveWhiteVal.textContent = whiteScore;
+      liveBlackVal.textContent = blackScore;
+      liveScorePanel.classList.toggle("show", state.teacher.liveScore);
+    }
+
+    function renderNames(){
+      nameOneVal.textContent = state.playerNames[1] || "Player 1";
+      nameTwoVal.textContent = state.mode === "cpu" ? "CPU" : (state.playerNames[2] || "Player 2");
     }
 
     function renderHud(){
+      if(!state.namesConfirmed){
+        turnPill.textContent = "Enter the player names to begin";
+        return;
+      }
+
       if(state.gameOver){
-        turnPill.textContent = "Board full. Score lab opened";
+        turnPill.textContent = state.teacher.autoOpenScoreLab ? "Board full. Score lab opened" : "Board full. Open Score Lab to calculate";
+        return;
+      }
+
+      if(state.bonusTurn){
+        turnPill.textContent = `${getPlayerName(state.currentPlayer)} earned a bonus stone`;
+        return;
+      }
+
+      if(state.cpuThinking){
+        turnPill.innerHTML = `${getPlayerName(2)} thinking<span class="turnDot black"></span>Black`;
       } else if(state.selectedPiece === "white"){
-        turnPill.innerHTML = `Player ${state.currentPlayer} choosing <span class="turnDot white"></span>White`;
+        turnPill.innerHTML = `${getPlayerName(state.currentPlayer)} choosing<span class="turnDot white"></span>White`;
       } else {
-        turnPill.innerHTML = `Player ${state.currentPlayer} choosing <span class="turnDot black"></span>Black`;
+        turnPill.innerHTML = `${getPlayerName(state.currentPlayer)} choosing<span class="turnDot black"></span>Black`;
       }
     }
 
     function renderAll(){
-      renderBoardList();
+      renderBoardTheme();
+      renderBoardDropdown();
+      renderSettings();
+      renderNames();
       renderBoard();
-      renderHistory();
       renderPieceChooser();
+      renderLiveScore();
       renderHud();
     }
 
@@ -1436,18 +2156,67 @@
       menuPanel.setAttribute("aria-hidden", "true");
     }
 
+    function openNameModal(){
+      nameModal.classList.add("show");
+      nameModal.setAttribute("aria-hidden", "false");
+      nameBackdrop.classList.add("show");
+      setTimeout(() => playerOneInput.focus(), 0);
+    }
+
+    function closeNameModal(){
+      nameModal.classList.remove("show");
+      nameModal.setAttribute("aria-hidden", "true");
+      nameBackdrop.classList.remove("show");
+    }
+
+    function confirmNames(){
+      const p1 = playerOneInput.value.trim() || "Player 1";
+      const p2 = playerTwoInput.value.trim() || "Player 2";
+      state.playerNames[1] = p1;
+      state.playerNames[2] = p2;
+      state.namesConfirmed = true;
+      closeNameModal();
+      renderAll();
+    }
+
     function setStep(stepKey){
       Object.entries(stepsEls).forEach(([k, el]) => {
         el.classList.toggle("active", k === stepKey);
       });
     }
 
+    function clearFeedback(){
+      if(!state.scoreLab) return;
+      state.scoreLab.feedbackText = "";
+      state.scoreLab.feedbackGood = false;
+    }
+
+    function setFeedback(text, good = false){
+      if(!state.scoreLab) return;
+      state.scoreLab.feedbackText = text;
+      state.scoreLab.feedbackGood = good;
+    }
+
+    function renderFeedback(){
+      const s = state.scoreLab;
+      if(!s || !s.feedbackText){
+        return `<div class="feedback empty">&nbsp;</div>`;
+      }
+      return `<div class="feedback ${s.feedbackGood ? "good" : "bad"}">${s.feedbackText}</div>`;
+    }
+
     function startScoreLab(){
       const whiteGroups = getGroups("white");
       const blackGroups = getGroups("black");
 
+      const whiteScore = multiplyStepwiseNumbers(whiteGroups.map(g => g.length)).result;
+      const blackScore = multiplyStepwiseNumbers(blackGroups.map(g => g.length)).result;
+
+      let phase = "whiteGroups";
+      if(whiteGroups.length === 0) phase = "whiteScore";
+
       state.scoreLab = {
-        phase:"whiteGroups",
+        phase,
         whiteGroups,
         blackGroups,
         whiteGroupIndex:0,
@@ -1456,13 +2225,17 @@
         blackSizesEntered:[],
         whiteMultiplyStep:0,
         blackMultiplyStep:0,
-        whiteRunningTotal:null,
-        blackRunningTotal:null,
-        whiteScore:null,
-        blackScore:null,
-        feedback:"",
+        whiteScore: whiteGroups.length ? null : whiteScore,
+        blackScore: blackGroups.length ? null : blackScore,
+        feedbackText:"",
+        feedbackGood:false,
         finished:false
       };
+
+      scoreNextBtn.dataset.mode = "check";
+      scoreNextBtn.textContent = "Check";
+      const chooseNewBoardBtn = document.getElementById("chooseNewBoardBtn");
+      if(chooseNewBoardBtn) chooseNewBoardBtn.remove();
 
       openScoreModal();
       renderScoreLab();
@@ -1478,6 +2251,19 @@
       scoreModal.classList.remove("show");
       scoreModal.setAttribute("aria-hidden", "true");
       modalBackdrop.classList.remove("show");
+    }
+
+    function wireSubmitOnEnter(inputId){
+      const input = document.getElementById(inputId);
+      if(!input) return;
+      setTimeout(() => input.focus(), 0);
+      input.addEventListener("keydown", (e) => {
+        if(e.key === "Enter"){
+          e.preventDefault();
+          e.stopPropagation();
+          scoreNextBtn.click();
+        }
+      });
     }
 
     function renderScoreLab(){
@@ -1503,11 +2289,14 @@
             <h4>Count White group ${idx + 1}</h4>
             <div class="modalText">Count the number of white hexes in the highlighted connected group.</div>
             <input id="groupSizeInput" class="input" type="number" min="1" step="1" placeholder="Enter the size of this white group" />
-            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+            ${renderFeedback()}
             <div class="groupList">${discovered}</div>
           </div>
         `;
         scoreNextBtn.textContent = idx === s.whiteGroups.length - 1 ? "Check and continue" : "Check";
+        scoreNextBtn.dataset.mode = "check";
+        wireSubmitOnEnter("groupSizeInput");
+        return;
       }
 
       if(s.phase === "whiteMultiply"){
@@ -1524,13 +2313,6 @@
           </div>
         `).join("");
 
-        if(!current){
-          s.phase = "whiteScore";
-          s.feedback = "";
-          renderScoreLab();
-          return;
-        }
-
         scoreLabContent.innerHTML = `
           <div class="questionCard">
             <h4>Multiply White's groups step by step</h4>
@@ -1543,11 +2325,14 @@
               <span class="prodFactor">${current.right}</span>
               <span class="prodSymbol">=</span>
             </div>
-            <input id="productInput" class="input" type="number" min="1" step="1" placeholder="Enter the result of this multiplication step" />
-            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+            <input id="productInput" class="input" type="number" min="0" step="1" placeholder="Enter the result of this multiplication step" />
+            ${renderFeedback()}
           </div>
         `;
         scoreNextBtn.textContent = s.whiteMultiplyStep === stepData.steps.length - 1 ? "Check and finish White" : "Check next step";
+        scoreNextBtn.dataset.mode = "check";
+        wireSubmitOnEnter("productInput");
+        return;
       }
 
       if(s.phase === "whiteScore"){
@@ -1556,13 +2341,13 @@
             <h4>White's final score</h4>
             <div class="modalText">White's multiplication is complete.</div>
             <div class="prodLine">
-              ${s.whiteSizesEntered.map((n, i) => `${i ? '<span class="prodSymbol">×</span>' : ''}<span class="prodFactor">${n}</span>`).join("")}
-              <span class="prodSymbol">=</span>
-              <span class="prodResult">${s.whiteScore}</span>
+              ${formatProductChips(s.whiteSizesEntered, s.whiteScore ?? 0)}
             </div>
           </div>
         `;
         scoreNextBtn.textContent = "Continue to Black";
+        scoreNextBtn.dataset.mode = "check";
+        return;
       }
 
       if(s.phase === "blackGroups"){
@@ -1574,11 +2359,14 @@
             <h4>Count Black group ${idx + 1}</h4>
             <div class="modalText">Count the number of black hexes in the highlighted connected group.</div>
             <input id="groupSizeInput" class="input" type="number" min="1" step="1" placeholder="Enter the size of this black group" />
-            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+            ${renderFeedback()}
             <div class="groupList">${discovered}</div>
           </div>
         `;
         scoreNextBtn.textContent = idx === s.blackGroups.length - 1 ? "Check and continue" : "Check";
+        scoreNextBtn.dataset.mode = "check";
+        wireSubmitOnEnter("groupSizeInput");
+        return;
       }
 
       if(s.phase === "blackMultiply"){
@@ -1595,13 +2383,6 @@
           </div>
         `).join("");
 
-        if(!current){
-          s.phase = "blackScore";
-          s.feedback = "";
-          renderScoreLab();
-          return;
-        }
-
         scoreLabContent.innerHTML = `
           <div class="questionCard">
             <h4>Multiply Black's groups step by step</h4>
@@ -1614,11 +2395,14 @@
               <span class="prodFactor">${current.right}</span>
               <span class="prodSymbol">=</span>
             </div>
-            <input id="productInput" class="input" type="number" min="1" step="1" placeholder="Enter the result of this multiplication step" />
-            <div id="groupFeedback" class="feedback">${s.feedback || ""}</div>
+            <input id="productInput" class="input" type="number" min="0" step="1" placeholder="Enter the result of this multiplication step" />
+            ${renderFeedback()}
           </div>
         `;
         scoreNextBtn.textContent = s.blackMultiplyStep === stepData.steps.length - 1 ? "Check and finish Black" : "Check next step";
+        scoreNextBtn.dataset.mode = "check";
+        wireSubmitOnEnter("productInput");
+        return;
       }
 
       if(s.phase === "blackScore"){
@@ -1627,38 +2411,17 @@
             <h4>Black's final score</h4>
             <div class="modalText">Black's multiplication is complete.</div>
             <div class="prodLine">
-              ${s.blackSizesEntered.map((n, i) => `${i ? '<span class="prodSymbol">×</span>' : ''}<span class="prodFactor">${n}</span>`).join("")}
-              <span class="prodSymbol">=</span>
-              <span class="prodResult">${s.blackScore}</span>
+              ${formatProductChips(s.blackSizesEntered, s.blackScore ?? 0)}
             </div>
           </div>
         `;
-        scoreNextBtn.textContent = "Continue to winner";
+        scoreNextBtn.textContent = "Show final result";
+        scoreNextBtn.dataset.mode = "check";
+        return;
       }
 
       if(s.phase === "winner"){
-        let winnerText = "It is a tie";
-        if(s.whiteScore > s.blackScore) winnerText = "Player 1 wins";
-        if(s.blackScore > s.whiteScore) winnerText = "Player 2 wins";
-
-        scoreLabContent.innerHTML = `
-          <div class="questionCard">
-            <h4>${winnerText}</h4>
-            <div class="modalText">Both scores are complete. Compare them to find the winner.</div>
-            <div class="winnerSummary">
-              <div class="winnerBox">
-                <div class="name">White score</div>
-                <div class="val">${s.whiteScore}</div>
-              </div>
-              <div class="winnerBox">
-                <div class="name">Black score</div>
-                <div class="val">${s.blackScore}</div>
-              </div>
-            </div>
-          </div>
-        `;
-        scoreNextBtn.textContent = "Done";
-        s.finished = true;
+        renderEndScreen();
       }
     }
 
@@ -1733,10 +2496,6 @@
       }
     }
 
-    function setFeedback(text, good = false){
-      state.scoreLab.feedback = text ? `<span class="${good ? 'good' : 'bad'}">${text}</span>` : "";
-    }
-
     function handleScoreNext(){
       const s = state.scoreLab;
       if(!s) return;
@@ -1749,9 +2508,10 @@
         if(val === actual){
           s.whiteSizesEntered.push(val);
           s.whiteGroupIndex++;
-          s.feedback = "";
+          clearFeedback();
           if(s.whiteGroupIndex >= s.whiteGroups.length){
-            s.phase = "whiteMultiply";
+            s.phase = s.whiteSizesEntered.length === 0 ? "whiteScore" : "whiteMultiply";
+            s.whiteScore = multiplyStepwiseNumbers(s.whiteSizesEntered).result;
           }
           renderScoreLab();
         } else {
@@ -1768,9 +2528,8 @@
         const val = Number(document.getElementById("productInput").value);
 
         if(val === current.result){
-          s.whiteRunningTotal = current.result;
           s.whiteMultiplyStep++;
-          s.feedback = "";
+          clearFeedback();
           if(s.whiteMultiplyStep >= steps.length){
             s.whiteScore = multiplyStepwiseNumbers(sizes).result;
             s.phase = "whiteScore";
@@ -1784,8 +2543,13 @@
       }
 
       if(s.phase === "whiteScore"){
-        s.phase = "blackGroups";
-        s.feedback = "";
+        if(s.blackGroups.length === 0){
+          s.blackScore = 0;
+          s.phase = "blackScore";
+        } else {
+          s.phase = "blackGroups";
+        }
+        clearFeedback();
         renderScoreLab();
         return;
       }
@@ -1798,9 +2562,10 @@
         if(val === actual){
           s.blackSizesEntered.push(val);
           s.blackGroupIndex++;
-          s.feedback = "";
+          clearFeedback();
           if(s.blackGroupIndex >= s.blackGroups.length){
-            s.phase = "blackMultiply";
+            s.phase = s.blackSizesEntered.length === 0 ? "blackScore" : "blackMultiply";
+            s.blackScore = multiplyStepwiseNumbers(s.blackSizesEntered).result;
           }
           renderScoreLab();
         } else {
@@ -1817,9 +2582,8 @@
         const val = Number(document.getElementById("productInput").value);
 
         if(val === current.result){
-          s.blackRunningTotal = current.result;
           s.blackMultiplyStep++;
-          s.feedback = "";
+          clearFeedback();
           if(s.blackMultiplyStep >= steps.length){
             s.blackScore = multiplyStepwiseNumbers(sizes).result;
             s.phase = "blackScore";
@@ -1834,18 +2598,9 @@
 
       if(s.phase === "blackScore"){
         s.phase = "winner";
-        s.feedback = "";
-        renderScoreLab();
-        return;
-      }
-
-      if(s.phase === "winner"){
+        clearFeedback();
         renderEndScreen();
         return;
-      }
-
-      if(s.finished){
-        renderEndScreen();
       }
     }
 
@@ -1853,30 +2608,32 @@
       const s = state.scoreLab;
       if(!s) return;
 
+      const whiteScore = s.whiteScore ?? 0;
+      const blackScore = s.blackScore ?? 0;
+
       let winnerText = "It is a tie";
-      if(s.whiteScore > s.blackScore) winnerText = "Player 1 wins";
-      if(s.blackScore > s.whiteScore) winnerText = "Player 2 wins";
+      if(whiteScore > blackScore) winnerText = "White wins";
+      if(blackScore > whiteScore) winnerText = "Black wins";
 
       scoreLabContent.innerHTML = `
         <div class="questionCard">
           <h4>${winnerText}</h4>
-          <div class="modalText">The score calculation is complete.</div>
+          <div class="modalText">Both scores are complete. Compare them to find the winner.</div>
           <div class="winnerSummary">
             <div class="winnerBox">
               <div class="name">White score</div>
-              <div class="val">${s.whiteScore}</div>
+              <div class="val">${whiteScore}</div>
             </div>
             <div class="winnerBox">
               <div class="name">Black score</div>
-              <div class="val">${s.blackScore}</div>
+              <div class="val">${blackScore}</div>
             </div>
           </div>
         </div>
       `;
 
       scoreNextBtn.textContent = "Reset Game";
-      scoreNextBtn.onclick = null;
-      scoreNextBtn.addEventListener("click", handleResetFromEnd, { once:true });
+      scoreNextBtn.dataset.mode = "reset";
 
       const actions = document.querySelector(".modalActions");
       if(!document.getElementById("chooseNewBoardBtn")){
@@ -1892,6 +2649,7 @@
       }
 
       s.finished = true;
+      setStep("winner");
       renderScoreBoardPreview();
     }
 
@@ -1899,10 +2657,283 @@
       const chooseNewBoardBtn = document.getElementById("chooseNewBoardBtn");
       if(chooseNewBoardBtn) chooseNewBoardBtn.remove();
       scoreNextBtn.textContent = "Check";
-      scoreNextBtn.onclick = null;
-      scoreNextBtn.addEventListener("click", handleScoreNext);
+      scoreNextBtn.dataset.mode = "check";
       resetGame(state.currentBoardId);
     }
+
+    function scoreSignature(cellsMap, perspective){
+      const items = [];
+      for(const [k, cell] of cellsMap){
+        if(cell.owner) items.push(`${k}:${cell.owner === perspective ? "1" : "2"}`);
+      }
+      return items.sort().join("|");
+    }
+
+    function centrality(cell){
+      return -(Math.abs(cell.q) + Math.abs(cell.r) + Math.abs(-cell.q - cell.r)) / 3;
+    }
+
+    function groupHeuristic(cellsMap, owner){
+      const groups = getGroupsFromMap(cellsMap, owner);
+      if(!groups.length){
+        return { groups, count:0, largest:0, sumSq:0, logProd:0 };
+      }
+
+      let largest = 0;
+      let sumSq = 0;
+      let logProd = 0;
+
+      for(const g of groups){
+        const n = g.length;
+        if(n > largest) largest = n;
+        sumSq += n * n;
+        logProd += Math.log(n);
+      }
+
+      return { groups, count:groups.length, largest, sumSq, logProd };
+    }
+
+    function edgePressure(cellsMap, owner){
+      let total = 0;
+      for(const [,cell] of cellsMap){
+        if(cell.owner !== owner) continue;
+        let own = 0;
+        let empty = 0;
+        for(const n of getNeighborsFromMap(cellsMap, cell)){
+          if(n.owner === owner) own++;
+          if(!n.owner) empty++;
+        }
+        total += own * 0.65 + empty * 0.45;
+      }
+      return total;
+    }
+
+    function centralInfluence(cellsMap, owner){
+      let total = 0;
+      for(const [,cell] of cellsMap){
+        if(cell.owner === owner) total += -centrality(cell);
+      }
+      return -total;
+    }
+
+    function evaluateMap(cellsMap, cpuPiece, level){
+      const opp = otherColor(cpuPiece);
+      const mine = groupHeuristic(cellsMap, cpuPiece);
+      const theirs = groupHeuristic(cellsMap, opp);
+
+      if(isBoardFullMap(cellsMap)){
+        const mineProd = getScoreForOwner(cellsMap, cpuPiece);
+        const oppProd = getScoreForOwner(cellsMap, opp);
+        if(mineProd > oppProd) return 100000 + (mineProd - oppProd);
+        if(mineProd < oppProd) return -100000 - (oppProd - mineProd);
+        return 0;
+      }
+
+      const fillRatio = filledCountMap(cellsMap) / cellsMap.size;
+      const late = 0.4 + fillRatio * 1.6;
+      const early = 1.5 - Math.min(fillRatio, .85);
+
+      let score =
+        (mine.logProd - theirs.logProd) * 44 * late * level.tactical +
+        (mine.sumSq - theirs.sumSq) * 1.65 * level.selfish +
+        (mine.largest - theirs.largest) * 5.2 +
+        (edgePressure(cellsMap, cpuPiece) - edgePressure(cellsMap, opp)) * 1.3 +
+        (mine.count < theirs.count ? 5.5 : 0) +
+        (mine.count - theirs.count) * -2.8 * late +
+        centralInfluence(cellsMap, cpuPiece) * early * level.center -
+        centralInfluence(cellsMap, opp) * early * (level.center * .7);
+
+      if(state.teacher.bonusMode === "connect4"){
+        const myBig = mine.groups.filter(g => g.length === 4).length;
+        const oppBig = theirs.groups.filter(g => g.length === 4).length;
+        score += (myBig - oppBig) * 18;
+      }
+
+      return score;
+    }
+
+    function evaluateMovePlacement(cellsMap, k, piece, cpuPiece, level){
+      const clone = cloneCellsMap(cellsMap);
+      clone.get(k).owner = piece;
+      const cell = clone.get(k);
+      let nearOwn = 0;
+      let nearOpp = 0;
+      let nearEmpty = 0;
+
+      for(const n of getNeighborsFromMap(clone, cell)){
+        if(n.owner === piece) nearOwn++;
+        else if(n.owner === otherColor(piece)) nearOpp++;
+        else nearEmpty++;
+      }
+
+      let score = evaluateMap(clone, cpuPiece, level);
+      score += nearOwn * 7.5;
+      score += nearOpp * 3.6;
+      score += nearEmpty * 0.8;
+      score += centrality(cell) * level.center * 6;
+
+      if(state.teacher.bonusMode === "connect4"){
+        const group = getGroupContainingCell(clone, k, piece);
+        if(group.length === 4) score += 22;
+      }
+
+      return score;
+    }
+
+    function getEmptyKeys(cellsMap){
+      const out = [];
+      for(const [k,cell] of cellsMap){
+        if(!cell.owner) out.push(k);
+      }
+      return out;
+    }
+
+    function candidateMoves(cellsMap, playerPiece, cpuPiece, level){
+      const empties = getEmptyKeys(cellsMap);
+      const candidates = [];
+
+      for(const k of empties){
+        const normalScore = evaluateMovePlacement(cellsMap, k, playerPiece, cpuPiece, level);
+        candidates.push({ key:k, piece:playerPiece, pre:normalScore });
+
+        const switchScore = evaluateMovePlacement(cellsMap, k, otherColor(playerPiece), cpuPiece, level) - 4.4;
+        candidates.push({ key:k, piece:otherColor(playerPiece), pre:switchScore });
+      }
+
+      candidates.sort((a,b) => b.pre - a.pre);
+      return candidates.slice(0, Math.min(level.beam * 2, candidates.length));
+    }
+
+    function minimax(cellsMap, playerPiece, cpuPiece, depth, maximizing, level, alpha, beta, cache){
+      const sig = `${scoreSignature(cellsMap, cpuPiece)}|${playerPiece}|${depth}|${maximizing ? 1 : 0}|${state.teacher.bonusMode}`;
+      if(cache.has(sig)) return cache.get(sig);
+
+      if(depth === 0 || isBoardFullMap(cellsMap)){
+        const val = evaluateMap(cellsMap, cpuPiece, level);
+        cache.set(sig, val);
+        return val;
+      }
+
+      const candidates = candidateMoves(cellsMap, playerPiece, cpuPiece, level).slice(0, level.beam);
+
+      if(maximizing){
+        let best = -Infinity;
+        for(const move of candidates){
+          const clone = cloneCellsMap(cellsMap);
+          clone.get(move.key).owner = move.piece;
+          const extraTurn = state.teacher.bonusMode === "connect4" && getGroupContainingCell(clone, move.key, move.piece).length === 4;
+          const nextMax = extraTurn ? true : false;
+          const nextPiece = extraTurn ? playerPiece : otherColor(playerPiece);
+          const val = minimax(clone, nextPiece, cpuPiece, depth - 1, nextMax, level, alpha, beta, cache);
+          if(val > best) best = val;
+          if(best > alpha) alpha = best;
+          if(beta <= alpha) break;
+        }
+        cache.set(sig, best);
+        return best;
+      }
+
+      let best = Infinity;
+      for(const move of candidates){
+        const clone = cloneCellsMap(cellsMap);
+        clone.get(move.key).owner = move.piece;
+        const extraTurn = state.teacher.bonusMode === "connect4" && getGroupContainingCell(clone, move.key, move.piece).length === 4;
+        const nextMax = extraTurn ? false : true;
+        const nextPiece = extraTurn ? playerPiece : otherColor(playerPiece);
+        const val = minimax(clone, nextPiece, cpuPiece, depth - 1, nextMax, level, alpha, beta, cache);
+        if(val < best) best = val;
+        if(best < beta) beta = best;
+        if(beta <= alpha) break;
+      }
+      cache.set(sig, best);
+      return best;
+    }
+
+    function chooseCpuMove(){
+      const level = getCpuLevel();
+      const cpuPiece = "black";
+      const empties = getEmptyKeys(state.cells);
+      if(!empties.length) return null;
+
+      const candidatePool = candidateMoves(state.cells, cpuPiece, cpuPiece, level).slice(0, Math.min(level.beam, empties.length * 2));
+      const cache = new Map();
+      const results = [];
+
+      for(const move of candidatePool){
+        const clone = cloneCellsMap(state.cells);
+        clone.get(move.key).owner = move.piece;
+        const extraTurn = state.teacher.bonusMode === "connect4" && getGroupContainingCell(clone, move.key, move.piece).length === 4;
+        const value = level.depth > 0
+          ? minimax(clone, extraTurn ? cpuPiece : "white", cpuPiece, level.depth, extraTurn, level, -Infinity, Infinity, cache)
+          : evaluateMap(clone, cpuPiece, level);
+
+        results.push({
+          ...move,
+          value: value + ((Math.random() * 2 - 1) * level.noise)
+        });
+      }
+
+      results.sort((a,b) => b.value - a.value);
+
+      if(Math.random() < level.switchChance){
+        const switched = results.filter(r => r.piece !== cpuPiece);
+        if(switched.length) return switched[0];
+      }
+
+      return results[0] || null;
+    }
+
+    function requestCpuMove(){
+      if(state.mode !== "cpu" || state.currentPlayer !== 2 || state.gameOver || !state.namesConfirmed) return;
+
+      cancelCpuTurn();
+      state.cpuThinking = true;
+      renderAll();
+
+      cpuTimeout = setTimeout(() => {
+        cpuTimeout = null;
+        const move = chooseCpuMove();
+        if(!move){
+          state.cpuThinking = false;
+          renderAll();
+          return;
+        }
+        state.selectedPiece = move.piece;
+        renderAll();
+        setTimeout(() => {
+          placeCpuPiece(move.key, move.piece);
+        }, 70);
+      }, CPU_DELAY);
+    }
+
+    function toggleDropdown(dropdownEl){
+      dropdownEl.classList.toggle("open");
+    }
+
+    boardDropdownHeader.addEventListener("click", () => toggleDropdown(boardDropdown));
+    teacherDropdownHeader.addEventListener("click", () => toggleDropdown(teacherDropdown));
+    controlsDropdownHeader.addEventListener("click", () => toggleDropdown(controlsDropdown));
+
+    modeTwoBtn.addEventListener("click", () => setMode("two"));
+    modeCpuBtn.addEventListener("click", () => setMode("cpu"));
+
+    liveScoreBtn.addEventListener("click", () => {
+      state.teacher.liveScore = !state.teacher.liveScore;
+      renderTeacherPanel();
+      renderLiveScore();
+    });
+
+    autoOpenBtn.addEventListener("click", () => {
+      state.teacher.autoOpenScoreLab = !state.teacher.autoOpenScoreLab;
+      renderTeacherPanel();
+      renderHud();
+    });
+
+    bonusModeBtn.addEventListener("click", () => {
+      state.teacher.bonusMode = state.teacher.bonusMode === "classic" ? "connect4" : "classic";
+      renderTeacherPanel();
+      renderHud();
+    });
 
     menuBtn.addEventListener("click", openMenu);
     closeMenuBtn.addEventListener("click", closeMenu);
@@ -1911,9 +2942,13 @@
     chooseWhiteBtn.addEventListener("click", () => setSelectedPiece("white"));
     chooseBlackBtn.addEventListener("click", () => setSelectedPiece("black"));
 
-    document.getElementById("resetBtn").addEventListener("click", () => {
+    resetBtn.addEventListener("click", () => {
       resetGame(state.currentBoardId);
       closeMenu();
+    });
+
+    mainResetBtn.addEventListener("click", () => {
+      resetGame(state.currentBoardId);
     });
 
     openScoreBtn.addEventListener("click", () => {
@@ -1921,12 +2956,34 @@
         if(!state.scoreLab) startScoreLab();
         else {
           openScoreModal();
-          renderScoreLab();
+          if(state.scoreLab.finished) renderEndScreen();
+          else renderScoreLab();
         }
       }
     });
 
-    scoreNextBtn.addEventListener("click", handleScoreNext);
+    startGameBtn.addEventListener("click", confirmNames);
+    playerOneInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){
+        e.preventDefault();
+        e.stopPropagation();
+        playerTwoInput.focus();
+      }
+    });
+    playerTwoInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){
+        e.preventDefault();
+        e.stopPropagation();
+        confirmNames();
+      }
+    });
+
+    scoreNextBtn.dataset.mode = "check";
+    scoreNextBtn.addEventListener("click", () => {
+      if(scoreNextBtn.dataset.mode === "reset") handleResetFromEnd();
+      else handleScoreNext();
+    });
+
     scoreCancelBtn.addEventListener("click", closeScoreModal);
     modalBackdrop.addEventListener("click", closeScoreModal);
 
@@ -1934,15 +2991,24 @@
       if(e.key === "Escape"){
         closeMenu();
         closeScoreModal();
+        return;
+      }
+
+      if(e.key === "Enter" && scoreModal.classList.contains("show")){
+        const active = document.activeElement;
+        const tag = active ? active.tagName : "";
+        if(tag === "INPUT" || tag === "TEXTAREA") return;
+        e.preventDefault();
+        scoreNextBtn.click();
       }
     });
 
-    function renderPieceChooser(){
-      chooseWhiteBtn.classList.toggle("active", state.selectedPiece === "white");
-      chooseBlackBtn.classList.toggle("active", state.selectedPiece === "black");
-    }
+    teacherDropdown.classList.remove("open");
+    controlsDropdown.classList.remove("open");
+    boardDropdown.classList.remove("open");
 
     resetGame(boards[0].id);
+    openNameModal();
   </script>
 </body>
 </html>
