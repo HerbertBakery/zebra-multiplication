@@ -263,33 +263,6 @@
       transform:none !important;
     }
 
-    .hud{
-      position:absolute;
-      left:50%;
-      bottom:18px;
-      transform:translateX(-50%);
-      z-index:10;
-      display:flex;
-      justify-content:center;
-      max-width:min(92%, 860px);
-    }
-
-    .pill{
-      padding:12px 16px;
-      border-radius:999px;
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:var(--shadowSoft);
-      backdrop-filter:blur(10px);
-      font-size:13px;
-      font-weight:800;
-      color:var(--text);
-      white-space:nowrap;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
     .turnDot{
       display:inline-block;
       width:14px;
@@ -315,27 +288,97 @@
     .cornerScore{
       position:absolute;
       z-index:12;
-      min-width:126px;
+      min-width:120px;
       padding:12px 14px;
       border-radius:22px;
-      background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
-      border:1px solid rgba(255,255,255,.08);
       box-shadow:var(--shadowSoft);
       backdrop-filter:blur(12px);
-      display:flex;
-      align-items:center;
-      gap:12px;
     }
 
     .cornerScore.white{
       left:18px;
       bottom:18px;
+      background:linear-gradient(180deg, rgba(250,252,255,.98), rgba(229,236,246,.96));
+      border:1px solid rgba(255,255,255,.78);
+      color:#202734;
     }
 
     .cornerScore.black{
       right:18px;
       bottom:18px;
-      justify-content:flex-end;
+      background:linear-gradient(180deg, rgba(20,28,40,.96), rgba(10,15,24,.94));
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--text);
+    }
+
+    .cornerMain{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      min-width:86px;
+      text-align:center;
+    }
+
+    .cornerTop{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:2px;
+    }
+
+    .turnPips{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      min-height:7px;
+    }
+
+    .turnPip{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:rgba(128,140,158,.64);
+      border:1px solid rgba(128,140,158,.7);
+      transition:opacity .16s ease, transform .16s ease;
+      opacity:.95;
+    }
+
+    .cornerScore.black .turnPip{
+      background:rgba(188,198,212,.58);
+      border-color:rgba(204,214,228,.68);
+    }
+
+    .cornerPlayerName{
+      font-size:14px;
+      line-height:1.1;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:140px;
+      width:100%;
+      text-align:center;
+    }
+
+    .cornerScore.white .cornerPlayerName{
+      color:#3a4250;
+    }
+
+    .cornerScore.black .cornerPlayerName{
+      color:rgba(238,244,251,.9);
+    }
+
+    .cornerValue{
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.05em;
+      font-weight:900;
+      color:inherit;
+      width:100%;
+      text-align:center;
     }
 
     .cornerStone{
@@ -345,55 +388,7 @@
       border:1px solid rgba(255,255,255,.16);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 6px 14px rgba(0,0,0,.18);
       flex:0 0 auto;
-    }
-
-    .cornerValue{
-      font-size:28px;
-      line-height:1;
-      letter-spacing:-.05em;
-      font-weight:900;
-      color:var(--text);
-    }
-
-    .nameTag{
-      position:absolute;
-      left:18px;
-      top:18px;
-      z-index:12;
-      min-width:240px;
-      padding:14px 16px;
-      border-radius:20px;
-      background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:var(--shadowSoft);
-      backdrop-filter:blur(12px);
-    }
-
-    .nameTagTitle{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      color:var(--gold);
-      font-weight:900;
-      margin-bottom:10px;
-    }
-
-    .nameRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:14px;
-      font-weight:900;
-    }
-
-    .nameRow + .nameRow{ margin-top:8px; }
-
-    .nameRowLabel{
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      gap:8px;
+      margin-bottom:2px;
     }
 
     .pieceDot{
@@ -1011,9 +1006,9 @@
     }
 
     .cell.tempBlack .hex-base{
-      fill:rgba(48,63,82,.42);
-      stroke:rgba(180,198,220,.85);
-      filter:drop-shadow(0 0 12px rgba(110,144,180,.18));
+      fill:rgba(240,247,255,.12);
+      stroke:rgba(255,255,255,.96);
+      filter:drop-shadow(0 0 12px rgba(255,255,255,.18));
     }
 
     .empty-hint{
@@ -1078,13 +1073,6 @@
 
       .stage{ padding:10px; }
 
-      .hud{
-        left:50%;
-        right:auto;
-        bottom:12px;
-        transform:translateX(-50%);
-      }
-
       .cornerScore.white{
         left:12px;
         bottom:12px;
@@ -1093,12 +1081,6 @@
       .cornerScore.black{
         right:12px;
         bottom:12px;
-      }
-
-      .nameTag{
-        left:12px;
-        top:12px;
-        min-width:220px;
       }
 
       .endTurnBtn{
@@ -1116,18 +1098,13 @@
 
     @media (max-width: 700px){
       .cornerScore{
-        min-width:100px;
+        min-width:108px;
         padding:10px 12px;
       }
 
       .cornerValue{ font-size:24px; }
-      .nameTag{ min-width:176px; }
-
-      .pill{
-        font-size:12px;
-        gap:8px;
-        padding:10px 12px;
-      }
+      .cornerPlayerName{ font-size:12px; max-width:92px; }
+      .cornerStone{ width:24px; height:24px; }
     }
   </style>
 </head>
@@ -1143,16 +1120,6 @@
       <div id="boardShell" class="boardShell" data-theme="trapezoid">
         <svg id="boardSvg" viewBox="0 0 1400 900" aria-label="Zebra Multiplication board"></svg>
 
-        <div id="nameTag" class="nameTag">
-          <div class="nameTagTitle">Players</div>
-          <div class="nameRow">
-            <div id="nameOneVal" class="nameRowLabel"><span class="pieceDot white"></span>Player 1</div>
-          </div>
-          <div class="nameRow">
-            <div id="nameTwoVal" class="nameRowLabel"><span class="pieceDot black"></span>Player 2</div>
-          </div>
-        </div>
-
         <button id="endTurnBtn" class="endTurnBtn" type="button" aria-label="End turn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h11"></path>
@@ -1161,19 +1128,28 @@
         </button>
 
         <div id="whiteCornerScore" class="cornerScore white">
-          <span class="cornerStone white"></span>
-          <span id="whiteCornerVal" class="cornerValue">0</span>
+          <div class="cornerMain">
+            <div id="whiteCornerTop" class="cornerTop">
+              <div id="whiteTurnPips" class="turnPips">
+                <span class="turnPip"></span>
+                <span class="turnPip"></span>
+              </div>
+            </div>
+            <div id="whiteCornerName" class="cornerPlayerName">Player 1</div>
+            <div id="whiteCornerVal" class="cornerValue">0</div>
+          </div>
         </div>
 
         <div id="blackCornerScore" class="cornerScore black">
-          <span id="blackCornerVal" class="cornerValue">0</span>
-          <span class="cornerStone black"></span>
-        </div>
-
-        <div class="hud">
-          <div id="turnPill" class="pill">
-            <span class="turnDot white"></span>
-            Waiting to start
+          <div class="cornerMain">
+            <div id="blackCornerTop" class="cornerTop">
+              <div id="blackTurnPips" class="turnPips">
+                <span class="turnPip"></span>
+                <span class="turnPip"></span>
+              </div>
+            </div>
+            <div id="blackCornerName" class="cornerPlayerName">Player 2</div>
+            <div id="blackCornerVal" class="cornerValue">0</div>
           </div>
         </div>
       </div>
@@ -1380,7 +1356,6 @@
 
     const boardShell = document.getElementById("boardShell");
     const boardSvg = document.getElementById("boardSvg");
-    const turnPill = document.getElementById("turnPill");
     const endTurnBtn = document.getElementById("endTurnBtn");
 
     const menuBtn = document.getElementById("menuBtn");
@@ -1428,8 +1403,6 @@
     const playerOneInput = document.getElementById("playerOneInput");
     const playerTwoInput = document.getElementById("playerTwoInput");
     const startGameBtn = document.getElementById("startGameBtn");
-    const nameOneVal = document.getElementById("nameOneVal");
-    const nameTwoVal = document.getElementById("nameTwoVal");
 
     const resetBtn = document.getElementById("resetBtn");
     const changeBoardBtn = document.getElementById("changeBoardBtn");
@@ -1446,6 +1419,12 @@
     const blackCornerScore = document.getElementById("blackCornerScore");
     const whiteCornerVal = document.getElementById("whiteCornerVal");
     const blackCornerVal = document.getElementById("blackCornerVal");
+    const whiteCornerName = document.getElementById("whiteCornerName");
+    const blackCornerName = document.getElementById("blackCornerName");
+    const whiteTurnPips = [...document.querySelectorAll("#whiteTurnPips .turnPip")];
+    const blackTurnPips = [...document.querySelectorAll("#blackTurnPips .turnPip")];
+    const whiteCornerTop = document.getElementById("whiteCornerTop");
+    const blackCornerTop = document.getElementById("blackCornerTop");
 
     const liveScoreBtn = document.getElementById("liveScoreBtn");
     const endgameStyleBtn = document.getElementById("endgameStyleBtn");
@@ -1979,8 +1958,15 @@
     }
 
     function canEndTurn(){
-      if(state.gameOver || !state.namesConfirmed) return false;
+      if(state.gameOver || !state.namesConfirmed || state.cpuThinking) return false;
       return currentTurnPlacementCount() >= state.placementsRequired;
+    }
+
+    function cycleTempPlacementColor(owner){
+      const playerDefault = defaultPieceForPlayer(state.currentPlayer);
+      if(owner === playerDefault) return otherColor(playerDefault);
+      if(owner === otherColor(playerDefault)) return null;
+      return playerDefault;
     }
 
     function togglePlacementAt(k){
@@ -1991,8 +1977,14 @@
       if(!baseCell || baseCell.owner) return;
 
       if(state.turnPlacements.has(k)){
-        state.turnPlacements.set(k, otherColor(state.turnPlacements.get(k)));
-        state.lastPlacedKey = k;
+        const next = cycleTempPlacementColor(state.turnPlacements.get(k));
+        if(next){
+          state.turnPlacements.set(k, next);
+          state.lastPlacedKey = k;
+        } else {
+          state.turnPlacements.delete(k);
+          state.lastPlacedKey = null;
+        }
         renderAll();
         return;
       }
@@ -2235,45 +2227,52 @@
       const blackScore = getScoreForOwner(effectiveCells, "black");
       whiteCornerVal.textContent = whiteScore;
       blackCornerVal.textContent = blackScore;
-      whiteCornerScore.style.display = state.teacher.liveScore ? "flex" : "none";
-      blackCornerScore.style.display = state.teacher.liveScore ? "flex" : "none";
+      whiteCornerScore.style.display = state.teacher.liveScore ? "block" : "none";
+      blackCornerScore.style.display = state.teacher.liveScore ? "block" : "none";
     }
 
     function renderNames(){
-      nameOneVal.innerHTML = `<span class="pieceDot white"></span>${state.playerNames[1] || "Player 1"}`;
-      nameTwoVal.innerHTML = `<span class="pieceDot black"></span>${state.mode === "cpu" ? "CPU" : (state.playerNames[2] || "Player 2")}`;
+      whiteCornerName.textContent = state.playerNames[1] || "Player 1";
+      blackCornerName.textContent = state.mode === "cpu" ? "CPU" : (state.playerNames[2] || "Player 2");
+    }
+
+    function setPips(pips, count){
+      pips.forEach((pip, i) => {
+        pip.style.display = i < count ? "block" : "none";
+      });
+    }
+
+    function renderTurnIndicators(){
+      whiteCornerTop.style.display = "none";
+      blackCornerTop.style.display = "none";
+      setPips(whiteTurnPips, 0);
+      setPips(blackTurnPips, 0);
+
+      if(!state.namesConfirmed || state.gameOver) return;
+
+      let activePlayer = state.currentPlayer;
+      let count = 0;
+
+      if(state.cpuThinking && state.currentPlayer === 2){
+        activePlayer = 2;
+        count = state.placementsRequired;
+      } else {
+        count = stonesLeftThisTurn();
+      }
+
+      if(count <= 0) return;
+
+      if(activePlayer === 1){
+        whiteCornerTop.style.display = "flex";
+        setPips(whiteTurnPips, Math.min(2, count));
+      } else if(activePlayer === 2){
+        blackCornerTop.style.display = "flex";
+        setPips(blackTurnPips, Math.min(2, count));
+      }
     }
 
     function renderHud(){
-      if(!state.namesConfirmed){
-        turnPill.innerHTML = `Enter the player names to begin`;
-        endTurnBtn.disabled = true;
-        endTurnBtn.classList.remove("ready");
-        return;
-      }
-
-      if(state.gameOver){
-        turnPill.innerHTML = state.teacher.endgameMode === "scorelab"
-          ? `Board full. Guided score lab opened`
-          : `Board full. Final scores are ready`;
-        endTurnBtn.disabled = true;
-        endTurnBtn.classList.remove("ready");
-        return;
-      }
-
-      if(state.cpuThinking){
-        turnPill.innerHTML = `<span class="turnDot black"></span>${getPlayerName(2)} is thinking`;
-        endTurnBtn.disabled = true;
-        endTurnBtn.classList.remove("ready");
-        return;
-      }
-
-      const left = stonesLeftThisTurn();
-      turnPill.innerHTML = `
-        <span class="turnDot ${state.currentPlayer === 1 ? "white" : "black"}"></span>
-        <span>${getPlayerName(state.currentPlayer)} • ${left} stone${left === 1 ? "" : "s"} left</span>
-      `;
-
+      renderTurnIndicators();
       endTurnBtn.disabled = !canEndTurn();
       endTurnBtn.classList.toggle("ready", canEndTurn());
     }
