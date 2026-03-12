@@ -1230,7 +1230,7 @@
               <div class="subCardTitle">Display</div>
               <div class="teacherGrid">
                 <button id="liveScoreBtn" class="toggleBtn active" type="button">Live Score On</button>
-                <button id="autoEndBtn" class="toggleBtn active" type="button">End Modal On</button>
+                <button id="endgameStyleBtn" class="toggleBtn active" type="button">Final Score Modal</button>
               </div>
 
               <div class="toggleLabel">Teacher tools</div>
@@ -1240,7 +1240,7 @@
               </div>
 
               <p class="small" id="teacherModeHelp" style="margin-top:12px;">
-                Live corner scores are shown by default. The end of game summary modal also opens by default.
+                Live corner scores are shown by default. Choose whether the game ends with the final score modal or the guided score lab.
               </p>
             </div>
           </div>
@@ -1448,7 +1448,7 @@
     const blackCornerVal = document.getElementById("blackCornerVal");
 
     const liveScoreBtn = document.getElementById("liveScoreBtn");
-    const autoEndBtn = document.getElementById("autoEndBtn");
+    const endgameStyleBtn = document.getElementById("endgameStyleBtn");
     const teacherModeHelp = document.getElementById("teacherModeHelp");
 
     const stepsEls = {
@@ -1466,7 +1466,7 @@
     const VIEW_H = 900;
     const CPU_DELAY = 260;
     const DEFAULT_BOARD_ID = "trapezoid";
-    const CUSTOM_BOARD_STORAGE_KEY = "zebraMultiplicationCustomBoardsV3";
+    const CUSTOM_BOARD_STORAGE_KEY = "zebraMultiplicationCustomBoardsV4";
 
     function createSvgEl(name, attrs = {}){
       const el = document.createElementNS(SVG_NS, name);
@@ -1735,7 +1735,7 @@
       },
       teacher: {
         liveScore: true,
-        autoEndModal: true
+        endgameMode: "final"
       },
       turnPlacements: new Map()
     };
@@ -2029,7 +2029,11 @@
       if(isBoardFullMap(state.cells)){
         state.gameOver = true;
         renderAll();
-        if(state.teacher.autoEndModal) openEndModal();
+        if(state.teacher.endgameMode === "scorelab"){
+          startScoreLab();
+        } else {
+          openEndModal();
+        }
         return;
       }
 
@@ -2192,11 +2196,14 @@
 
     function renderTeacherPanel(){
       liveScoreBtn.classList.toggle("active", state.teacher.liveScore);
-      autoEndBtn.classList.toggle("active", state.teacher.autoEndModal);
+      endgameStyleBtn.classList.toggle("active", true);
 
       liveScoreBtn.textContent = state.teacher.liveScore ? "Live Score On" : "Live Score Off";
-      autoEndBtn.textContent = state.teacher.autoEndModal ? "End Modal On" : "End Modal Off";
-      teacherModeHelp.textContent = "Live corner scores are shown by default. The end of game summary modal also opens by default.";
+      endgameStyleBtn.textContent = state.teacher.endgameMode === "final" ? "Final Score Modal" : "Guided Score Lab";
+
+      teacherModeHelp.textContent = state.teacher.endgameMode === "final"
+        ? "Live corner scores are shown by default. The game ends with the final score modal."
+        : "Live corner scores are shown by default. The game ends with the guided score lab.";
     }
 
     function renderSettings(){
@@ -2246,7 +2253,9 @@
       }
 
       if(state.gameOver){
-        turnPill.innerHTML = `Board full. Final scores are ready`;
+        turnPill.innerHTML = state.teacher.endgameMode === "scorelab"
+          ? `Board full. Guided score lab opened`
+          : `Board full. Final scores are ready`;
         endTurnBtn.disabled = true;
         endTurnBtn.classList.remove("ready");
         return;
@@ -3274,9 +3283,10 @@
       renderLiveScore();
     });
 
-    autoEndBtn.addEventListener("click", () => {
-      state.teacher.autoEndModal = !state.teacher.autoEndModal;
+    endgameStyleBtn.addEventListener("click", () => {
+      state.teacher.endgameMode = state.teacher.endgameMode === "final" ? "scorelab" : "final";
       renderTeacherPanel();
+      renderHud();
     });
 
     menuBtn.addEventListener("click", openMenu);
