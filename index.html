@@ -22,7 +22,7 @@
       --black1:#475667;
       --black2:#172330;
       --black3:#070b10;
-      --menuW:min(440px, 92vw);
+      --menuW:min(460px, 92vw);
     }
 
     *{ box-sizing:border-box; }
@@ -64,19 +64,19 @@
       backdrop-filter:blur(10px);
       display:grid;
       place-items:center;
-      transition:transform .12s ease, border-color .18s ease, background .18s ease;
+      transition:transform .12s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
     }
 
     .menuBtn:hover,
     .btn:hover,
-    .pieceBtn:hover,
     .settingBtn:hover,
     .levelBtn:hover,
     .dropdownHeader:hover,
     .boardOption:hover,
     .closeBtn:hover,
     .toggleBtn:hover,
-    .resetCornerBtn:hover{
+    .endTurnBtn:hover,
+    .builderCell:hover{
       transform:translateY(-1px);
       border-color:rgba(255,255,255,.18);
     }
@@ -196,7 +196,8 @@
         radial-gradient(900px 520px at 50% 50%, rgba(255,255,255,.03), transparent 72%);
     }
 
-    .boardShell[data-theme="diamond"]::after{
+    .boardShell[data-theme="diamond"]::after,
+    .boardShell[data-theme="custom"]::after{
       background:
         linear-gradient(135deg, transparent 0 47%, rgba(255,255,255,.035) 47% 50%, transparent 50%),
         linear-gradient(-135deg, transparent 0 47%, rgba(125,177,255,.045) 47% 50%, transparent 50%),
@@ -225,86 +226,41 @@
       z-index:1;
     }
 
-    .sideChooser{
+    .endTurnBtn{
       position:absolute;
       top:18px;
       right:18px;
       z-index:12;
-      width:260px;
-      padding:14px;
-      border-radius:20px;
-      background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
+      width:76px;
+      height:76px;
+      border:none;
+      border-radius:24px;
+      cursor:pointer;
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(16,25,37,.96), rgba(11,18,28,.92));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:var(--shadowSoft);
       backdrop-filter:blur(12px);
-    }
-
-    .sideChooser .label,
-    .panelLabel{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      color:var(--gold);
-      font-weight:900;
-      margin-bottom:10px;
-    }
-
-    .pieceChooser,
-    .modeGrid,
-    .teacherGrid{
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
+      place-items:center;
+      transition:transform .12s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
     }
 
-    .pieceBtn,
-    .settingBtn,
-    .toggleBtn,
-    .levelBtn{
-      border:none;
-      border-radius:16px;
-      padding:14px 12px;
-      cursor:pointer;
-      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--text);
-      box-shadow:var(--shadowSoft);
-      transition:transform .12s ease, border-color .18s ease, background .18s ease;
-      font-size:14px;
-      font-weight:900;
+    .endTurnBtn svg{
+      width:32px;
+      height:32px;
     }
 
-    .pieceBtn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .pieceBtn.active,
-    .settingBtn.active,
-    .levelBtn.active,
-    .boardOption.active,
-    .toggleBtn.active{
+    .endTurnBtn.ready{
       border-color:rgba(255,217,118,.55);
       box-shadow:0 0 0 1px rgba(255,217,118,.22), var(--shadowSoft);
-      background:linear-gradient(180deg, rgba(255,217,118,.12), rgba(255,255,255,.04));
+      background:linear-gradient(180deg, rgba(255,217,118,.14), rgba(255,255,255,.04));
     }
 
-    .pieceDot{
-      width:14px;
-      height:14px;
-      border-radius:50%;
-      border:1px solid rgba(255,255,255,.18);
-      flex:0 0 auto;
-    }
-
-    .pieceDot.white{
-      background: radial-gradient(circle at 32% 28%, var(--white1) 0%, var(--white2) 42%, var(--white3) 100%);
-    }
-
-    .pieceDot.black{
-      background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
+    .endTurnBtn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none !important;
     }
 
     .hud{
@@ -315,11 +271,10 @@
       z-index:10;
       display:flex;
       justify-content:center;
-      max-width:min(90%, 760px);
+      max-width:min(92%, 860px);
     }
 
-    .pill,
-    .resetCornerBtn{
+    .pill{
       padding:12px 16px;
       border-radius:999px;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
@@ -330,76 +285,74 @@
       font-weight:800;
       color:var(--text);
       white-space:nowrap;
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
     .turnDot{
       display:inline-block;
-      width:10px;
-      height:10px;
+      width:14px;
+      height:14px;
       border-radius:50%;
-      margin:0 8px 0 8px;
-      vertical-align:middle;
       border:1px solid rgba(255,255,255,.16);
+      vertical-align:middle;
+      flex:0 0 auto;
     }
 
-    .turnDot.white{
+    .turnDot.white,
+    .cornerStone.white,
+    .pieceDot.white{
       background: radial-gradient(circle at 32% 28%, var(--white1) 0%, var(--white2) 42%, var(--white3) 100%);
     }
 
-    .turnDot.black{
+    .turnDot.black,
+    .cornerStone.black,
+    .pieceDot.black{
       background: radial-gradient(circle at 35% 30%, var(--black1) 0%, var(--black2) 35%, var(--black3) 100%);
     }
 
-    .resetCornerBtn{
+    .cornerScore{
       position:absolute;
-      right:18px;
-      bottom:18px;
       z-index:12;
-      cursor:pointer;
-      min-width:132px;
-      text-align:center;
-      transition:transform .12s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .liveScore{
-      position:absolute;
-      left:18px;
-      bottom:18px;
-      z-index:12;
-      min-width:178px;
-      padding:14px 16px;
-      border-radius:20px;
+      min-width:126px;
+      padding:12px 14px;
+      border-radius:22px;
       background:linear-gradient(180deg, rgba(16,25,37,.94), rgba(11,18,28,.92));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:var(--shadowSoft);
       backdrop-filter:blur(12px);
-      display:none;
-    }
-
-    .liveScore.show{ display:block; }
-
-    .liveScoreRow{
       display:flex;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
-      font-size:13px;
+    }
+
+    .cornerScore.white{
+      left:18px;
+      bottom:18px;
+    }
+
+    .cornerScore.black{
+      right:18px;
+      bottom:18px;
+      justify-content:flex-end;
+    }
+
+    .cornerStone{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 6px 14px rgba(0,0,0,.18);
+      flex:0 0 auto;
+    }
+
+    .cornerValue{
+      font-size:28px;
+      line-height:1;
+      letter-spacing:-.05em;
       font-weight:900;
-      margin-top:8px;
-    }
-
-    .liveScoreRow:first-of-type{ margin-top:0; }
-
-    .liveScoreTag{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .liveScoreVal{
-      color:var(--gold);
-      font-size:16px;
-      letter-spacing:-.03em;
+      color:var(--text);
     }
 
     .nameTag{
@@ -430,29 +383,31 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      font-size:13px;
+      font-size:14px;
       font-weight:900;
     }
 
     .nameRow + .nameRow{ margin-top:8px; }
 
     .nameRowLabel{
-      color:var(--muted);
+      color:var(--text);
       display:flex;
       align-items:center;
       gap:8px;
     }
 
-    .nameRowValue{
-      font-size:14px;
-      font-weight:900;
-      color:var(--text);
-      text-align:right;
+    .pieceDot{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.18);
+      flex:0 0 auto;
     }
 
     .menuBackdrop,
     .modalBackdrop,
-    .nameBackdrop{
+    .nameBackdrop,
+    .builderBackdrop{
       position:fixed;
       inset:0;
       background:rgba(5,8,13,.54);
@@ -465,7 +420,8 @@
 
     .menuBackdrop.show,
     .modalBackdrop.show,
-    .nameBackdrop.show{
+    .nameBackdrop.show,
+    .builderBackdrop.show{
       opacity:1;
       pointer-events:auto;
     }
@@ -530,14 +486,6 @@
       padding:16px;
     }
 
-    .card h3{
-      margin:0 0 10px;
-      font-size:13px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      color:var(--gold);
-    }
-
     .small,
     .card p{
       color:var(--muted);
@@ -585,66 +533,14 @@
       color:var(--muted);
     }
 
-    .dropdown.open .chev{
-      transform:rotate(180deg);
-    }
+    .dropdown.open .chev{ transform:rotate(180deg); }
 
     .dropdownBody{
       display:none;
       gap:10px;
     }
 
-    .dropdown.open > .dropdownBody{
-      display:grid;
-    }
-
-    .boardOption{
-      width:100%;
-      text-align:left;
-      border:none;
-      border-radius:16px;
-      padding:14px;
-      cursor:pointer;
-      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--text);
-      box-shadow:var(--shadowSoft);
-      transition:transform .12s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .boardOption .name{
-      font-size:15px;
-      font-weight:900;
-      margin-bottom:3px;
-    }
-
-    .boardOption .desc{
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.5;
-    }
-
-    .levelGrid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .levelBtn{
-      text-align:left;
-      padding:12px;
-      font-size:13px;
-      line-height:1.35;
-    }
-
-    .levelBtn .sub{
-      display:block;
-      color:var(--muted);
-      font-size:11px;
-      font-weight:700;
-      margin-top:4px;
-    }
+    .dropdown.open > .dropdownBody{ display:grid; }
 
     .subCard{
       border-radius:18px;
@@ -662,6 +558,19 @@
       font-weight:900;
     }
 
+    .modeGrid,
+    .teacherGrid,
+    .levelGrid,
+    .btnRow{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .settingBtn,
+    .toggleBtn,
+    .levelBtn,
+    .boardOption,
     .btn,
     .input{
       width:100%;
@@ -675,11 +584,22 @@
       background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:var(--shadowSoft);
+      transition:transform .12s ease, border-color .18s ease, background .18s ease;
     }
 
-    .btn{
-      cursor:pointer;
-      transition:transform .12s ease, border-color .18s ease;
+    .settingBtn,
+    .toggleBtn,
+    .levelBtn,
+    .boardOption,
+    .btn{ cursor:pointer; }
+
+    .settingBtn.active,
+    .levelBtn.active,
+    .boardOption.active,
+    .toggleBtn.active{
+      border-color:rgba(255,217,118,.55);
+      box-shadow:0 0 0 1px rgba(255,217,118,.22), var(--shadowSoft);
+      background:linear-gradient(180deg, rgba(255,217,118,.12), rgba(255,255,255,.04));
     }
 
     .btn.gold{
@@ -688,10 +608,20 @@
       border-color:#f6de94;
     }
 
-    .btnRow{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
+    .boardOption{
+      text-align:left;
+    }
+
+    .boardOption .name{
+      font-size:15px;
+      font-weight:900;
+      margin-bottom:3px;
+    }
+
+    .boardOption .desc{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
     }
 
     .toggleLabel{
@@ -704,7 +634,9 @@
       text-transform:uppercase;
     }
 
-    .modal{
+    .modal,
+    .builderModal,
+    .nameModal{
       position:fixed;
       inset:0;
       display:grid;
@@ -713,10 +645,13 @@
       pointer-events:none;
     }
 
-    .modal.show{ pointer-events:auto; }
+    .modal.show,
+    .builderModal.show,
+    .nameModal.show{ pointer-events:auto; }
 
-    .modalCard{
-      width:min(820px, 92vw);
+    .modalCard,
+    .builderCard{
+      width:min(860px, 92vw);
       max-height:min(90vh, 950px);
       overflow:auto;
       border-radius:28px;
@@ -729,21 +664,7 @@
       transition:opacity .18s ease, transform .18s ease;
     }
 
-    .modal.show .modalCard{
-      opacity:1;
-      transform:translateY(0) scale(1);
-    }
-
-    .nameModal{
-      position:fixed;
-      inset:0;
-      display:grid;
-      place-items:center;
-      z-index:60;
-      pointer-events:none;
-    }
-
-    .nameModal.show{ pointer-events:auto; }
+    .builderCard{ width:min(980px, 94vw); }
 
     .nameModalCard{
       width:min(620px, 92vw);
@@ -760,6 +681,8 @@
       transition:opacity .18s ease, transform .18s ease;
     }
 
+    .modal.show .modalCard,
+    .builderModal.show .builderCard,
     .nameModal.show .nameModalCard{
       opacity:1;
       transform:translateY(0) scale(1);
@@ -779,6 +702,13 @@
       font-size:32px;
       line-height:1.05;
       letter-spacing:-.05em;
+    }
+
+    .modalText{
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+      margin-bottom:16px;
     }
 
     .nameGrid{
@@ -829,7 +759,9 @@
       display:block;
     }
 
-    .questionCard{
+    .questionCard,
+    .winnerCard,
+    .breakdownCard{
       border-radius:22px;
       border:1px solid rgba(255,255,255,.08);
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
@@ -837,17 +769,12 @@
       margin-bottom:14px;
     }
 
-    .questionCard h4{
-      margin:0 0 6px;
-      font-size:20px;
+    .questionCard h4,
+    .winnerCard h4,
+    .breakdownCard h4{
+      margin:0 0 8px;
+      font-size:22px;
       letter-spacing:-.03em;
-    }
-
-    .modalText{
-      color:var(--muted);
-      line-height:1.65;
-      font-size:15px;
-      margin-bottom:16px;
     }
 
     .feedback{
@@ -896,9 +823,7 @@
       border:1px solid rgba(255,255,255,.08);
     }
 
-    .prodSymbol{
-      background:rgba(255,255,255,.03);
-    }
+    .prodSymbol{ background:rgba(255,255,255,.03); }
 
     .prodResult{
       border-color:rgba(255,217,118,.35);
@@ -941,6 +866,113 @@
       letter-spacing:-.05em;
     }
 
+    .endGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:14px;
+      margin-bottom:14px;
+    }
+
+    .endBox{
+      border-radius:24px;
+      padding:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .endHead{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+      font-size:14px;
+      font-weight:900;
+      color:var(--muted);
+    }
+
+    .endScoreVal{
+      font-size:42px;
+      font-weight:900;
+      letter-spacing:-.06em;
+      margin-bottom:12px;
+    }
+
+    .breakdownLine{
+      font-size:14px;
+      color:var(--text);
+      margin-top:8px;
+      line-height:1.6;
+    }
+
+    .builderLayout{
+      display:grid;
+      grid-template-columns:minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .builderCanvasWrap{
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      min-height:540px;
+    }
+
+    #builderSvg{
+      width:100%;
+      height:540px;
+      display:block;
+    }
+
+    .builderCell{
+      cursor:pointer;
+      transition:opacity .12s ease, transform .12s ease;
+    }
+
+    .builderCell polygon{
+      fill:rgba(255,255,255,.028);
+      stroke:rgba(255,255,255,.16);
+      stroke-width:1.6;
+    }
+
+    .builderCell.on polygon{
+      fill:rgba(255,217,118,.14);
+      stroke:rgba(255,217,118,.72);
+    }
+
+    .builderCell text{
+      fill:rgba(255,255,255,.34);
+      font-size:11px;
+      font-weight:800;
+      pointer-events:none;
+      user-select:none;
+    }
+
+    .builderMeta{
+      display:grid;
+      gap:14px;
+    }
+
+    .builderCount{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    .builderHelper{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.65;
+    }
+
+    .builderList{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+    }
+
     .cell{
       cursor:pointer;
       transition:filter .12s ease;
@@ -972,6 +1004,26 @@
       stroke:rgba(124,138,156,.56);
     }
 
+    .cell.tempWhite .hex-base{
+      fill:rgba(240,247,255,.12);
+      stroke:rgba(255,255,255,.96);
+      filter:drop-shadow(0 0 12px rgba(255,255,255,.18));
+    }
+
+    .cell.tempBlack .hex-base{
+      fill:rgba(48,63,82,.42);
+      stroke:rgba(180,198,220,.85);
+      filter:drop-shadow(0 0 12px rgba(110,144,180,.18));
+    }
+
+    .empty-hint{
+      opacity:0;
+      transition:opacity .12s ease;
+      pointer-events:none;
+    }
+
+    .cell.empty:hover .empty-hint{ opacity:1; }
+
     .piece{
       pointer-events:none;
       transform-origin:center;
@@ -986,14 +1038,6 @@
       0%{ opacity:0; transform:scale(.45); }
       100%{ opacity:1; transform:scale(1); }
     }
-
-    .empty-hint{
-      opacity:0;
-      transition:opacity .12s ease;
-      pointer-events:none;
-    }
-
-    .cell.empty:hover .empty-hint{ opacity:1; }
 
     .scoreHighlight .hex-base{
       fill:rgba(255,255,255,.05);
@@ -1023,9 +1067,7 @@
       opacity:.18;
     }
 
-    .scorePiece{
-      pointer-events:none;
-    }
+    .scorePiece{ pointer-events:none; }
 
     @media (max-width: 980px){
       .boardShell{
@@ -1036,23 +1078,20 @@
 
       .stage{ padding:10px; }
 
-      .sideChooser{
-        top:14px;
-        right:14px;
-        width:226px;
-        padding:12px;
-      }
-
       .hud{
-        left:210px;
-        right:152px;
+        left:50%;
+        right:auto;
         bottom:12px;
-        transform:none;
-        justify-content:center;
+        transform:translateX(-50%);
       }
 
-      .liveScore{
+      .cornerScore.white{
         left:12px;
+        bottom:12px;
+      }
+
+      .cornerScore.black{
+        right:12px;
         bottom:12px;
       }
 
@@ -1062,40 +1101,32 @@
         min-width:220px;
       }
 
-      .resetCornerBtn{
+      .endTurnBtn{
+        top:12px;
         right:12px;
-        bottom:12px;
       }
 
       .winnerSummary,
-      .nameGrid{
+      .nameGrid,
+      .endGrid,
+      .builderLayout{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width: 700px){
-      .sideChooser{
-        width:182px;
+      .cornerScore{
+        min-width:100px;
+        padding:10px 12px;
       }
 
-      .pieceBtn,
-      .settingBtn,
-      .toggleBtn{
-        padding:12px 10px;
-        font-size:13px;
-      }
+      .cornerValue{ font-size:24px; }
+      .nameTag{ min-width:176px; }
 
-      .resetCornerBtn{
-        min-width:110px;
-        padding:11px 14px;
-      }
-
-      .liveScore{
-        min-width:150px;
-      }
-
-      .nameTag{
-        min-width:180px;
+      .pill{
+        font-size:12px;
+        gap:8px;
+        padding:10px 12px;
       }
     }
   </style>
@@ -1109,52 +1140,42 @@
     </button>
 
     <div class="stage">
-      <div id="boardShell" class="boardShell" data-theme="path">
+      <div id="boardShell" class="boardShell" data-theme="trapezoid">
         <svg id="boardSvg" viewBox="0 0 1400 900" aria-label="Zebra Multiplication board"></svg>
 
         <div id="nameTag" class="nameTag">
           <div class="nameTagTitle">Players</div>
           <div class="nameRow">
-            <div class="nameRowLabel"><span class="pieceDot white"></span>Player 1</div>
-            <div id="nameOneVal" class="nameRowValue">Player 1</div>
+            <div id="nameOneVal" class="nameRowLabel"><span class="pieceDot white"></span>Player 1</div>
           </div>
           <div class="nameRow">
-            <div class="nameRowLabel"><span class="pieceDot black"></span>Player 2</div>
-            <div id="nameTwoVal" class="nameRowValue">Player 2</div>
+            <div id="nameTwoVal" class="nameRowLabel"><span class="pieceDot black"></span>Player 2</div>
           </div>
         </div>
 
-        <div class="sideChooser">
-          <div class="label">Choose Piece</div>
-          <div class="pieceChooser">
-            <button id="chooseWhiteBtn" class="pieceBtn active" type="button">
-              <span class="pieceDot white"></span>
-              White
-            </button>
-            <button id="chooseBlackBtn" class="pieceBtn" type="button">
-              <span class="pieceDot black"></span>
-              Black
-            </button>
-          </div>
+        <button id="endTurnBtn" class="endTurnBtn" type="button" aria-label="End turn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h11"></path>
+            <path d="M12 6l6 6-6 6"></path>
+          </svg>
+        </button>
+
+        <div id="whiteCornerScore" class="cornerScore white">
+          <span class="cornerStone white"></span>
+          <span id="whiteCornerVal" class="cornerValue">0</span>
         </div>
 
-        <div id="liveScorePanel" class="liveScore">
-          <div class="panelLabel">Live Score</div>
-          <div class="liveScoreRow">
-            <div class="liveScoreTag"><span class="pieceDot white"></span>White</div>
-            <div id="liveWhiteVal" class="liveScoreVal">0</div>
-          </div>
-          <div class="liveScoreRow">
-            <div class="liveScoreTag"><span class="pieceDot black"></span>Black</div>
-            <div id="liveBlackVal" class="liveScoreVal">0</div>
-          </div>
+        <div id="blackCornerScore" class="cornerScore black">
+          <span id="blackCornerVal" class="cornerValue">0</span>
+          <span class="cornerStone black"></span>
         </div>
 
         <div class="hud">
-          <div id="turnPill" class="pill"><span class="turnDot white"></span>Player 1 choosing White</div>
+          <div id="turnPill" class="pill">
+            <span class="turnDot white"></span>
+            Waiting to start
+          </div>
         </div>
-
-        <button id="mainResetBtn" class="resetCornerBtn" type="button">Reset Game</button>
       </div>
     </div>
   </div>
@@ -1196,8 +1217,8 @@
               <div id="boardDropdown" class="dropdown">
                 <button id="boardDropdownHeader" class="dropdownHeader" type="button">
                   <span>
-                    <span id="boardDropdownTitle">Board</span>
-                    <span id="boardDropdownSub" class="sub">Select a board</span>
+                    <span id="boardDropdownTitle">Game Boards</span>
+                    <span id="boardDropdownSub" class="sub">Trapezoid (21 cells)</span>
                   </span>
                   <span class="chev">⌄</span>
                 </button>
@@ -1206,19 +1227,20 @@
             </div>
 
             <div class="subCard">
-              <div class="subCardTitle">Scoring</div>
+              <div class="subCardTitle">Display</div>
               <div class="teacherGrid">
                 <button id="liveScoreBtn" class="toggleBtn active" type="button">Live Score On</button>
-                <button id="autoOpenBtn" class="toggleBtn active" type="button">Auto Score Lab On</button>
+                <button id="autoEndBtn" class="toggleBtn active" type="button">End Modal On</button>
               </div>
 
-              <div class="toggleLabel">Display</div>
-              <div class="teacherGrid">
-                <button id="bonusModeBtn" class="toggleBtn" type="button">Connect 4 Mode Off</button>
+              <div class="toggleLabel">Teacher tools</div>
+              <div class="btnRow">
+                <button id="openScoreBtn" class="btn" type="button">Open Score Lab</button>
+                <button id="openBuilderBtn" class="btn" type="button">Create Board</button>
               </div>
 
               <p class="small" id="teacherModeHelp" style="margin-top:12px;">
-                Classic mode uses the normal zebra rules.
+                Live corner scores are shown by default. The end of game summary modal also opens by default.
               </p>
             </div>
           </div>
@@ -1230,15 +1252,15 @@
           <button id="controlsDropdownHeader" class="dropdownHeader" type="button">
             <span>
               <span>Game Controls</span>
-              <span class="sub">Reset and score tools</span>
+              <span class="sub">Reset and board tools</span>
             </span>
             <span class="chev">⌄</span>
           </button>
 
           <div class="dropdownBody">
             <div class="btnRow">
-              <button id="resetBtn" class="btn" type="button">Reset Board</button>
-              <button id="openScoreBtn" class="btn" type="button">Open Score Lab</button>
+              <button id="resetBtn" class="btn" type="button">Restart Game</button>
+              <button id="changeBoardBtn" class="btn" type="button">Boards</button>
             </div>
           </div>
         </div>
@@ -1276,13 +1298,70 @@
     </div>
   </div>
 
+  <div id="endBackdrop" class="modalBackdrop"></div>
+  <div id="endModal" class="modal" aria-hidden="true">
+    <div class="modalCard">
+      <div class="modalMini">Game Over</div>
+      <h2 class="modalTitle">Final Scores</h2>
+      <div id="endModalContent"></div>
+      <div class="modalActions">
+        <button id="endRestartBtn" class="btn gold" type="button">Restart Game</button>
+        <button id="endBoardsBtn" class="btn" type="button">Choose Board</button>
+        <button id="endCloseBtn" class="btn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="builderBackdrop" class="builderBackdrop"></div>
+  <div id="builderModal" class="builderModal" aria-hidden="true">
+    <div class="builderCard">
+      <div class="modalMini">Create Your Own Board</div>
+      <h2 class="modalTitle">Build a custom puzzle</h2>
+      <div class="modalText">
+        Click hexes to add or remove them. Give the board a name, save it, and it will stay in local storage for later.
+      </div>
+
+      <div class="builderLayout">
+        <div class="builderCanvasWrap">
+          <svg id="builderSvg" viewBox="0 0 980 540" aria-label="Board builder"></svg>
+        </div>
+
+        <div class="builderMeta">
+          <div class="subCard">
+            <div class="subCardTitle">Board name</div>
+            <input id="builderNameInput" class="input" type="text" maxlength="32" placeholder="My zebra board" />
+            <div id="builderCount" class="builderCount" style="margin-top:10px;">0 cells selected</div>
+          </div>
+
+          <div class="subCard">
+            <div class="subCardTitle">Tips</div>
+            <div class="builderHelper">
+              A board needs at least 3 cells to save. You can reopen this builder anytime and make more custom boards.
+            </div>
+          </div>
+
+          <div class="subCard">
+            <div class="subCardTitle">Your custom boards</div>
+            <div id="builderSavedList" class="builderList"></div>
+          </div>
+
+          <div class="modalActions" style="margin-top:0;">
+            <button id="builderSaveBtn" class="btn gold" type="button">Save and Play</button>
+            <button id="builderClearBtn" class="btn" type="button">Clear</button>
+            <button id="builderCloseBtn" class="btn" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="nameBackdrop" class="nameBackdrop"></div>
   <div id="nameModal" class="nameModal" aria-hidden="true">
     <div class="nameModalCard">
       <div class="modalMini">New Match</div>
       <h2 class="modalTitle">Enter the player names</h2>
       <div class="modalText">
-        Set the names once, then the turn bar will show the name instead of Player 1 or Player 2.
+        Set the names once, then the board will show their names during the whole match.
       </div>
 
       <div class="nameGrid">
@@ -1302,6 +1381,7 @@
     const boardShell = document.getElementById("boardShell");
     const boardSvg = document.getElementById("boardSvg");
     const turnPill = document.getElementById("turnPill");
+    const endTurnBtn = document.getElementById("endTurnBtn");
 
     const menuBtn = document.getElementById("menuBtn");
     const closeMenuBtn = document.getElementById("closeMenuBtn");
@@ -1325,7 +1405,23 @@
     const scoreSvg = document.getElementById("scoreSvg");
     const scoreNextBtn = document.getElementById("scoreNextBtn");
     const scoreCancelBtn = document.getElementById("scoreCancelBtn");
-    const openScoreBtn = document.getElementById("openScoreBtn");
+
+    const endBackdrop = document.getElementById("endBackdrop");
+    const endModal = document.getElementById("endModal");
+    const endModalContent = document.getElementById("endModalContent");
+    const endRestartBtn = document.getElementById("endRestartBtn");
+    const endBoardsBtn = document.getElementById("endBoardsBtn");
+    const endCloseBtn = document.getElementById("endCloseBtn");
+
+    const builderBackdrop = document.getElementById("builderBackdrop");
+    const builderModal = document.getElementById("builderModal");
+    const builderSvg = document.getElementById("builderSvg");
+    const builderNameInput = document.getElementById("builderNameInput");
+    const builderCount = document.getElementById("builderCount");
+    const builderSaveBtn = document.getElementById("builderSaveBtn");
+    const builderClearBtn = document.getElementById("builderClearBtn");
+    const builderCloseBtn = document.getElementById("builderCloseBtn");
+    const builderSavedList = document.getElementById("builderSavedList");
 
     const nameBackdrop = document.getElementById("nameBackdrop");
     const nameModal = document.getElementById("nameModal");
@@ -1335,11 +1431,10 @@
     const nameOneVal = document.getElementById("nameOneVal");
     const nameTwoVal = document.getElementById("nameTwoVal");
 
-    const chooseWhiteBtn = document.getElementById("chooseWhiteBtn");
-    const chooseBlackBtn = document.getElementById("chooseBlackBtn");
-
-    const mainResetBtn = document.getElementById("mainResetBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const changeBoardBtn = document.getElementById("changeBoardBtn");
+    const openScoreBtn = document.getElementById("openScoreBtn");
+    const openBuilderBtn = document.getElementById("openBuilderBtn");
 
     const modeTwoBtn = document.getElementById("modeTwoBtn");
     const modeCpuBtn = document.getElementById("modeCpuBtn");
@@ -1347,13 +1442,13 @@
     const modeText = document.getElementById("modeText");
     const levelGrid = document.getElementById("levelGrid");
 
-    const liveScorePanel = document.getElementById("liveScorePanel");
-    const liveWhiteVal = document.getElementById("liveWhiteVal");
-    const liveBlackVal = document.getElementById("liveBlackVal");
+    const whiteCornerScore = document.getElementById("whiteCornerScore");
+    const blackCornerScore = document.getElementById("blackCornerScore");
+    const whiteCornerVal = document.getElementById("whiteCornerVal");
+    const blackCornerVal = document.getElementById("blackCornerVal");
 
     const liveScoreBtn = document.getElementById("liveScoreBtn");
-    const autoOpenBtn = document.getElementById("autoOpenBtn");
-    const bonusModeBtn = document.getElementById("bonusModeBtn");
+    const autoEndBtn = document.getElementById("autoEndBtn");
     const teacherModeHelp = document.getElementById("teacherModeHelp");
 
     const stepsEls = {
@@ -1370,6 +1465,8 @@
     const VIEW_W = 1400;
     const VIEW_H = 900;
     const CPU_DELAY = 260;
+    const DEFAULT_BOARD_ID = "trapezoid";
+    const CUSTOM_BOARD_STORAGE_KEY = "zebraMultiplicationCustomBoardsV3";
 
     function createSvgEl(name, attrs = {}){
       const el = document.createElementNS(SVG_NS, name);
@@ -1468,7 +1565,7 @@
       return uniqueCoords(coords).sort((a,b) => a.r - b.r || a.q - b.q);
     }
 
-    const boards = [
+    const baseBoards = [
       {
         id:"path",
         name:"Path",
@@ -1514,7 +1611,7 @@
       {
         id:"trapezoid",
         name:"Trapezoid",
-        description:"Compact and balanced with sturdy edges.",
+        description:"Balanced 21 cell board with strong strategic depth.",
         theme:"trapezoid",
         coords: cleanBoard(rowsToCoords([3,4,5,5,4]))
       },
@@ -1605,23 +1702,23 @@
     ].sort((a,b) => a.coords.length - b.coords.length || a.name.localeCompare(b.name));
 
     const cpuLevels = [
-      { id:1, name:"Level 1", label:"Wanderer", depth:0, beam:6, noise:1.75, switchChance:.36, selfish:0.45, tactical:0.25, center:0.8 },
-      { id:2, name:"Level 2", label:"Scout", depth:0, beam:8, noise:1.20, switchChance:.28, selfish:0.60, tactical:0.35, center:0.8 },
-      { id:3, name:"Level 3", label:"Reader", depth:1, beam:8, noise:.75, switchChance:.20, selfish:0.80, tactical:0.55, center:0.65 },
-      { id:4, name:"Level 4", label:"Builder", depth:1, beam:10, noise:.42, switchChance:.14, selfish:1.00, tactical:0.80, center:0.55 },
-      { id:5, name:"Level 5", label:"Hunter", depth:2, beam:8, noise:.20, switchChance:.10, selfish:1.15, tactical:1.10, center:0.45 },
-      { id:6, name:"Level 6", label:"Strategist", depth:2, beam:10, noise:.10, switchChance:.07, selfish:1.25, tactical:1.35, center:0.35 },
-      { id:7, name:"Level 7", label:"Sage", depth:2, beam:12, noise:.04, switchChance:.04, selfish:1.40, tactical:1.70, center:0.28 },
-      { id:8, name:"Level 8", label:"Grandmaster", depth:3, beam:10, noise:0, switchChance:.02, selfish:1.55, tactical:2.05, center:0.20 }
+      { id:1, name:"Level 1", label:"Wanderer", depth:0, beam:6, noise:1.90, switchChance:.40, selfish:0.42, tactical:0.22, center:0.95 },
+      { id:2, name:"Level 2", label:"Scout", depth:0, beam:8, noise:1.25, switchChance:.30, selfish:0.58, tactical:0.34, center:0.86 },
+      { id:3, name:"Level 3", label:"Reader", depth:1, beam:10, noise:.72, switchChance:.18, selfish:0.82, tactical:0.62, center:0.70 },
+      { id:4, name:"Level 4", label:"Builder", depth:1, beam:14, noise:.36, switchChance:.12, selfish:1.00, tactical:0.95, center:0.56 },
+      { id:5, name:"Level 5", label:"Hunter", depth:2, beam:16, noise:.16, switchChance:.08, selfish:1.16, tactical:1.28, center:0.42 },
+      { id:6, name:"Level 6", label:"Strategist", depth:2, beam:22, noise:.06, switchChance:.05, selfish:1.30, tactical:1.70, center:0.30 },
+      { id:7, name:"Level 7", label:"Sage", depth:3, beam:18, noise:.02, switchChance:.02, selfish:1.45, tactical:2.10, center:0.22 },
+      { id:8, name:"Level 8", label:"Grandmaster", depth:4, beam:20, noise:0, switchChance:0, selfish:1.65, tactical:2.55, center:0.15 }
     ];
 
     let cpuTimeout = null;
+    let builderSelection = new Set();
 
     let state = {
-      currentBoardId: boards[0].id,
+      currentBoardId: DEFAULT_BOARD_ID,
       cells: new Map(),
       currentPlayer: 1,
-      selectedPiece: "white",
       moveNumber: 1,
       history: [],
       gameOver: false,
@@ -1630,29 +1727,54 @@
       mode: "two",
       cpuLevel: 4,
       cpuThinking: false,
-      bonusTurn: false,
       namesConfirmed: false,
+      placementsRequired: 1,
       playerNames: {
         1: "Player 1",
         2: "Player 2"
       },
       teacher: {
         liveScore: true,
-        autoOpenScoreLab: true,
-        bonusMode: "classic"
-      }
+        autoEndModal: true
+      },
+      turnPlacements: new Map()
     };
 
-    function defaultPieceForPlayer(player){
-      return player === 1 ? "white" : "black";
+    function loadCustomBoards(){
+      try{
+        const raw = localStorage.getItem(CUSTOM_BOARD_STORAGE_KEY);
+        if(!raw) return [];
+        const parsed = JSON.parse(raw);
+        if(!Array.isArray(parsed)) return [];
+        return parsed
+          .filter(b => b && b.id && b.name && Array.isArray(b.coords) && b.coords.length)
+          .map(b => ({
+            id:String(b.id),
+            name:String(b.name),
+            description:`Custom board with ${b.coords.length} cells.`,
+            theme:"custom",
+            custom:true,
+            coords: cleanBoard(b.coords.map(c => ({ q:Number(c.q), r:Number(c.r) })))
+          }));
+      } catch(err){
+        return [];
+      }
     }
 
-    function otherColor(owner){
-      return owner === "white" ? "black" : "white";
+    function saveCustomBoards(boards){
+      localStorage.setItem(CUSTOM_BOARD_STORAGE_KEY, JSON.stringify(boards.map(b => ({
+        id:b.id,
+        name:b.name,
+        coords:b.coords
+      }))));
+    }
+
+    function getAllBoards(){
+      return [...baseBoards, ...loadCustomBoards()].sort((a,b) => a.coords.length - b.coords.length || a.name.localeCompare(b.name));
     }
 
     function getBoardById(id){
-      return boards.find(b => b.id === id) || boards[0];
+      return getAllBoards().find(b => b.id === id) || getAllBoards().find(b => b.id === DEFAULT_BOARD_ID) || getAllBoards()[0];
     }
 
     function getCpuLevel(){
@@ -1662,6 +1784,14 @@
     function getPlayerName(player){
       if(state.mode === "cpu" && player === 2) return "CPU";
       return state.playerNames[player] || `Player ${player}`;
+    }
+
+    function defaultPieceForPlayer(player){
+      return player === 1 ? "white" : "black";
+    }
+
+    function otherColor(owner){
+      return owner === "white" ? "black" : "white";
     }
 
     function cloneBoardCells(board){
@@ -1676,6 +1806,16 @@
       const out = new Map();
       for(const [k, cell] of cells){
         out.set(k, { q:cell.q, r:cell.r, owner:cell.owner });
+      }
+      return out;
+    }
+
+    function getEffectiveCells(baseCells = state.cells, turnPlacements = state.turnPlacements){
+      const out = cloneCellsMap(baseCells);
+      for(const [k, owner] of turnPlacements){
+        if(out.has(k)){
+          out.get(k).owner = owner;
+        }
       }
       return out;
     }
@@ -1699,27 +1839,6 @@
       return out;
     }
 
-    function getGroupContainingCell(cellsMap, startKey, owner){
-      const start = cellsMap.get(startKey);
-      if(!start || start.owner !== owner) return [];
-      const stack = [start];
-      const visited = new Set([startKey]);
-      const group = [];
-
-      while(stack.length){
-        const cur = stack.pop();
-        group.push(cur);
-        for(const n of getNeighborsFromMap(cellsMap, cur)){
-          const nk = key(n.q, n.r);
-          if(n.owner === owner && !visited.has(nk)){
-            visited.add(nk);
-            stack.push(n);
-          }
-        }
-      }
-      return group;
-    }
-
     function getGroupsFromMap(cellsMap, owner){
       const visited = new Set();
       const groups = [];
@@ -1741,7 +1860,7 @@
             }
           }
         }
-        groups.push(group);
+        groups.push(group.sort((a,b) => a.r - b.r || a.q - b.q));
       }
 
       groups.sort((a,b) => b.length - a.length);
@@ -1749,17 +1868,12 @@
     }
 
     function getGroups(owner){
-      return getGroupsFromMap(state.cells, owner).map(group => group.sort((a,b) => a.r - b.r || a.q - b.q));
+      return getGroupsFromMap(getEffectiveCells(), owner);
     }
 
     function multiplyStepwiseNumbers(numbers){
       if(!numbers.length) return { steps: [], result: 0 };
-      if(numbers.length === 1) {
-        return {
-          steps: [{ left: numbers[0], right: 0, result: 0 }],
-          result: 0
-        };
-      }
+      if(numbers.length === 1) return { steps: [], result: numbers[0] };
 
       const steps = [];
       let running = numbers[0];
@@ -1774,16 +1888,10 @@
 
     function formatProductChips(numbers, result){
       if(!numbers.length){
-        return `<span class="prodResult">${result}</span>`;
+        return `<span class="prodResult">0</span>`;
       }
       if(numbers.length === 1){
-        return `
-          <span class="prodFactor">${numbers[0]}</span>
-          <span class="prodSymbol">×</span>
-          <span class="prodFactor">0</span>
-          <span class="prodSymbol">=</span>
-          <span class="prodResult">${result}</span>
-        `;
+        return `<span class="prodFactor">${numbers[0]}</span><span class="prodSymbol">=</span><span class="prodResult">${result}</span>`;
       }
       return `
         ${numbers.map((n, i) => `${i ? '<span class="prodSymbol">×</span>' : ''}<span class="prodFactor">${n}</span>`).join("")}
@@ -1798,18 +1906,31 @@
       return multiplyStepwiseNumbers(sizes).result;
     }
 
-    function filledCountMap(cellsMap){
+    function emptyCellCount(cellsMap = state.cells){
       let count = 0;
-      for(const [, cell] of cellsMap) if(cell.owner) count++;
+      for(const [,cell] of cellsMap){
+        if(!cell.owner) count++;
+      }
       return count;
     }
 
     function isBoardFullMap(cellsMap){
-      return filledCountMap(cellsMap) === cellsMap.size;
+      return emptyCellCount(cellsMap) === 0;
     }
 
     function isBoardFull(){
-      return isBoardFullMap(state.cells);
+      return isBoardFullMap(getEffectiveCells());
+    }
+
+    function computeTurnRequirementFromBase(baseCells){
+      if(state.history.length === 0) return 1;
+      return Math.min(2, Math.max(1, emptyCellCount(baseCells)));
+    }
+
+    function beginTurn(player){
+      state.currentPlayer = player;
+      state.turnPlacements = new Map();
+      state.placementsRequired = computeTurnRequirementFromBase(state.cells);
     }
 
     function cancelCpuTurn(){
@@ -1825,15 +1946,14 @@
       const board = getBoardById(boardId);
       state.currentBoardId = board.id;
       state.cells = cloneBoardCells(board);
-      state.currentPlayer = 1;
-      state.selectedPiece = defaultPieceForPlayer(1);
       state.moveNumber = 1;
       state.history = [];
       state.gameOver = false;
       state.scoreLab = null;
       state.lastPlacedKey = null;
-      state.bonusTurn = false;
       closeScoreModal();
+      closeEndModal();
+      beginTurn(1);
       renderAll();
     }
 
@@ -1850,90 +1970,76 @@
       renderSettings();
     }
 
-    function setSelectedPiece(piece){
-      if(state.cpuThinking) return;
+    function currentTurnPlacementCount(){
+      return state.turnPlacements.size;
+    }
+
+    function stonesLeftThisTurn(){
+      return Math.max(0, state.placementsRequired - currentTurnPlacementCount());
+    }
+
+    function canEndTurn(){
+      if(state.gameOver || !state.namesConfirmed) return false;
+      return currentTurnPlacementCount() >= state.placementsRequired;
+    }
+
+    function togglePlacementAt(k){
+      if(state.gameOver || state.cpuThinking || !state.namesConfirmed) return;
       if(state.mode === "cpu" && state.currentPlayer === 2) return;
-      state.selectedPiece = piece;
-      renderPieceChooser();
-      renderHud();
-    }
 
-    function shouldAwardBonusTurn(lastKey, owner){
-      if(state.teacher.bonusMode !== "connect4") return false;
-      const group = getGroupContainingCell(state.cells, lastKey, owner);
-      return group.length === 4;
-    }
+      const baseCell = state.cells.get(k);
+      if(!baseCell || baseCell.owner) return;
 
-    function finishTurnAfterPlacement(lastKey, placedOwner){
-      state.bonusTurn = false;
-
-      if(shouldAwardBonusTurn(lastKey, placedOwner) && !isBoardFull()){
-        state.bonusTurn = true;
-        state.selectedPiece = defaultPieceForPlayer(state.currentPlayer);
+      if(state.turnPlacements.has(k)){
+        state.turnPlacements.set(k, otherColor(state.turnPlacements.get(k)));
+        state.lastPlacedKey = k;
         renderAll();
-        if(state.mode === "cpu" && state.currentPlayer === 2){
-          requestCpuMove();
-        }
         return;
       }
 
-      if(isBoardFull()){
+      if(currentTurnPlacementCount() >= state.placementsRequired) return;
+
+      state.turnPlacements.set(k, defaultPieceForPlayer(state.currentPlayer));
+      state.lastPlacedKey = k;
+      renderAll();
+    }
+
+    function commitTurnPlacements(){
+      for(const [k, owner] of state.turnPlacements){
+        const cell = state.cells.get(k);
+        if(!cell || cell.owner) continue;
+        cell.owner = owner;
+        state.history.push({
+          move: state.moveNumber,
+          player: state.currentPlayer,
+          piece: owner,
+          q: cell.q,
+          r: cell.r
+        });
+        state.moveNumber++;
+      }
+      state.turnPlacements = new Map();
+    }
+
+    function finishTurn(){
+      if(!canEndTurn()) return;
+
+      commitTurnPlacements();
+
+      if(isBoardFullMap(state.cells)){
         state.gameOver = true;
         renderAll();
-        if(state.teacher.autoOpenScoreLab){
-          startScoreLab();
-        }
+        if(state.teacher.autoEndModal) openEndModal();
         return;
       }
 
-      state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
-      state.selectedPiece = defaultPieceForPlayer(state.currentPlayer);
+      const nextPlayer = state.currentPlayer === 1 ? 2 : 1;
+      beginTurn(nextPlayer);
       renderAll();
 
       if(state.mode === "cpu" && state.currentPlayer === 2){
         requestCpuMove();
       }
-    }
-
-    function placePiece(k){
-      if(state.gameOver || state.cpuThinking || !state.namesConfirmed) return;
-      if(state.mode === "cpu" && state.currentPlayer === 2) return;
-
-      const cell = state.cells.get(k);
-      if(!cell || cell.owner) return;
-
-      cell.owner = state.selectedPiece;
-      state.lastPlacedKey = k;
-      state.history.push({
-        move: state.moveNumber,
-        player: state.currentPlayer,
-        piece: state.selectedPiece,
-        q: cell.q,
-        r: cell.r
-      });
-
-      state.moveNumber++;
-      finishTurnAfterPlacement(k, state.selectedPiece);
-    }
-
-    function placeCpuPiece(k, piece){
-      if(state.gameOver) return;
-      const cell = state.cells.get(k);
-      if(!cell || cell.owner) return;
-
-      cell.owner = piece;
-      state.lastPlacedKey = k;
-      state.history.push({
-        move: state.moveNumber,
-        player: 2,
-        piece,
-        q: cell.q,
-        r: cell.r
-      });
-
-      state.moveNumber++;
-      state.cpuThinking = false;
-      finishTurnAfterPlacement(k, piece);
     }
 
     function injectDefs(svg){
@@ -1954,61 +2060,6 @@
       svg.appendChild(defs);
     }
 
-    function renderBoardTheme(){
-      const board = getBoardById(state.currentBoardId);
-      boardShell.dataset.theme = board.theme || board.id;
-    }
-
-    function renderBoard(){
-      boardSvg.innerHTML = "";
-      injectDefs(boardSvg);
-
-      const coords = [...state.cells.values()];
-      const bounds = computeBounds(coords);
-      const boardW = (bounds.maxX - bounds.minX) + HEX_SIZE * 2.6;
-      const boardH = (bounds.maxY - bounds.minY) + HEX_SIZE * 2.8;
-      const scale = Math.min((VIEW_W - 120) / boardW, (VIEW_H - 120) / boardH, 1.62);
-
-      const gMain = createSvgEl("g", {
-        transform:`translate(${VIEW_W/2},${VIEW_H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
-      });
-
-      boardSvg.appendChild(gMain);
-
-      coords.sort((a,b) => a.r - b.r || a.q - b.q).forEach(cell => {
-        const { x, y } = axialToPixel(cell.q, cell.r);
-
-        const disabled = state.gameOver || cell.owner || state.cpuThinking || !state.namesConfirmed || (state.mode === "cpu" && state.currentPlayer === 2);
-        const g = createSvgEl("g", {
-          class:`cell ${cell.owner ? cell.owner : "empty"} ${disabled ? "disabled" : ""}`,
-          "data-key": key(cell.q, cell.r)
-        });
-
-        g.appendChild(createSvgEl("polygon", {
-          class:"hex-base",
-          points:hexPoints(x, y, HEX_SIZE - 2)
-        }));
-
-        if(!cell.owner && !disabled){
-          g.appendChild(createSvgEl("circle", {
-            class:"empty-hint",
-            cx:x, cy:y, r:6.2,
-            fill:state.selectedPiece === "white" ? "rgba(255,255,255,.92)" : "rgba(129,146,167,.76)"
-          }));
-          g.addEventListener("click", () => placePiece(key(cell.q, cell.r)));
-        }
-
-        if(cell.owner){
-          const isNew = key(cell.q, cell.r) === state.lastPlacedKey;
-          g.appendChild(renderPiece(cell.owner, x, y, isNew));
-        }
-
-        gMain.appendChild(g);
-      });
-
-      state.lastPlacedKey = null;
-    }
-
     function renderPiece(owner, x, y, isNew = false){
       const wrap = createSvgEl("g", { class:`piece${isNew ? " newPlace" : ""}` });
 
@@ -2024,18 +2075,96 @@
       return wrap;
     }
 
-    function renderBoardDropdown(){
+    function renderBoardTheme(){
       const board = getBoardById(state.currentBoardId);
-      boardDropdownTitle.textContent = `${board.name} (${board.coords.length})`;
-      boardDropdownSub.textContent = board.description;
+      boardShell.dataset.theme = board.theme || board.id;
+    }
+
+    function renderBoard(){
+      boardSvg.innerHTML = "";
+      injectDefs(boardSvg);
+
+      const effectiveCells = getEffectiveCells();
+      const coords = [...effectiveCells.values()];
+      const bounds = computeBounds(coords);
+      const boardW = (bounds.maxX - bounds.minX) + HEX_SIZE * 2.6;
+      const boardH = (bounds.maxY - bounds.minY) + HEX_SIZE * 2.8;
+      const scale = Math.min((VIEW_W - 120) / boardW, (VIEW_H - 120) / boardH, 1.62);
+
+      const gMain = createSvgEl("g", {
+        transform:`translate(${VIEW_W/2},${VIEW_H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
+      });
+
+      boardSvg.appendChild(gMain);
+
+      coords.sort((a,b) => a.r - b.r || a.q - b.q).forEach(cell => {
+        const k = key(cell.q, cell.r);
+        const { x, y } = axialToPixel(cell.q, cell.r);
+        const baseCell = state.cells.get(k);
+        const isBaseOccupied = !!baseCell.owner;
+        const isTemp = state.turnPlacements.has(k);
+
+        let className = "cell ";
+        if(isTemp){
+          className += state.turnPlacements.get(k) === "white" ? "tempWhite" : "tempBlack";
+        } else if(cell.owner === "white"){
+          className += "white";
+        } else if(cell.owner === "black"){
+          className += "black";
+        } else {
+          className += "empty";
+        }
+
+        const disabled = state.gameOver || state.cpuThinking || !state.namesConfirmed || (state.mode === "cpu" && state.currentPlayer === 2) || isBaseOccupied;
+        if(disabled && !isTemp) className += " disabled";
+
+        const g = createSvgEl("g", {
+          class:className,
+          "data-key": k
+        });
+
+        g.appendChild(createSvgEl("polygon", {
+          class:"hex-base",
+          points:hexPoints(x, y, HEX_SIZE - 2)
+        }));
+
+        if(!cell.owner && !disabled){
+          g.appendChild(createSvgEl("circle", {
+            class:"empty-hint",
+            cx:x, cy:y, r:6.2,
+            fill:defaultPieceForPlayer(state.currentPlayer) === "white" ? "rgba(255,255,255,.92)" : "rgba(129,146,167,.76)"
+          }));
+        }
+
+        if(!isBaseOccupied && !state.gameOver && !state.cpuThinking && state.namesConfirmed && !(state.mode === "cpu" && state.currentPlayer === 2)){
+          g.addEventListener("click", () => togglePlacementAt(k));
+        }
+
+        if(cell.owner){
+          const isNew = isTemp && k === state.lastPlacedKey;
+          g.appendChild(renderPiece(cell.owner, x, y, isNew));
+        }
+
+        gMain.appendChild(g);
+      });
+
+      state.lastPlacedKey = null;
+    }
+
+    function renderBoardDropdown(){
+      const allBoards = getAllBoards();
+      const board = getBoardById(state.currentBoardId);
+      boardDropdownTitle.textContent = "Game Boards";
+      boardDropdownSub.textContent = `${board.name} (${board.coords.length} cells)`;
+
       boardDropdownBody.innerHTML = "";
 
-      boards.forEach(b => {
+      allBoards.forEach(b => {
         const btn = document.createElement("button");
         btn.className = `boardOption ${b.id === state.currentBoardId ? "active" : ""}`;
         btn.type = "button";
         btn.innerHTML = `
-          <div class="name">${b.name} (${b.coords.length} cells)</div>
+          <div class="name">${b.name} ${b.custom ? "• Custom" : ""} (${b.coords.length} cells)</div>
           <div class="desc">${b.description}</div>
         `;
         btn.addEventListener("click", () => {
@@ -2046,20 +2175,28 @@
         });
         boardDropdownBody.appendChild(btn);
       });
+
+      const createBtn = document.createElement("button");
+      createBtn.className = "boardOption";
+      createBtn.type = "button";
+      createBtn.innerHTML = `
+        <div class="name">Create Your Own Board</div>
+        <div class="desc">Open the board builder, design a puzzle, save it, and play it.</div>
+      `;
+      createBtn.addEventListener("click", () => {
+        closeMenu();
+        openBuilderModal();
+      });
+      boardDropdownBody.appendChild(createBtn);
     }
 
     function renderTeacherPanel(){
       liveScoreBtn.classList.toggle("active", state.teacher.liveScore);
-      autoOpenBtn.classList.toggle("active", state.teacher.autoOpenScoreLab);
-      bonusModeBtn.classList.toggle("active", state.teacher.bonusMode === "connect4");
+      autoEndBtn.classList.toggle("active", state.teacher.autoEndModal);
 
       liveScoreBtn.textContent = state.teacher.liveScore ? "Live Score On" : "Live Score Off";
-      autoOpenBtn.textContent = state.teacher.autoOpenScoreLab ? "Auto Score Lab On" : "Auto Score Lab Off";
-      bonusModeBtn.textContent = state.teacher.bonusMode === "connect4" ? "Connect 4 Mode On" : "Connect 4 Mode Off";
-
-      teacherModeHelp.textContent = state.teacher.bonusMode === "connect4"
-        ? "Connect 4 Mode is on. A bonus stone is only earned when the placed move creates a connected group of exactly 4. Reaching 5 or more does not earn another bonus."
-        : "Classic mode uses the normal zebra rules.";
+      autoEndBtn.textContent = state.teacher.autoEndModal ? "End Modal On" : "End Modal Off";
+      teacherModeHelp.textContent = "Live corner scores are shown by default. The end of game summary modal also opens by default.";
     }
 
     function renderSettings(){
@@ -2085,52 +2222,51 @@
       renderTeacherPanel();
     }
 
-    function renderPieceChooser(){
-      const locked = state.mode === "cpu" && state.currentPlayer === 2;
-      chooseWhiteBtn.disabled = locked || state.cpuThinking || !state.namesConfirmed;
-      chooseBlackBtn.disabled = locked || state.cpuThinking || !state.namesConfirmed;
-      chooseWhiteBtn.classList.toggle("active", state.selectedPiece === "white");
-      chooseBlackBtn.classList.toggle("active", state.selectedPiece === "black");
-      chooseWhiteBtn.style.opacity = (locked || state.cpuThinking || !state.namesConfirmed) ? ".65" : "1";
-      chooseBlackBtn.style.opacity = (locked || state.cpuThinking || !state.namesConfirmed) ? ".65" : "1";
-    }
-
     function renderLiveScore(){
-      const whiteScore = getScoreForOwner(state.cells, "white");
-      const blackScore = getScoreForOwner(state.cells, "black");
-      liveWhiteVal.textContent = whiteScore;
-      liveBlackVal.textContent = blackScore;
-      liveScorePanel.classList.toggle("show", state.teacher.liveScore);
+      const effectiveCells = getEffectiveCells();
+      const whiteScore = getScoreForOwner(effectiveCells, "white");
+      const blackScore = getScoreForOwner(effectiveCells, "black");
+      whiteCornerVal.textContent = whiteScore;
+      blackCornerVal.textContent = blackScore;
+      whiteCornerScore.style.display = state.teacher.liveScore ? "flex" : "none";
+      blackCornerScore.style.display = state.teacher.liveScore ? "flex" : "none";
     }
 
     function renderNames(){
-      nameOneVal.textContent = state.playerNames[1] || "Player 1";
-      nameTwoVal.textContent = state.mode === "cpu" ? "CPU" : (state.playerNames[2] || "Player 2");
+      nameOneVal.innerHTML = `<span class="pieceDot white"></span>${state.playerNames[1] || "Player 1"}`;
+      nameTwoVal.innerHTML = `<span class="pieceDot black"></span>${state.mode === "cpu" ? "CPU" : (state.playerNames[2] || "Player 2")}`;
     }
 
     function renderHud(){
       if(!state.namesConfirmed){
-        turnPill.textContent = "Enter the player names to begin";
+        turnPill.innerHTML = `Enter the player names to begin`;
+        endTurnBtn.disabled = true;
+        endTurnBtn.classList.remove("ready");
         return;
       }
 
       if(state.gameOver){
-        turnPill.textContent = state.teacher.autoOpenScoreLab ? "Board full. Score lab opened" : "Board full. Open Score Lab to calculate";
-        return;
-      }
-
-      if(state.bonusTurn){
-        turnPill.textContent = `${getPlayerName(state.currentPlayer)} earned a bonus stone`;
+        turnPill.innerHTML = `Board full. Final scores are ready`;
+        endTurnBtn.disabled = true;
+        endTurnBtn.classList.remove("ready");
         return;
       }
 
       if(state.cpuThinking){
-        turnPill.innerHTML = `${getPlayerName(2)} thinking<span class="turnDot black"></span>Black`;
-      } else if(state.selectedPiece === "white"){
-        turnPill.innerHTML = `${getPlayerName(state.currentPlayer)} choosing<span class="turnDot white"></span>White`;
-      } else {
-        turnPill.innerHTML = `${getPlayerName(state.currentPlayer)} choosing<span class="turnDot black"></span>Black`;
+        turnPill.innerHTML = `<span class="turnDot black"></span>${getPlayerName(2)} is thinking`;
+        endTurnBtn.disabled = true;
+        endTurnBtn.classList.remove("ready");
+        return;
       }
+
+      const left = stonesLeftThisTurn();
+      turnPill.innerHTML = `
+        <span class="turnDot ${state.currentPlayer === 1 ? "white" : "black"}"></span>
+        <span>${getPlayerName(state.currentPlayer)} • ${left} stone${left === 1 ? "" : "s"} left</span>
+      `;
+
+      endTurnBtn.disabled = !canEndTurn();
+      endTurnBtn.classList.toggle("ready", canEndTurn());
     }
 
     function renderAll(){
@@ -2139,7 +2275,6 @@
       renderSettings();
       renderNames();
       renderBoard();
-      renderPieceChooser();
       renderLiveScore();
       renderHud();
     }
@@ -2177,6 +2312,50 @@
       state.namesConfirmed = true;
       closeNameModal();
       renderAll();
+
+      if(state.mode === "cpu" && state.currentPlayer === 2){
+        requestCpuMove();
+      }
+    }
+
+    function openScoreModal(){
+      scoreModal.classList.add("show");
+      scoreModal.setAttribute("aria-hidden", "false");
+      modalBackdrop.classList.add("show");
+    }
+
+    function closeScoreModal(){
+      scoreModal.classList.remove("show");
+      scoreModal.setAttribute("aria-hidden", "true");
+      modalBackdrop.classList.remove("show");
+    }
+
+    function openEndModal(){
+      renderEndModal();
+      endModal.classList.add("show");
+      endModal.setAttribute("aria-hidden", "false");
+      endBackdrop.classList.add("show");
+    }
+
+    function closeEndModal(){
+      endModal.classList.remove("show");
+      endModal.setAttribute("aria-hidden", "true");
+      endBackdrop.classList.remove("show");
+    }
+
+    function openBuilderModal(){
+      builderModal.classList.add("show");
+      builderModal.setAttribute("aria-hidden", "false");
+      builderBackdrop.classList.add("show");
+      renderBuilder();
+      renderSavedBoardsList();
+      setTimeout(() => builderNameInput.focus(), 0);
+    }
+
+    function closeBuilderModal(){
+      builderModal.classList.remove("show");
+      builderModal.setAttribute("aria-hidden", "true");
+      builderBackdrop.classList.remove("show");
     }
 
     function setStep(stepKey){
@@ -2206,8 +2385,8 @@
     }
 
     function startScoreLab(){
-      const whiteGroups = getGroups("white");
-      const blackGroups = getGroups("black");
+      const whiteGroups = getGroupsFromMap(state.cells, "white");
+      const blackGroups = getGroupsFromMap(state.cells, "black");
 
       const whiteScore = multiplyStepwiseNumbers(whiteGroups.map(g => g.length)).result;
       const blackScore = multiplyStepwiseNumbers(blackGroups.map(g => g.length)).result;
@@ -2241,18 +2420,6 @@
       renderScoreLab();
     }
 
-    function openScoreModal(){
-      scoreModal.classList.add("show");
-      scoreModal.setAttribute("aria-hidden", "false");
-      modalBackdrop.classList.add("show");
-    }
-
-    function closeScoreModal(){
-      scoreModal.classList.remove("show");
-      scoreModal.setAttribute("aria-hidden", "true");
-      modalBackdrop.classList.remove("show");
-    }
-
     function wireSubmitOnEnter(inputId){
       const input = document.getElementById(inputId);
       if(!input) return;
@@ -2264,6 +2431,77 @@
           scoreNextBtn.click();
         }
       });
+    }
+
+    function renderScoreBoardPreview(){
+      const s = state.scoreLab;
+      if(!s) return;
+
+      scoreSvg.innerHTML = "";
+      injectDefs(scoreSvg);
+
+      const board = getBoardById(state.currentBoardId);
+      const coords = board.coords;
+      const size = 18;
+      const bounds = computeBounds(coords, size);
+      const W = 1000;
+      const H = 320;
+      const boardW = (bounds.maxX - bounds.minX) + size * 2.8;
+      const boardH = (bounds.maxY - bounds.minY) + size * 2.8;
+      const scale = Math.min((W - 50) / boardW, (H - 50) / boardH, 1.65);
+
+      const gMain = createSvgEl("g", {
+        transform:`translate(${W/2},${H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
+      });
+      scoreSvg.appendChild(gMain);
+
+      let activeOwner = null;
+      let activeGroup = null;
+
+      if(s.phase === "whiteGroups"){
+        activeOwner = "white";
+        activeGroup = s.whiteGroups[s.whiteGroupIndex] || [];
+      } else if(s.phase === "blackGroups"){
+        activeOwner = "black";
+        activeGroup = s.blackGroups[s.blackGroupIndex] || [];
+      }
+
+      const activeSet = new Set((activeGroup || []).map(c => key(c.q, c.r)));
+
+      for(const cell of state.cells.values()){
+        const { x, y } = axialToPixel(cell.q, cell.r, size);
+
+        let cls = "scoreHighlight";
+        if(activeOwner){
+          if(cell.owner === activeOwner && activeSet.has(key(cell.q, cell.r))){
+            cls += ` match ${activeOwner}`;
+          } else if(cell.owner && cell.owner !== activeOwner){
+            cls += " otherOwner";
+          }
+        } else {
+          cls += cell.owner ? ` match ${cell.owner}` : "";
+        }
+
+        const g = createSvgEl("g", { class:cls });
+
+        g.appendChild(createSvgEl("polygon", {
+          class:"hex-base",
+          points:hexPoints(x, y, size - 1.2)
+        }));
+
+        if(cell.owner){
+          const r = size * .48;
+          if(cell.owner === "white"){
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y + 1, r:r + 1.4, fill:"rgba(0,0,0,.12)" }));
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y, r:r, fill:"url(#whiteGrad)" }));
+          } else {
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y + 1, r:r + 1.4, fill:"rgba(0,0,0,.18)" }));
+            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y, r:r, fill:"url(#blackGrad)" }));
+          }
+        }
+
+        gMain.appendChild(g);
+      }
     }
 
     function renderScoreLab(){
@@ -2421,78 +2659,7 @@
       }
 
       if(s.phase === "winner"){
-        renderEndScreen();
-      }
-    }
-
-    function renderScoreBoardPreview(){
-      const s = state.scoreLab;
-      if(!s) return;
-
-      scoreSvg.innerHTML = "";
-      injectDefs(scoreSvg);
-
-      const board = getBoardById(state.currentBoardId);
-      const coords = board.coords;
-      const size = 18;
-      const bounds = computeBounds(coords, size);
-      const W = 1000;
-      const H = 320;
-      const boardW = (bounds.maxX - bounds.minX) + size * 2.8;
-      const boardH = (bounds.maxY - bounds.minY) + size * 2.8;
-      const scale = Math.min((W - 50) / boardW, (H - 50) / boardH, 1.65);
-
-      const gMain = createSvgEl("g", {
-        transform:`translate(${W/2},${H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
-      });
-      scoreSvg.appendChild(gMain);
-
-      let activeOwner = null;
-      let activeGroup = null;
-
-      if(s.phase === "whiteGroups"){
-        activeOwner = "white";
-        activeGroup = s.whiteGroups[s.whiteGroupIndex] || [];
-      } else if(s.phase === "blackGroups"){
-        activeOwner = "black";
-        activeGroup = s.blackGroups[s.blackGroupIndex] || [];
-      }
-
-      const activeSet = new Set((activeGroup || []).map(c => key(c.q, c.r)));
-
-      for(const cell of state.cells.values()){
-        const { x, y } = axialToPixel(cell.q, cell.r, size);
-
-        let cls = "scoreHighlight";
-        if(activeOwner){
-          if(cell.owner === activeOwner && activeSet.has(key(cell.q, cell.r))){
-            cls += ` match ${activeOwner}`;
-          } else if(cell.owner && cell.owner !== activeOwner){
-            cls += " otherOwner";
-          }
-        } else {
-          cls += cell.owner ? ` match ${cell.owner}` : "";
-        }
-
-        const g = createSvgEl("g", { class:cls });
-
-        g.appendChild(createSvgEl("polygon", {
-          class:"hex-base",
-          points:hexPoints(x, y, size - 1.2)
-        }));
-
-        if(cell.owner){
-          const r = size * .48;
-          if(cell.owner === "white"){
-            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y + 1, r:r + 1.4, fill:"rgba(0,0,0,.12)" }));
-            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y, r:r, fill:"url(#whiteGrad)" }));
-          } else {
-            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y + 1, r:r + 1.4, fill:"rgba(0,0,0,.18)" }));
-            g.appendChild(createSvgEl("circle", { class:"scorePiece", cx:x, cy:y, r:r, fill:"url(#blackGrad)" }));
-          }
-        }
-
-        gMain.appendChild(g);
+        renderScoreLabWinner();
       }
     }
 
@@ -2510,8 +2677,9 @@
           s.whiteGroupIndex++;
           clearFeedback();
           if(s.whiteGroupIndex >= s.whiteGroups.length){
-            s.phase = s.whiteSizesEntered.length === 0 ? "whiteScore" : "whiteMultiply";
-            s.whiteScore = multiplyStepwiseNumbers(s.whiteSizesEntered).result;
+            const stepwise = multiplyStepwiseNumbers(s.whiteSizesEntered);
+            s.phase = stepwise.steps.length ? "whiteMultiply" : "whiteScore";
+            s.whiteScore = stepwise.result;
           }
           renderScoreLab();
         } else {
@@ -2564,8 +2732,9 @@
           s.blackGroupIndex++;
           clearFeedback();
           if(s.blackGroupIndex >= s.blackGroups.length){
-            s.phase = s.blackSizesEntered.length === 0 ? "blackScore" : "blackMultiply";
-            s.blackScore = multiplyStepwiseNumbers(s.blackSizesEntered).result;
+            const stepwise = multiplyStepwiseNumbers(s.blackSizesEntered);
+            s.phase = stepwise.steps.length ? "blackMultiply" : "blackScore";
+            s.blackScore = stepwise.result;
           }
           renderScoreLab();
         } else {
@@ -2599,12 +2768,11 @@
       if(s.phase === "blackScore"){
         s.phase = "winner";
         clearFeedback();
-        renderEndScreen();
-        return;
+        renderScoreLabWinner();
       }
     }
 
-    function renderEndScreen(){
+    function renderScoreLabWinner(){
       const s = state.scoreLab;
       if(!s) return;
 
@@ -2632,10 +2800,10 @@
         </div>
       `;
 
-      scoreNextBtn.textContent = "Reset Game";
+      scoreNextBtn.textContent = "Restart Game";
       scoreNextBtn.dataset.mode = "reset";
 
-      const actions = document.querySelector(".modalActions");
+      const actions = document.querySelector("#scoreModal .modalActions");
       if(!document.getElementById("chooseNewBoardBtn")){
         const btn = document.createElement("button");
         btn.id = "chooseNewBoardBtn";
@@ -2661,6 +2829,154 @@
       resetGame(state.currentBoardId);
     }
 
+    function getScoreBreakdown(owner){
+      const groups = getGroupsFromMap(state.cells, owner);
+      const sizes = groups.map(g => g.length);
+      const score = multiplyStepwiseNumbers(sizes).result;
+      return { owner, groups, sizes, score };
+    }
+
+    function renderEndModal(){
+      const white = getScoreBreakdown("white");
+      const black = getScoreBreakdown("black");
+
+      let winnerHeadline = "It is a tie";
+      if(white.score > black.score) winnerHeadline = "White wins";
+      if(black.score > white.score) winnerHeadline = "Black wins";
+
+      endModalContent.innerHTML = `
+        <div class="winnerCard">
+          <h4>${winnerHeadline}</h4>
+          <div class="modalText">Here is the full score breakdown for both colours.</div>
+        </div>
+
+        <div class="endGrid">
+          <div class="endBox">
+            <div class="endHead"><span class="cornerStone white"></span> White</div>
+            <div class="endScoreVal">${white.score}</div>
+            <div class="breakdownLine">Groups: ${white.sizes.length ? white.sizes.join(", ") : "none"}</div>
+            <div class="breakdownLine">Calculation: ${white.sizes.length ? white.sizes.join(" × ") : "0"}${white.sizes.length ? ` = ${white.score}` : ""}</div>
+          </div>
+
+          <div class="endBox">
+            <div class="endHead"><span class="cornerStone black"></span> Black</div>
+            <div class="endScoreVal">${black.score}</div>
+            <div class="breakdownLine">Groups: ${black.sizes.length ? black.sizes.join(", ") : "none"}</div>
+            <div class="breakdownLine">Calculation: ${black.sizes.length ? black.sizes.join(" × ") : "0"}${black.sizes.length ? ` = ${black.score}` : ""}</div>
+          </div>
+        </div>
+
+        <div class="breakdownCard">
+          <h4>Summary</h4>
+          <div class="modalText">
+            A single group scores as its own size. Multiple groups are multiplied together.
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBuilder(){
+      builderSvg.innerHTML = "";
+      injectDefs(builderSvg);
+
+      const candidates = cleanBoard(hexagon(4));
+      const size = 24;
+      const bounds = computeBounds(candidates, size);
+      const W = 980;
+      const H = 540;
+      const boardW = (bounds.maxX - bounds.minX) + size * 3;
+      const boardH = (bounds.maxY - bounds.minY) + size * 3;
+      const scale = Math.min((W - 60) / boardW, (H - 60) / boardH, 1.25);
+
+      const gMain = createSvgEl("g", {
+        transform:`translate(${W/2},${H/2}) scale(${scale}) translate(${-(bounds.minX+bounds.maxX)/2},${-(bounds.minY+bounds.maxY)/2})`
+      });
+      builderSvg.appendChild(gMain);
+
+      candidates.forEach((cell, idx) => {
+        const { x, y } = axialToPixel(cell.q, cell.r, size);
+        const cellKey = key(cell.q, cell.r);
+        const g = createSvgEl("g", { class:`builderCell ${builderSelection.has(cellKey) ? "on" : ""}` });
+
+        g.appendChild(createSvgEl("polygon", {
+          points:hexPoints(x, y, size - 1.5)
+        }));
+
+        g.appendChild(createSvgEl("text", {
+          x:x,
+          y:y + 4,
+          "text-anchor":"middle"
+        }));
+        g.lastChild.textContent = idx + 1;
+
+        g.addEventListener("click", () => {
+          if(builderSelection.has(cellKey)) builderSelection.delete(cellKey);
+          else builderSelection.add(cellKey);
+          renderBuilder();
+        });
+
+        gMain.appendChild(g);
+      });
+
+      builderCount.textContent = `${builderSelection.size} cell${builderSelection.size === 1 ? "" : "s"} selected`;
+    }
+
+    function renderSavedBoardsList(){
+      const customBoards = loadCustomBoards();
+      builderSavedList.innerHTML = "";
+
+      if(!customBoards.length){
+        builderSavedList.innerHTML = `<div class="builderHelper">No custom boards saved yet.</div>`;
+        return;
+      }
+
+      customBoards.forEach(board => {
+        const row = document.createElement("div");
+        row.className = "boardOption";
+        row.innerHTML = `
+          <div class="name">${board.name} (${board.coords.length} cells)</div>
+          <div class="desc">Saved in this browser.</div>
+        `;
+        row.addEventListener("click", () => {
+          closeBuilderModal();
+          resetGame(board.id);
+          renderBoardDropdown();
+        });
+        builderSavedList.appendChild(row);
+      });
+    }
+
+    function saveCustomBoard(){
+      const name = builderNameInput.value.trim() || `Custom Board ${loadCustomBoards().length + 1}`;
+      if(builderSelection.size < 3){
+        alert("Please select at least 3 cells for a custom board.");
+        return;
+      }
+
+      const coords = [...builderSelection].map(k => {
+        const [q,r] = k.split(",").map(Number);
+        return { q, r };
+      });
+
+      const boards = loadCustomBoards();
+      const newBoard = {
+        id:`custom-${Date.now()}`,
+        name,
+        coords: cleanBoard(coords)
+      };
+      boards.push(newBoard);
+      saveCustomBoards(boards);
+
+      builderSelection = new Set();
+      builderNameInput.value = "";
+      renderBuilder();
+      renderSavedBoardsList();
+      renderBoardDropdown();
+
+      closeBuilderModal();
+      resetGame(newBoard.id);
+    }
+
     function scoreSignature(cellsMap, perspective){
       const items = [];
       for(const [k, cell] of cellsMap){
@@ -2676,13 +2992,12 @@
     function groupHeuristic(cellsMap, owner){
       const groups = getGroupsFromMap(cellsMap, owner);
       if(!groups.length){
-        return { groups, count:0, largest:0, sumSq:0, logProd:0 };
+        return { groups, count:0, largest:0, sumSq:0, logProd:0, scoreNow:0 };
       }
 
       let largest = 0;
       let sumSq = 0;
       let logProd = 0;
-
       for(const g of groups){
         const n = g.length;
         if(n > largest) largest = n;
@@ -2690,7 +3005,15 @@
         logProd += Math.log(n);
       }
 
-      return { groups, count:groups.length, largest, sumSq, logProd };
+      const sizes = groups.map(g => g.length);
+      return {
+        groups,
+        count:groups.length,
+        largest,
+        sumSq,
+        logProd,
+        scoreNow:multiplyStepwiseNumbers(sizes).result
+      };
     }
 
     function edgePressure(cellsMap, owner){
@@ -2716,6 +3039,12 @@
       return -total;
     }
 
+    function immediateTacticalSwing(cellsMap, piece){
+      const myScore = getScoreForOwner(cellsMap, piece);
+      const oppScore = getScoreForOwner(cellsMap, otherColor(piece));
+      return myScore - oppScore;
+    }
+
     function evaluateMap(cellsMap, cpuPiece, level){
       const opp = otherColor(cpuPiece);
       const mine = groupHeuristic(cellsMap, cpuPiece);
@@ -2724,30 +3053,24 @@
       if(isBoardFullMap(cellsMap)){
         const mineProd = getScoreForOwner(cellsMap, cpuPiece);
         const oppProd = getScoreForOwner(cellsMap, opp);
-        if(mineProd > oppProd) return 100000 + (mineProd - oppProd);
-        if(mineProd < oppProd) return -100000 - (oppProd - mineProd);
+        if(mineProd > oppProd) return 1000000 + (mineProd - oppProd);
+        if(mineProd < oppProd) return -1000000 - (oppProd - mineProd);
         return 0;
       }
 
-      const fillRatio = filledCountMap(cellsMap) / cellsMap.size;
-      const late = 0.4 + fillRatio * 1.6;
-      const early = 1.5 - Math.min(fillRatio, .85);
+      const fillRatio = 1 - (emptyCellCount(cellsMap) / cellsMap.size);
+      const late = 0.35 + fillRatio * 1.9;
+      const early = 1.55 - Math.min(fillRatio, .9);
 
       let score =
-        (mine.logProd - theirs.logProd) * 44 * late * level.tactical +
-        (mine.sumSq - theirs.sumSq) * 1.65 * level.selfish +
+        (mine.scoreNow - theirs.scoreNow) * 12.0 * late * level.tactical +
+        (mine.logProd - theirs.logProd) * 30 * late * level.tactical +
+        (mine.sumSq - theirs.sumSq) * 1.85 * level.selfish +
         (mine.largest - theirs.largest) * 5.2 +
-        (edgePressure(cellsMap, cpuPiece) - edgePressure(cellsMap, opp)) * 1.3 +
-        (mine.count < theirs.count ? 5.5 : 0) +
-        (mine.count - theirs.count) * -2.8 * late +
+        (edgePressure(cellsMap, cpuPiece) - edgePressure(cellsMap, opp)) * 1.4 +
+        (mine.count - theirs.count) * -2.5 * late +
         centralInfluence(cellsMap, cpuPiece) * early * level.center -
-        centralInfluence(cellsMap, opp) * early * (level.center * .7);
-
-      if(state.teacher.bonusMode === "connect4"){
-        const myBig = mine.groups.filter(g => g.length === 4).length;
-        const oppBig = theirs.groups.filter(g => g.length === 4).length;
-        score += (myBig - oppBig) * 18;
-      }
+        centralInfluence(cellsMap, opp) * early * (level.center * .72);
 
       return score;
     }
@@ -2767,16 +3090,11 @@
       }
 
       let score = evaluateMap(clone, cpuPiece, level);
-      score += nearOwn * 7.5;
+      score += nearOwn * 7.8;
       score += nearOpp * 3.6;
       score += nearEmpty * 0.8;
       score += centrality(cell) * level.center * 6;
-
-      if(state.teacher.bonusMode === "connect4"){
-        const group = getGroupContainingCell(clone, k, piece);
-        if(group.length === 4) score += 22;
-      }
-
+      score += immediateTacticalSwing(clone, cpuPiece) * 2.4 * level.tactical;
       return score;
     }
 
@@ -2796,16 +3114,18 @@
         const normalScore = evaluateMovePlacement(cellsMap, k, playerPiece, cpuPiece, level);
         candidates.push({ key:k, piece:playerPiece, pre:normalScore });
 
-        const switchScore = evaluateMovePlacement(cellsMap, k, otherColor(playerPiece), cpuPiece, level) - 4.4;
-        candidates.push({ key:k, piece:otherColor(playerPiece), pre:switchScore });
+        const switchedPiece = otherColor(playerPiece);
+        const switchPenalty = level.switchChance === 0 ? 0 : 2.1 / Math.max(level.tactical, .2);
+        const switchScore = evaluateMovePlacement(cellsMap, k, switchedPiece, cpuPiece, level) - switchPenalty;
+        candidates.push({ key:k, piece:switchedPiece, pre:switchScore });
       }
 
       candidates.sort((a,b) => b.pre - a.pre);
       return candidates.slice(0, Math.min(level.beam * 2, candidates.length));
     }
 
-    function minimax(cellsMap, playerPiece, cpuPiece, depth, maximizing, level, alpha, beta, cache){
-      const sig = `${scoreSignature(cellsMap, cpuPiece)}|${playerPiece}|${depth}|${maximizing ? 1 : 0}|${state.teacher.bonusMode}`;
+    function minimax(cellsMap, playerPiece, cpuPiece, stonesLeftThisTurn, depth, maximizing, level, alpha, beta, cache){
+      const sig = `${scoreSignature(cellsMap, cpuPiece)}|${playerPiece}|${stonesLeftThisTurn}|${depth}|${maximizing ? 1 : 0}`;
       if(cache.has(sig)) return cache.get(sig);
 
       if(depth === 0 || isBoardFullMap(cellsMap)){
@@ -2821,10 +3141,13 @@
         for(const move of candidates){
           const clone = cloneCellsMap(cellsMap);
           clone.get(move.key).owner = move.piece;
-          const extraTurn = state.teacher.bonusMode === "connect4" && getGroupContainingCell(clone, move.key, move.piece).length === 4;
-          const nextMax = extraTurn ? true : false;
-          const nextPiece = extraTurn ? playerPiece : otherColor(playerPiece);
-          const val = minimax(clone, nextPiece, cpuPiece, depth - 1, nextMax, level, alpha, beta, cache);
+          const nextStonesLeft = stonesLeftThisTurn - 1;
+          const turnEnds = nextStonesLeft <= 0 || isBoardFullMap(clone);
+          const nextDepth = turnEnds ? depth - 1 : depth;
+          const resetStones = turnEnds ? Math.min(2, Math.max(1, emptyCellCount(clone))) : nextStonesLeft;
+          const nextPiece = turnEnds ? defaultPieceForPlayer(1) : defaultPieceForPlayer(2);
+          const nextMax = turnEnds ? false : true;
+          const val = minimax(clone, nextPiece, cpuPiece, resetStones, nextDepth, nextMax, level, alpha, beta, cache);
           if(val > best) best = val;
           if(best > alpha) alpha = best;
           if(beta <= alpha) break;
@@ -2837,10 +3160,13 @@
       for(const move of candidates){
         const clone = cloneCellsMap(cellsMap);
         clone.get(move.key).owner = move.piece;
-        const extraTurn = state.teacher.bonusMode === "connect4" && getGroupContainingCell(clone, move.key, move.piece).length === 4;
-        const nextMax = extraTurn ? false : true;
-        const nextPiece = extraTurn ? playerPiece : otherColor(playerPiece);
-        const val = minimax(clone, nextPiece, cpuPiece, depth - 1, nextMax, level, alpha, beta, cache);
+        const nextStonesLeft = stonesLeftThisTurn - 1;
+        const turnEnds = nextStonesLeft <= 0 || isBoardFullMap(clone);
+        const nextDepth = turnEnds ? depth - 1 : depth;
+        const resetStones = turnEnds ? Math.min(2, Math.max(1, emptyCellCount(clone))) : nextStonesLeft;
+        const nextPiece = turnEnds ? defaultPieceForPlayer(2) : defaultPieceForPlayer(1);
+        const nextMax = turnEnds ? true : false;
+        const val = minimax(clone, nextPiece, cpuPiece, resetStones, nextDepth, nextMax, level, alpha, beta, cache);
         if(val < best) best = val;
         if(best < beta) beta = best;
         if(beta <= alpha) break;
@@ -2849,22 +3175,28 @@
       return best;
     }
 
-    function chooseCpuMove(){
+    function chooseCpuMove(currentPiece, stonesLeftThisTurn, workingCells){
       const level = getCpuLevel();
       const cpuPiece = "black";
-      const empties = getEmptyKeys(state.cells);
+      const empties = getEmptyKeys(workingCells);
       if(!empties.length) return null;
 
-      const candidatePool = candidateMoves(state.cells, cpuPiece, cpuPiece, level).slice(0, Math.min(level.beam, empties.length * 2));
+      const candidatePool = candidateMoves(workingCells, currentPiece, cpuPiece, level).slice(0, Math.min(level.beam, empties.length * 2));
       const cache = new Map();
       const results = [];
 
       for(const move of candidatePool){
-        const clone = cloneCellsMap(state.cells);
+        const clone = cloneCellsMap(workingCells);
         clone.get(move.key).owner = move.piece;
-        const extraTurn = state.teacher.bonusMode === "connect4" && getGroupContainingCell(clone, move.key, move.piece).length === 4;
+        const remainingAfter = stonesLeftThisTurn - 1;
+        const turnEnds = remainingAfter <= 0 || isBoardFullMap(clone);
+        const nextDepth = turnEnds ? Math.max(0, level.depth - 1) : level.depth;
+        const nextStones = turnEnds ? Math.min(2, Math.max(1, emptyCellCount(clone))) : remainingAfter;
+        const nextPiece = turnEnds ? defaultPieceForPlayer(1) : defaultPieceForPlayer(2);
+        const nextMax = turnEnds ? false : true;
+
         const value = level.depth > 0
-          ? minimax(clone, extraTurn ? cpuPiece : "white", cpuPiece, level.depth, extraTurn, level, -Infinity, Infinity, cache)
+          ? minimax(clone, nextPiece, cpuPiece, nextStones, nextDepth, nextMax, level, -Infinity, Infinity, cache)
           : evaluateMap(clone, cpuPiece, level);
 
         results.push({
@@ -2875,8 +3207,8 @@
 
       results.sort((a,b) => b.value - a.value);
 
-      if(Math.random() < level.switchChance){
-        const switched = results.filter(r => r.piece !== cpuPiece);
+      if(level.switchChance > 0 && Math.random() < level.switchChance){
+        const switched = results.filter(r => r.piece !== currentPiece);
         if(switched.length) return switched[0];
       }
 
@@ -2890,19 +3222,38 @@
       state.cpuThinking = true;
       renderAll();
 
-      cpuTimeout = setTimeout(() => {
-        cpuTimeout = null;
-        const move = chooseCpuMove();
+      const cpuTakeStep = (workingCells, currentPiece, stepsLeft, placements) => {
+        const move = chooseCpuMove(currentPiece, stepsLeft, workingCells);
         if(!move){
           state.cpuThinking = false;
           renderAll();
           return;
         }
-        state.selectedPiece = move.piece;
-        renderAll();
-        setTimeout(() => {
-          placeCpuPiece(move.key, move.piece);
-        }, 70);
+
+        const nextWorking = cloneCellsMap(workingCells);
+        nextWorking.get(move.key).owner = move.piece;
+        placements.push({ key:move.key, piece:move.piece });
+
+        if(stepsLeft <= 1 || isBoardFullMap(nextWorking)){
+          state.turnPlacements = new Map(placements.map(p => [p.key, p.piece]));
+          state.cpuThinking = false;
+          renderAll();
+          finishTurn();
+          return;
+        }
+
+        cpuTimeout = setTimeout(() => {
+          cpuTimeout = null;
+          state.turnPlacements = new Map(placements.map(p => [p.key, p.piece]));
+          renderAll();
+          cpuTakeStep(nextWorking, defaultPieceForPlayer(2), stepsLeft - 1, placements);
+        }, 140);
+      };
+
+      cpuTimeout = setTimeout(() => {
+        cpuTimeout = null;
+        const workingCells = cloneCellsMap(state.cells);
+        cpuTakeStep(workingCells, defaultPieceForPlayer(2), state.placementsRequired, []);
       }, CPU_DELAY);
     }
 
@@ -2923,44 +3274,50 @@
       renderLiveScore();
     });
 
-    autoOpenBtn.addEventListener("click", () => {
-      state.teacher.autoOpenScoreLab = !state.teacher.autoOpenScoreLab;
+    autoEndBtn.addEventListener("click", () => {
+      state.teacher.autoEndModal = !state.teacher.autoEndModal;
       renderTeacherPanel();
-      renderHud();
-    });
-
-    bonusModeBtn.addEventListener("click", () => {
-      state.teacher.bonusMode = state.teacher.bonusMode === "classic" ? "connect4" : "classic";
-      renderTeacherPanel();
-      renderHud();
     });
 
     menuBtn.addEventListener("click", openMenu);
     closeMenuBtn.addEventListener("click", closeMenu);
     menuBackdrop.addEventListener("click", closeMenu);
 
-    chooseWhiteBtn.addEventListener("click", () => setSelectedPiece("white"));
-    chooseBlackBtn.addEventListener("click", () => setSelectedPiece("black"));
+    endTurnBtn.addEventListener("click", finishTurn);
 
     resetBtn.addEventListener("click", () => {
       resetGame(state.currentBoardId);
       closeMenu();
     });
 
-    mainResetBtn.addEventListener("click", () => {
-      resetGame(state.currentBoardId);
+    changeBoardBtn.addEventListener("click", () => {
+      teacherDropdown.classList.add("open");
+      boardDropdown.classList.add("open");
     });
 
     openScoreBtn.addEventListener("click", () => {
-      if(state.gameOver){
-        if(!state.scoreLab) startScoreLab();
-        else {
-          openScoreModal();
-          if(state.scoreLab.finished) renderEndScreen();
-          else renderScoreLab();
-        }
+      if(!state.gameOver) return;
+      if(!state.scoreLab) startScoreLab();
+      else {
+        openScoreModal();
+        if(state.scoreLab.finished) renderScoreLabWinner();
+        else renderScoreLab();
       }
     });
+
+    openBuilderBtn.addEventListener("click", () => {
+      closeMenu();
+      openBuilderModal();
+    });
+
+    builderSaveBtn.addEventListener("click", saveCustomBoard);
+    builderClearBtn.addEventListener("click", () => {
+      builderSelection = new Set();
+      builderNameInput.value = "";
+      renderBuilder();
+    });
+    builderCloseBtn.addEventListener("click", closeBuilderModal);
+    builderBackdrop.addEventListener("click", closeBuilderModal);
 
     startGameBtn.addEventListener("click", confirmNames);
     playerOneInput.addEventListener("keydown", (e) => {
@@ -2987,10 +3344,27 @@
     scoreCancelBtn.addEventListener("click", closeScoreModal);
     modalBackdrop.addEventListener("click", closeScoreModal);
 
+    endRestartBtn.addEventListener("click", () => {
+      closeEndModal();
+      resetGame(state.currentBoardId);
+    });
+
+    endBoardsBtn.addEventListener("click", () => {
+      closeEndModal();
+      openMenu();
+      teacherDropdown.classList.add("open");
+      boardDropdown.classList.add("open");
+    });
+
+    endCloseBtn.addEventListener("click", closeEndModal);
+    endBackdrop.addEventListener("click", closeEndModal);
+
     window.addEventListener("keydown", (e) => {
       if(e.key === "Escape"){
         closeMenu();
         closeScoreModal();
+        closeEndModal();
+        closeBuilderModal();
         return;
       }
 
@@ -3007,7 +3381,7 @@
     controlsDropdown.classList.remove("open");
     boardDropdown.classList.remove("open");
 
-    resetGame(boards[0].id);
+    resetGame(DEFAULT_BOARD_ID);
     openNameModal();
   </script>
 </body>
